@@ -9,7 +9,7 @@ version: 2
     - checkout
     - run:
         name: Install Rust
-        command:
+        command: |
           apt update
           apt install curl
           curl https://sh.rustup.rs -sSf | sh -s -- -y
