@@ -2,7 +2,9 @@ version: 2
 
 .cargo: &cargo
   name: Cargo build
-  command: cargo build -vv
+  command: |
+    export PATH=/root/.cargo/bin:$PATH
+    cargo build -vv
 
 .job_template: &job_apt
   steps:
