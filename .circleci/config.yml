@@ -6,7 +6,7 @@ version: 2
     export PATH=/root/.cargo/bin:$PATH
     cargo build -vv
 
-.job_template: &job_apt
+.job_apt_template: &job_apt
   steps:
     - checkout
     - run:
@@ -18,14 +18,140 @@ version: 2
     - run:
         <<: *cargo
 
+.job_yum_template: &job_yum
+  steps:
+    - checkout
+    - run:
+        name: Install Rust
+        command: |
+          yum install -y curl
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+    - run:
+        <<: *cargo
+
 jobs:
   latest:
     <<: *job_apt
     docker:
       - image: nvidia/cuda:latest
+  9.2-devel-ubuntu18.04:
+    <<: *job_apt
+    docker:
+      - image: nvidia/cuda:9.2-devel-ubuntu18.04
+  10.0-devel-ubuntu16.04:
+    <<: *job_apt
+    docker:
+      - image: nvidia/cuda:10.0-devel-ubuntu16.04
+  9.2-devel-ubuntu16.04:
+    <<: *job_apt
+    docker:
+      - image: nvidia/cuda:9.2-devel-ubuntu16.04
+  9.1-devel-ubuntu16.04:
+    <<: *job_apt
+    docker:
+      - image: nvidia/cuda:9.1-devel-ubuntu16.04
+  9.0-devel-ubuntu16.04:
+    <<: *job_apt
+    docker:
+      - image: nvidia/cuda:9.0-devel-ubuntu16.04
+  8.0-devel-ubuntu16.04:
+    <<: *job_apt
+    docker:
+      - image: nvidia/cuda:8.0-devel-ubuntu16.04
+  8.0-devel-ubuntu14.04:
+    <<: *job_apt
+    docker:
+      - image: nvidia/cuda:8.0-devel-ubuntu14.04
+  7.5-devel-ubuntu14.04:
+    <<: *job_apt
+    docker:
+      - image: nvidia/cuda:7.5-devel-ubuntu14.04
+  7.0-devel-ubuntu14.04:
+    <<: *job_apt
+    docker:
+      - image: nvidia/cuda:7.0-devel-ubuntu14.04
+  6.5-devel-ubuntu14.04:
+    <<: *job_apt
+    docker:
+      - image: nvidia/cuda:6.5-devel-ubuntu14.04
+  10.0-devel-centos7:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:10.0-devel-centos7
+  9.2-devel-centos7:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:9.2-devel-centos7
+  9.1-devel-centos7:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:9.1-devel-centos7
+  9.0-devel-centos7:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:9.0-devel-centos7
+  8.0-devel-centos7:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:8.0-devel-centos7
+  7.5-devel-centos7:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:7.5-devel-centos7
+  7.0-devel-centos7:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:7.0-devel-centos7
+  10.0-devel-centos6:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:10.0-devel-centos6
+  9.2-devel-centos6:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:9.2-devel-centos6
+  9.1-devel-centos6:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:9.1-devel-centos6
+  9.0-devel-centos6:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:9.0-devel-centos6
+  8.0-devel-centos6:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:8.0-devel-centos6
+  7.5-devel-centos6:
+    <<: *job_yum
+    docker:
+      - image: nvidia/cuda:7.5-devel-centos6
 
 workflows:
   version: 2
   tests:
     jobs:
       - latest
+      - 9.2-devel-ubuntu18.04
+      - 10.0-devel-ubuntu16.04
+      - 9.2-devel-ubuntu16.04
+      - 9.1-devel-ubuntu16.04
+      - 9.0-devel-ubuntu16.04
+      - 8.0-devel-ubuntu16.04
+      - 8.0-devel-ubuntu14.04
+      - 7.5-devel-ubuntu14.04
+      - 7.0-devel-ubuntu14.04
+      - 6.5-devel-ubuntu14.04
+      - 10.0-devel-centos7
+      - 9.2-devel-centos7
+      - 9.1-devel-centos7
+      - 9.0-devel-centos7
+      - 8.0-devel-centos7
+      - 7.5-devel-centos7
+      - 7.0-devel-centos7
+      - 10.0-devel-centos6
+      - 9.2-devel-centos6
+      - 9.1-devel-centos6
+      - 9.0-devel-centos6
+      - 8.0-devel-centos6
+      - 7.5-devel-centos6
