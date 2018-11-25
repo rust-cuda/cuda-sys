@@ -1,18 +1,24 @@
 version: 2
 
-.job_template: &job
+.cargo: &cargo
+  name: Cargo build
+  command: cargo build -vv
+
+.job_template: &job_apt
   steps:
     - checkout
     - run:
         name: Install Rust
-        command: curl https://sh.rustup.rs -sSf | sh -s -- -y
+        command:
+          apt update
+          apt install curl
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
     - run:
-        name: Cargo build
-        command: cargo build -vv
+        <<: *cargo
 
 jobs:
   latest:
-    <<: *job
+    <<: *job_apt
     docker:
       - image: nvidia/cuda:latest
 
