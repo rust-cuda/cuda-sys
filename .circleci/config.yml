@@ -1,0 +1,23 @@
+version: 2
+
+.job_template: &job
+  steps:
+    - checkout
+    - run:
+        name: Install Rust
+        command: curl https://sh.rustup.rs -sSf | sh -s -- -y
+    - run:
+        name: Cargo build
+        command: cargo build -vv
+
+jobs:
+  latest:
+    *job
+    docker:
+      - image: nvidia/cuda:latest
+
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - latest
