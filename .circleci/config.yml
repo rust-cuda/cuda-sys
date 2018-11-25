@@ -11,7 +11,7 @@ version: 2
         name: Install Rust
         command: |
           apt update
-          apt install curl
+          apt install -y curl
           curl https://sh.rustup.rs -sSf | sh -s -- -y
     - run:
         <<: *cargo
