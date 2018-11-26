@@ -13,7 +13,7 @@ version: 2
         name: Install Rust
         command: |
           apt update
-          apt install -y curl
+          apt install -y curl clang libclang-dev
           curl https://sh.rustup.rs -sSf | sh -s -- -y
     - run:
         <<: *cargo
@@ -24,7 +24,7 @@ version: 2
     - run:
         name: Install Rust
         command: |
-          yum install -y curl
+          yum install -y curl clang-devel clang
           curl https://sh.rustup.rs -sSf | sh -s -- -y
     - run:
         <<: *cargo
