@@ -1,10 +1,15 @@
 version: 2
 
-.cargo: &cargo
-  name: Cargo build
+.cargo: &cargo_build
+  name: Cargo Build
   command: |
     export PATH=/root/.cargo/bin:$PATH
     cargo build -v
+
+.cargo: &cargo_test
+  name: Cargo Test
+  command: |
+    export PATH=/root/.cargo/bin:$PATH
     cargo test -v
 
 .job_apt_template: &job_apt
@@ -17,7 +22,8 @@ version: 2
           apt install -y curl clang libclang-dev
           curl https://sh.rustup.rs -sSf | sh -s -- -y
     - run:
-        <<: *cargo
+        <<: *cargo_build
+        <<: *cargo_test
 
 .job_yum_template: &job_yum
   steps:
@@ -28,7 +34,8 @@ version: 2
           yum install -y curl clang-devel clang
           curl https://sh.rustup.rs -sSf | sh -s -- -y
     - run:
-        <<: *cargo
+        <<: *cargo_build
+        <<: *cargo_test
 
 jobs:
   latest:
