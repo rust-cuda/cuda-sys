@@ -137,7 +137,10 @@ fn main() {
         .write_to_file(out_path.join("vector_types_bindings.rs"))
         .expect("Unable to write vector types bindings");
 
-    println!("cargo:rustc-link-search=native={}/lib", cuda_path.display());
+    println!(
+        "cargo:rustc-link-search=native={}/lib64",
+        cuda_path.display()
+    );
     println!("cargo:rustc-link-lib=dylib=cuda");
     println!("cargo:rustc-link-lib=dylib=cudart");
     println!("cargo:rustc-link-lib=dylib=cublas");
