@@ -1,12 +1,12 @@
 version: 2
 
-.cargo: &cargo_build
+.cargo_build: &cargo_build
   name: Cargo Build
   command: |
     export PATH=/root/.cargo/bin:$PATH
     cargo build -v
 
-.cargo: &cargo_test
+.cargo_test: &cargo_test
   name: Cargo Test
   command: |
     export PATH=/root/.cargo/bin:$PATH
