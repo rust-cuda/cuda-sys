@@ -3,22 +3,44 @@ extern crate bindgen;
 use std::env;
 use std::path::PathBuf;
 
-fn find_library_paths() -> Vec<String> {
+fn read_env() -> Vec<String> {
     match env::var("CUDA_LIBRARY_PATH") {
         Ok(path) => {
-            let split_char = if cfg!(target_os = "windows") { ";" } else { ":" };
+            let split_char = if cfg!(target_os = "windows") {
+                ";"
+            } else {
+                ":"
+            };
 
-            path.split(split_char).map(|s| s.to_owned()).collect::<Vec<_>>()
+            path.split(split_char)
+                .map(|s| s.to_owned())
+                .collect::<Vec<_>>()
         }
         Err(_) => vec![],
     }
 }
 
+fn find_cuda() -> PathBuf {
+    let mut candidates = read_env();
+    candidates.push("/usr/local/cuda".to_string());
+    candidates.push("/opt/cuda".to_string());
+    for base in &candidates {
+        let base = PathBuf::from(base);
+        let path = base.join("include/cuda.h");
+        if path.is_file() {
+            return base;
+        }
+    }
+    panic!("CUDA cannot find");
+}
+
 fn main() {
     let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+    let cuda_path = find_cuda();
 
     bindgen::builder()
         .header("wrapper/cuda.h")
+        .clang_arg(format!("-I{}/include", cuda_path.display()))
         .whitelist_recursively(false)
         .whitelist_type("^CU.*")
         .whitelist_type("^cuuint(32|64)_t")
@@ -35,6 +57,7 @@ fn main() {
 
     bindgen::builder()
         .header("wrapper/cublas.h")
+        .clang_arg(format!("-I{}/include", cuda_path.display()))
         .whitelist_recursively(false)
         .whitelist_type("^cublas.*")
         .whitelist_var("^cublas.*")
@@ -47,6 +70,7 @@ fn main() {
 
     bindgen::builder()
         .header("wrapper/cucomplex.h")
+        .clang_arg(format!("-I{}/include", cuda_path.display()))
         .whitelist_recursively(false)
         .whitelist_type("^cu.*Complex$")
         .default_enum_style(bindgen::EnumVariation::Rust)
@@ -57,6 +81,7 @@ fn main() {
 
     bindgen::builder()
         .header("wrapper/cudart.h")
+        .clang_arg(format!("-I{}/include", cuda_path.display()))
         .whitelist_recursively(false)
         .whitelist_type("^cuda.*")
         .whitelist_type("^surfaceReference")
@@ -71,6 +96,7 @@ fn main() {
 
     bindgen::builder()
         .header("wrapper/driver_types.h")
+        .clang_arg(format!("-I{}/include", cuda_path.display()))
         .whitelist_recursively(false)
         .whitelist_type("^CU.*")
         .whitelist_type("^cuda.*")
@@ -82,6 +108,7 @@ fn main() {
 
     bindgen::builder()
         .header("wrapper/library_types.h")
+        .clang_arg(format!("-I{}/include", cuda_path.display()))
         .whitelist_recursively(false)
         .whitelist_type("^cuda.*")
         .whitelist_type("^libraryPropertyType.*")
@@ -93,6 +120,7 @@ fn main() {
 
     bindgen::builder()
         .header("wrapper/vector_types.h")
+        .clang_arg(format!("-I{}/include", cuda_path.display()))
         // .whitelist_recursively(false)
         .whitelist_type("^u?char[0-9]$")
         .whitelist_type("^dim[0-9]$")
@@ -109,9 +137,7 @@ fn main() {
         .write_to_file(out_path.join("vector_types_bindings.rs"))
         .expect("Unable to write vector types bindings");
 
-    for p in find_library_paths() {
-        println!("cargo:rustc-link-search=native={}", p);
-    }
+    println!("cargo:rustc-link-search=native={}/lib", cuda_path.display());
     println!("cargo:rustc-link-lib=dylib=cuda");
     println!("cargo:rustc-link-lib=dylib=cudart");
     println!("cargo:rustc-link-lib=dylib=cublas");
