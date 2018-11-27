@@ -31,6 +31,7 @@ version: 2
     - run:
         name: Install Rust
         command: |
+          yum install -y epel-release
           yum install -y curl clang-devel clang
           curl https://sh.rustup.rs -sSf | sh -s -- -y
     - run:
