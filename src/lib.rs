@@ -13,3 +13,10 @@ pub mod runtime {
     type CUexternalSemaphore_st = CUexternalSemaphore;
     include!("bindgen/cuda_runtime.rs");
 }
+
+pub mod cublas {
+    use driver::*;
+    pub use driver::cudaDataType;
+    use runtime::cudaStream_t;
+    include!("bindgen/cublas.rs");
+}
