@@ -1,16 +1,5 @@
-pub mod cublas;
-pub mod cuda;
-pub mod cudart;
-pub mod vector_types;
-
-#[test]
-fn cuda_version() {
-    let mut d_ver = 0;
-    unsafe {
-        cuda::cuDriverGetVersion(&mut d_ver as *mut i32);
-    }
-    println!("driver version = {}", d_ver);
-}
-
-mod cuda_tests;
-mod cudart_tests;
+#![allow(non_camel_case_types, non_upper_case_globals, non_snake_case)]
+include!("bindgen/cuda.rs");
+include!("bindgen/cucomplex.rs");
+include!("bindgen/vector_types.rs");
+include!("bindgen/library_types.rs");
