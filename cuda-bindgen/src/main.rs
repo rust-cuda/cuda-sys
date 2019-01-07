@@ -121,7 +121,7 @@ fn main() {
             .default_enum_style(bindgen::EnumVariation::Rust)
             .generate()
             .expect("Unable to generate CUDA RT bindings")
-            .write_to_file(out_path.join("cudart.rs"))
+            .write_to_file(out_path.join("cuda_runtime.rs"))
             .expect("Unable to write CUDA RT bindings");
     }
 
