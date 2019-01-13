@@ -27,7 +27,7 @@ fn find_cuda() -> Vec<PathBuf> {
         let path = base.join("include/cuda.h");
         if path.is_file() {
             valid_paths.push(base.join("lib64"));
-            valid_paths.push(base.join("lib64/stubs"));
+            valid_paths.push(base.join("compat"));
         }
     }
     valid_paths
