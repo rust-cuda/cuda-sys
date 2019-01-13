@@ -15,20 +15,22 @@ fn read_env() -> Vec<PathBuf> {
     }
 }
 
-fn find_cuda() -> PathBuf {
+fn find_cuda() -> Vec<PathBuf> {
     let mut candidates = read_env();
     candidates.push(PathBuf::from("/usr/local/cuda"));
     candidates.push(PathBuf::from("/opt/cuda"));
 
     // CUDA directory must have include/cuda.h header file
+    let mut valid_paths = vec![];
     for base in &candidates {
         let base = PathBuf::from(base);
         let path = base.join("include/cuda.h");
         if path.is_file() {
-            return base.join("lib64");
+            valid_paths.push(base.join("lib64"));
+            valid_paths.push(base.join("lib64/stubs"));
         }
     }
-    panic!("CUDA cannot find");
+    valid_paths
 }
 
 fn find_cuda_windows() -> PathBuf {
@@ -93,12 +95,16 @@ fn find_cuda_windows() -> PathBuf {
 }
 
 fn main() {
-    let path = if cfg!(target_os = "windows") {
-        find_cuda_windows()
+    if cfg!(target_os = "windows") {
+        println!(
+            "cargo:rustc-link-search=native={}",
+            find_cuda_windows().display()
+        );
     } else {
-        find_cuda()
+        for path in find_cuda() {
+            println!("cargo:rustc-link-search=native={}", path.display());
+        }
     };
-    println!("cargo:rustc-link-search=native={}", path.display());
     println!("cargo:rustc-link-lib=dylib=cuda");
     println!("cargo:rustc-link-lib=dylib=cudart");
     println!("cargo:rustc-link-lib=dylib=cublas");
