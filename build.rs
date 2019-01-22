@@ -1,3 +1,6 @@
+extern crate glob;
+
+use glob::glob;
 use std::{env, path::PathBuf};
 
 fn read_env() -> Vec<PathBuf> {
@@ -17,10 +20,14 @@ fn read_env() -> Vec<PathBuf> {
 
 fn find_cuda() -> Vec<PathBuf> {
     let mut candidates = read_env();
-    candidates.push(PathBuf::from("/usr/local/cuda"));
     candidates.push(PathBuf::from("/opt/cuda"));
+    candidates.push(PathBuf::from("/usr/local/cuda"));
+    for e in glob("/usr/local/cuda-*").unwrap() {
+        if let Ok(path) = e {
+            candidates.push(path)
+        }
+    }
 
-    // CUDA directory must have include/cuda.h header file
     let mut valid_paths = vec![];
     for base in &candidates {
         let lib = PathBuf::from(base).join("lib64");
