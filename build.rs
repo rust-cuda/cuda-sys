@@ -23,12 +23,10 @@ fn find_cuda() -> Vec<PathBuf> {
     // CUDA directory must have include/cuda.h header file
     let mut valid_paths = vec![];
     for base in &candidates {
-        let base = PathBuf::from(base);
-        let header = base.join("include/cuda.h");
-        if header.is_file() {
-            valid_paths.push(base.join("lib64"));
-            valid_paths.push(base.join("lib64/stubs"));
-            continue;
+        let lib = PathBuf::from(base).join("lib64");
+        if lib.is_dir() {
+            valid_paths.push(lib.clone());
+            valid_paths.push(lib.join("stubs"));
         }
     }
     eprintln!("Found CUDA paths: {:?}", valid_paths);
