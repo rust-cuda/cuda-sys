@@ -34,7 +34,7 @@ version: 2
     - run:
         name: Install Rust
         command: |
-          yum install -y curl
+          yum install -y curl clang
           curl https://sh.rustup.rs -sSf | sh -s -- -y
     - run:
         <<: *cargo
