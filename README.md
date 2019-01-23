@@ -14,3 +14,9 @@ This crate does not include CUDA itself. You need to install on your own.
 Cuda is installed via the typical Windows installer. To verify that cuda-sys can
 find your Cuda installation, you can check that the `CUDA_PATH` environment
 variable has been set.
+
+License
+--------
+Dual-licensed to be compatible with the Rust project.
+Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0) or the [MIT license](http://opensource.org/licenses/MIT), at your option.
+This file may not be copied, modified, or distributed except according to those terms.
