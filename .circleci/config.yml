@@ -114,30 +114,6 @@ jobs:
     <<: *job_yum
     docker:
       - image: nvidia/cuda:7.0-devel-centos7
-  10.0-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:10.0-devel-centos6
-  9.2-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:9.2-devel-centos6
-  9.1-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:9.1-devel-centos6
-  9.0-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:9.0-devel-centos6
-  8.0-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:8.0-devel-centos6
-  7.5-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:7.5-devel-centos6
 
 workflows:
   version: 2
@@ -161,9 +137,3 @@ workflows:
       - 8.0-devel-centos7
       - 7.5-devel-centos7
       - 7.0-devel-centos7
-      - 10.0-devel-centos6
-      - 9.2-devel-centos6
-      - 9.1-devel-centos6
-      - 9.0-devel-centos6
-      - 8.0-devel-centos6
-      - 7.5-devel-centos6
