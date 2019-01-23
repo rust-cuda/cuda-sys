@@ -4,7 +4,7 @@ version: 2
   name: Cargo build
   command: |
     export PATH=/root/.cargo/bin:$PATH
-    cargo build -vv
+    cargo build -vv $CRATE_CARGO_FEATURES
 
 .job_apt_template: &job_apt
   steps:
@@ -35,94 +35,140 @@ jobs:
     docker:
       - image: nvidia/cuda:latest
   9.2-devel-ubuntu18.04:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_9_2
     <<: *job_apt
     docker:
       - image: nvidia/cuda:9.2-devel-ubuntu18.04
   10.0-devel-ubuntu16.04:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_10_0
     <<: *job_apt
     docker:
       - image: nvidia/cuda:10.0-devel-ubuntu16.04
   9.2-devel-ubuntu16.04:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_9_2
     <<: *job_apt
     docker:
       - image: nvidia/cuda:9.2-devel-ubuntu16.04
   9.1-devel-ubuntu16.04:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_9_1
     <<: *job_apt
     docker:
       - image: nvidia/cuda:9.1-devel-ubuntu16.04
   9.0-devel-ubuntu16.04:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_9_0
     <<: *job_apt
     docker:
       - image: nvidia/cuda:9.0-devel-ubuntu16.04
   8.0-devel-ubuntu16.04:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_8_0
     <<: *job_apt
     docker:
       - image: nvidia/cuda:8.0-devel-ubuntu16.04
   8.0-devel-ubuntu14.04:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_8_0
     <<: *job_apt
     docker:
       - image: nvidia/cuda:8.0-devel-ubuntu14.04
   7.5-devel-ubuntu14.04:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_7_5
     <<: *job_apt
     docker:
       - image: nvidia/cuda:7.5-devel-ubuntu14.04
   7.0-devel-ubuntu14.04:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_7_0
     <<: *job_apt
     docker:
       - image: nvidia/cuda:7.0-devel-ubuntu14.04
   6.5-devel-ubuntu14.04:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_6_5
     <<: *job_apt
     docker:
       - image: nvidia/cuda:6.5-devel-ubuntu14.04
   10.0-devel-centos7:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_10_0
     <<: *job_yum
     docker:
       - image: nvidia/cuda:10.0-devel-centos7
   9.2-devel-centos7:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_9_2
     <<: *job_yum
     docker:
       - image: nvidia/cuda:9.2-devel-centos7
   9.1-devel-centos7:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_9_1
     <<: *job_yum
     docker:
       - image: nvidia/cuda:9.1-devel-centos7
   9.0-devel-centos7:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_9_0
     <<: *job_yum
     docker:
       - image: nvidia/cuda:9.0-devel-centos7
   8.0-devel-centos7:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_8_0
     <<: *job_yum
     docker:
       - image: nvidia/cuda:8.0-devel-centos7
   7.5-devel-centos7:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_7_5
     <<: *job_yum
     docker:
       - image: nvidia/cuda:7.5-devel-centos7
   7.0-devel-centos7:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_7_0
     <<: *job_yum
     docker:
       - image: nvidia/cuda:7.0-devel-centos7
   10.0-devel-centos6:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_10_0
     <<: *job_yum
     docker:
       - image: nvidia/cuda:10.0-devel-centos6
   9.2-devel-centos6:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_9_2
     <<: *job_yum
     docker:
       - image: nvidia/cuda:9.2-devel-centos6
   9.1-devel-centos6:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_9_1
     <<: *job_yum
     docker:
       - image: nvidia/cuda:9.1-devel-centos6
   9.0-devel-centos6:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_9_0
     <<: *job_yum
     docker:
       - image: nvidia/cuda:9.0-devel-centos6
   8.0-devel-centos6:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_8_0
     <<: *job_yum
     docker:
       - image: nvidia/cuda:8.0-devel-centos6
   7.5-devel-centos6:
+    environment:
+      CRATE_CARGO_FEATURES: --no-default-features --features cuda_7_5
     <<: *job_yum
     docker:
       - image: nvidia/cuda:7.5-devel-centos6
