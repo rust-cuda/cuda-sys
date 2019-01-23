@@ -1,5 +1,8 @@
 use env_logger;
-use std::{fs, path::PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
@@ -34,6 +37,18 @@ struct CudaBindgen {
     all: bool,
 }
 
+fn builder(cuda_path: &Path, header_name: &str) -> Option<bindgen::Builder> {
+    let header = cuda_path.join(header_name);
+    if !header.exists() {
+        return None;
+    }
+    Some(
+        bindgen::builder()
+            .header(header.to_str().unwrap())
+            .clang_arg(format!("-I{}", cuda_path.display())),
+    )
+}
+
 fn main() {
     env_logger::init();
     let opt = CudaBindgen::from_args();
@@ -49,9 +64,8 @@ fn main() {
     fs::create_dir_all(&out_path).expect("Unable to create output directory");
 
     if opt.driver || opt.all {
-        bindgen::builder()
-            .header(format!("{}/cuda.h", cuda_inc_path.display()))
-            .clang_arg(format!("-I{}", cuda_inc_path.display()))
+        builder(&cuda_inc_path, "cuda.h")
+            .expect("cuda.h does not exist")
             .whitelist_recursively(false)
             .whitelist_type("^CU.*")
             .whitelist_type("^cuuint(32|64)_t")
@@ -64,9 +78,8 @@ fn main() {
             .write_to_file(out_path.join("cuda.rs"))
             .expect("Unable to write CUDA bindings");
 
-        bindgen::builder()
-            .header(format!("{}/cuComplex.h", cuda_inc_path.display()))
-            .clang_arg(format!("-I{}", cuda_inc_path.display()))
+        builder(&cuda_inc_path, "cuComplex.h")
+            .expect("cuComplex.h does not exist")
             .whitelist_recursively(false)
             .whitelist_type("^cu.*Complex$")
             .default_enum_style(bindgen::EnumVariation::Rust)
@@ -75,21 +88,8 @@ fn main() {
             .write_to_file(out_path.join("cucomplex.rs"))
             .expect("Unable to write CUComplex bindings");
 
-        bindgen::builder()
-            .header(format!("{}/library_types.h", cuda_inc_path.display()))
-            .clang_arg(format!("-I{}", cuda_inc_path.display()))
-            .whitelist_recursively(false)
-            .whitelist_type("^cuda.*")
-            .whitelist_type("^libraryPropertyType.*")
-            .default_enum_style(bindgen::EnumVariation::Rust)
-            .generate()
-            .expect("Unable to generate library types bindings")
-            .write_to_file(out_path.join("library_types.rs"))
-            .expect("Unable to write library types bindings");
-
-        bindgen::builder()
-            .header(format!("{}/vector_types.h", cuda_inc_path.display()))
-            .clang_arg(format!("-I{}", cuda_inc_path.display()))
+        builder(&cuda_inc_path, "vector_types.h")
+            .expect("vector_types.h does not exist")
             .whitelist_type("^u?char[0-9]$")
             .whitelist_type("^dim[0-9]$")
             .whitelist_type("^double[0-9]$")
@@ -104,12 +104,23 @@ fn main() {
             .expect("Unable to generate vector types bindings")
             .write_to_file(out_path.join("vector_types.rs"))
             .expect("Unable to write vector types bindings");
+
+        if let Some(builder) = builder(&cuda_inc_path, "library_types.h") {
+            builder
+                .whitelist_recursively(false)
+                .whitelist_type("^cuda.*")
+                .whitelist_type("^libraryPropertyType.*")
+                .default_enum_style(bindgen::EnumVariation::Rust)
+                .generate()
+                .expect("Unable to generate library types bindings")
+                .write_to_file(out_path.join("library_types.rs"))
+                .expect("Unable to write library types bindings");
+        }
     }
 
     if opt.runtime || opt.all {
-        bindgen::builder()
-            .header(format!("{}/cuda_runtime.h", cuda_inc_path.display()))
-            .clang_arg(format!("-I{}", cuda_inc_path.display()))
+        builder(&cuda_inc_path, "cuda_runtime.h")
+            .expect("cuda_runtime.h does not exist")
             .whitelist_recursively(false)
             .whitelist_type("^cuda.*")
             .whitelist_type("^surfaceReference")
@@ -124,9 +135,8 @@ fn main() {
     }
 
     if opt.cublas || opt.all {
-        bindgen::builder()
-            .header(format!("{}/cublas.h", cuda_inc_path.display()))
-            .clang_arg(format!("-I{}", cuda_inc_path.display()))
+        builder(&cuda_inc_path, "cublas.h")
+            .expect("cublas.h does not exist")
             .whitelist_recursively(false)
             .whitelist_type("^cublas.*")
             .whitelist_function("^cublas.*")
