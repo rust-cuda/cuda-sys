@@ -1,5 +1,7 @@
 [workspace]
 members = [
+  "cuda-bindgen",
+  "cuda-searcher",
   "cuda-driver-sys",
   "cuda-runtime-sys",
   "cublas-sys"
