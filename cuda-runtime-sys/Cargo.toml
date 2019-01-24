@@ -6,3 +6,6 @@ edition = "2018"
 
 [dependencies.cuda-driver-sys]
 path = "../cuda-driver-sys"
+
+[build-dependencies]
+cuda-searcher = { path = "../cuda-searcher" }

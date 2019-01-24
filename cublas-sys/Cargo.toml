@@ -9,3 +9,6 @@ path = "../cuda-driver-sys"
 
 [dependencies.cuda-runtime-sys]
 path = "../cuda-runtime-sys"
+
+[build-dependencies]
+cuda-searcher = { path = "../cuda-searcher" }
