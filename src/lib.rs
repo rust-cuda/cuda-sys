@@ -15,8 +15,8 @@ pub mod runtime {
 }
 
 pub mod cublas {
-    use driver::*;
     pub use driver::cudaDataType;
+    use driver::*;
     use runtime::cudaStream_t;
     include!("bindgen/cublas.rs");
 }
