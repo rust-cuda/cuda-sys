@@ -6,6 +6,14 @@ version: 2
     export PATH=/root/.cargo/bin:$PATH
     cargo build -v
 
+.cuda_bindgen: &cuda_bindgen
+  name: Test cuda bindgen
+  command: |
+    export PATH=/root/.cargo/bin:$PATH
+    rustup component add rustfmt
+    cd cuda-bindgen
+    cargo run -- -a test_binding /usr/local/cuda
+
 .job_apt_template: &job_apt
   steps:
     - checkout
@@ -13,10 +21,12 @@ version: 2
         name: Install Rust
         command: |
           apt update
-          apt install -y curl
+          apt install -y curl clang
           curl https://sh.rustup.rs -sSf | sh -s -- -y
     - run:
         <<: *cargo
+    - run:
+        <<: *cuda_bindgen
 
 .job_yum_template: &job_yum
   steps:
@@ -24,10 +34,12 @@ version: 2
     - run:
         name: Install Rust
         command: |
-          yum install -y curl
+          yum install -y curl clang
           curl https://sh.rustup.rs -sSf | sh -s -- -y
     - run:
         <<: *cargo
+    - run:
+        <<: *cuda_bindgen
 
 jobs:
   latest:
@@ -102,30 +114,6 @@ jobs:
     <<: *job_yum
     docker:
       - image: nvidia/cuda:7.0-devel-centos7
-  10.0-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:10.0-devel-centos6
-  9.2-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:9.2-devel-centos6
-  9.1-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:9.1-devel-centos6
-  9.0-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:9.0-devel-centos6
-  8.0-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:8.0-devel-centos6
-  7.5-devel-centos6:
-    <<: *job_yum
-    docker:
-      - image: nvidia/cuda:7.5-devel-centos6
 
 workflows:
   version: 2
@@ -149,9 +137,3 @@ workflows:
       - 8.0-devel-centos7
       - 7.5-devel-centos7
       - 7.0-devel-centos7
-      - 10.0-devel-centos6
-      - 9.2-devel-centos6
-      - 9.1-devel-centos6
-      - 9.0-devel-centos6
-      - 8.0-devel-centos6
-      - 7.5-devel-centos6
