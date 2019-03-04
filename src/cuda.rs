@@ -2331,6 +2331,7 @@ pub enum cudaError_enum {
     #[doc = " This indicates that an unknown internal error has occurred."]
     CUDA_ERROR_UNKNOWN = 999,
 }
+pub use self::cudaError_enum as  cudaError_t;
 pub use self::cudaError_enum as CUresult;
 impl CUdevice_P2PAttribute_enum {
     pub const CU_DEVICE_P2P_ATTRIBUTE_CUDA_ARRAY_ACCESS_SUPPORTED: CUdevice_P2PAttribute_enum =
