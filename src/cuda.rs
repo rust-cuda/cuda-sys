@@ -3298,7 +3298,7 @@ fn bindgen_test_layout_CUDA_ARRAY_DESCRIPTOR_st() {
 pub type CUDA_ARRAY_DESCRIPTOR = CUDA_ARRAY_DESCRIPTOR_st;
 #[doc = " 3D array descriptor"]
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct CUDA_ARRAY3D_DESCRIPTOR_st {
     #[doc = "< Width of 3D array"]
     pub Width: usize,
