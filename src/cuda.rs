@@ -43,7 +43,7 @@ impl<T> ::std::cmp::PartialEq for __BindgenUnionField<T> {
     }
 }
 impl<T> ::std::cmp::Eq for __BindgenUnionField<T> {}
-pub const CUDA_VERSION: u32 = 10000;
+pub const CUDA_VERSION: u32 = 10010;
 pub const CU_IPC_HANDLE_SIZE: u32 = 64;
 pub const CU_MEMHOSTALLOC_PORTABLE: u32 = 1;
 pub const CU_MEMHOSTALLOC_DEVICEMAP: u32 = 2;
@@ -1315,14 +1315,19 @@ pub enum CUfunction_attribute_enum {
     #[doc = " The maximum size in bytes of dynamically-allocated shared memory that can be used by"]
     #[doc = " this function. If the user-specified dynamic shared memory size is larger than this"]
     #[doc = " value, the launch will fail."]
+    #[doc = " See ::cuFuncSetAttribute"]
     CU_FUNC_ATTRIBUTE_MAX_DYNAMIC_SHARED_SIZE_BYTES = 8,
     #[doc = " On devices where the L1 cache and shared memory use the same hardware resources,"]
-    #[doc = " this sets the shared memory carveout preference, in percent of the total resources."]
+    #[doc = " this sets the shared memory carveout preference, in percent of the total shared memory."]
+    #[doc = " Refer to ::CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_MULTIPROCESSOR."]
     #[doc = " This is only a hint, and the driver can choose a different ratio if required to execute the function."]
+    #[doc = " See ::cuFuncSetAttribute"]
     CU_FUNC_ATTRIBUTE_PREFERRED_SHARED_MEMORY_CARVEOUT = 9,
     #[doc = " On devices where the L1 cache and shared memory use the same hardware resources,"]
-    #[doc = " this sets the shared memory carveout preference, in percent of the total resources."]
+    #[doc = " this sets the shared memory carveout preference, in percent of the total shared memory."]
+    #[doc = " Refer to ::CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_MULTIPROCESSOR."]
     #[doc = " This is only a hint, and the driver can choose a different ratio if required to execute the function."]
+    #[doc = " See ::cuFuncSetAttribute"]
     CU_FUNC_ATTRIBUTE_MAX = 10,
 }
 pub use self::CUfunction_attribute_enum as CUfunction_attribute;
@@ -1353,13 +1358,14 @@ pub enum CUsharedconfig_enum {
 }
 pub use self::CUsharedconfig_enum as CUsharedconfig;
 #[repr(i32)]
-#[doc = " Shared memory carveout configurations"]
+#[doc = " Shared memory carveout configurations. These may be passed to ::cuFuncSetAttribute"]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum CUshared_carveout_enum {
+    #[doc = "< No preference for shared memory or L1 (default)"]
     CU_SHAREDMEM_CARVEOUT_DEFAULT = -1,
-    #[doc = " < no preference for shared memory or L1 (default)"]
+    #[doc = "< Prefer maximum available shared memory, minimum L1 cache"]
     CU_SHAREDMEM_CARVEOUT_MAX_SHARED = 100,
-    #[doc = " < prefer maximum available shared memory, minimum L1 cache"]
+    #[doc = "< Prefer maximum available L1 cache, minimum shared memory"]
     CU_SHAREDMEM_CARVEOUT_MAX_L1 = 0,
 }
 pub use self::CUshared_carveout_enum as CUshared_carveout;
@@ -1571,6 +1577,8 @@ pub enum CUjit_target_enum {
     CU_TARGET_COMPUTE_62 = 62,
     #[doc = "< Compute device class 7.0."]
     CU_TARGET_COMPUTE_70 = 70,
+    #[doc = "< Compute device class 7.2."]
+    CU_TARGET_COMPUTE_72 = 72,
     #[doc = "< Compute device class 7.5."]
     CU_TARGET_COMPUTE_75 = 75,
 }
@@ -2036,6 +2044,16 @@ pub enum CUstreamCaptureStatus_enum {
 }
 pub use self::CUstreamCaptureStatus_enum as CUstreamCaptureStatus;
 #[repr(u32)]
+#[doc = " Possible modes for stream capture thread interactions. For more details see"]
+#[doc = " ::cuStreamBeginCapture and ::cuThreadExchangeStreamCaptureMode"]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+pub enum CUstreamCaptureMode_enum {
+    CU_STREAM_CAPTURE_MODE_GLOBAL = 0,
+    CU_STREAM_CAPTURE_MODE_THREAD_LOCAL = 1,
+    CU_STREAM_CAPTURE_MODE_RELAXED = 2,
+}
+pub use self::CUstreamCaptureMode_enum as CUstreamCaptureMode;
+#[repr(u32)]
 #[doc = " Error codes"]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum cudaError_enum {
@@ -2249,7 +2267,8 @@ pub enum cudaError_enum {
     CUDA_ERROR_INVALID_PC = 718,
     #[doc = " An exception occurred on the device while executing a kernel. Common"]
     #[doc = " causes include dereferencing an invalid device pointer and accessing"]
-    #[doc = " out of bounds shared memory."]
+    #[doc = " out of bounds shared memory. Less common cases can be system specific - more"]
+    #[doc = " information about these cases can be found in the system specific user guide."]
     #[doc = " This leaves the process in an inconsistent state and any further CUDA work"]
     #[doc = " will return the same error. To continue using CUDA, the process must be terminated"]
     #[doc = " and relaunched."]
@@ -2268,7 +2287,19 @@ pub enum cudaError_enum {
     #[doc = " This error indicates that the system is not yet ready to start any CUDA"]
     #[doc = " work.  To continue using CUDA, verify the system configuration is in a"]
     #[doc = " valid state and all required driver daemons are actively running."]
+    #[doc = " More information about this error can be found in the system specific"]
+    #[doc = " user guide."]
     CUDA_ERROR_SYSTEM_NOT_READY = 802,
+    #[doc = " This error indicates that there is a mismatch between the versions of"]
+    #[doc = " the display driver and the CUDA driver. Refer to the compatibility documentation"]
+    #[doc = " for supported versions."]
+    CUDA_ERROR_SYSTEM_DRIVER_MISMATCH = 803,
+    #[doc = " This error indicates that the system was upgraded to run with forward compatibility"]
+    #[doc = " but the visible hardware detected by CUDA does not support this configuration."]
+    #[doc = " Refer to the compatibility documentation for the supported hardware matrix or ensure"]
+    #[doc = " that only supported hardware is visible during initialization via the CUDA_VISIBLE_DEVICES"]
+    #[doc = " environment variable."]
+    CUDA_ERROR_COMPAT_NOT_SUPPORTED_ON_DEVICE = 804,
     #[doc = " This error indicates that the operation is not permitted when"]
     #[doc = " the stream is capturing."]
     CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED = 900,
@@ -2293,13 +2324,17 @@ pub enum cudaError_enum {
     #[doc = " This error indicates that the operation is not permitted on an event which"]
     #[doc = " was last recorded in a capturing stream."]
     CUDA_ERROR_CAPTURED_EVENT = 907,
+    #[doc = " A stream capture sequence not initiated with the ::CU_STREAM_CAPTURE_MODE_RELAXED"]
+    #[doc = " argument to ::cuStreamBeginCapture was passed to ::cuStreamEndCapture in a"]
+    #[doc = " different thread."]
+    CUDA_ERROR_STREAM_CAPTURE_WRONG_THREAD = 908,
     #[doc = " This indicates that an unknown internal error has occurred."]
     CUDA_ERROR_UNKNOWN = 999,
 }
 pub use self::cudaError_enum as CUresult;
 impl CUdevice_P2PAttribute_enum {
     pub const CU_DEVICE_P2P_ATTRIBUTE_CUDA_ARRAY_ACCESS_SUPPORTED: CUdevice_P2PAttribute_enum =
-        CUdevice_P2PAttribute_enum::CU_DEVICE_P2P_ATTRIBUTE_ARRAY_ACCESS_ACCESS_SUPPORTED;
+        CUdevice_P2PAttribute_enum::CU_DEVICE_P2P_ATTRIBUTE_ACCESS_ACCESS_SUPPORTED;
 }
 #[repr(u32)]
 #[doc = " P2P Attributes"]
@@ -2312,7 +2347,7 @@ pub enum CUdevice_P2PAttribute_enum {
     #[doc = "< Atomic operation over the link supported"]
     CU_DEVICE_P2P_ATTRIBUTE_NATIVE_ATOMIC_SUPPORTED = 3,
     #[doc = "< \\deprecated use CU_DEVICE_P2P_ATTRIBUTE_CUDA_ARRAY_ACCESS_SUPPORTED instead"]
-    CU_DEVICE_P2P_ATTRIBUTE_ARRAY_ACCESS_ACCESS_SUPPORTED = 4,
+    CU_DEVICE_P2P_ATTRIBUTE_ACCESS_ACCESS_SUPPORTED = 4,
 }
 pub use self::CUdevice_P2PAttribute_enum as CUdevice_P2PAttribute;
 #[doc = " CUDA stream callback"]
@@ -5359,7 +5394,9 @@ extern "C" {
     #[doc = " \\return"]
     #[doc = " ::CUDA_SUCCESS,"]
     #[doc = " ::CUDA_ERROR_INVALID_VALUE,"]
-    #[doc = " ::CUDA_ERROR_INVALID_DEVICE"]
+    #[doc = " ::CUDA_ERROR_INVALID_DEVICE,"]
+    #[doc = " ::CUDA_ERROR_SYSTEM_DRIVER_MISMATCH,"]
+    #[doc = " ::CUDA_ERROR_COMPAT_NOT_SUPPORTED_ON_DEVICE"]
     #[doc = " \\notefnerr"]
     pub fn cuInit(Flags: ::std::os::raw::c_uint) -> CUresult;
 }
@@ -5928,8 +5965,9 @@ extern "C" {
     #[doc = " \\e C > \\e P, then CUDA will yield to other OS threads when waiting for"]
     #[doc = " the GPU (::CU_CTX_SCHED_YIELD), otherwise CUDA will not yield while"]
     #[doc = " waiting for results and actively spin on the processor (::CU_CTX_SCHED_SPIN)."]
-    #[doc = " However, on low power devices like Tegra, it always defaults to"]
-    #[doc = " ::CU_CTX_SCHED_BLOCKING_SYNC."]
+    #[doc = " Additionally, on Tegra devices, ::CU_CTX_SCHED_AUTO uses a heuristic based on"]
+    #[doc = " the power profile of the platform and may choose ::CU_CTX_SCHED_BLOCKING_SYNC"]
+    #[doc = " for low-powered devices."]
     #[doc = ""]
     #[doc = " - ::CU_CTX_LMEM_RESIZE_TO_MAX: Instruct CUDA to not reduce local memory"]
     #[doc = " after resizing local memory for a kernel. This can prevent thrashing by"]
@@ -6079,7 +6117,6 @@ extern "C" {
     #[doc = " ::CUDA_SUCCESS,"]
     #[doc = " ::CUDA_ERROR_DEINITIALIZED,"]
     #[doc = " ::CUDA_ERROR_NOT_INITIALIZED,"]
-    #[doc = " ::CUDA_ERROR_INVALID_VALUE"]
     #[doc = " \\notefnerr"]
     #[doc = ""]
     #[doc = " \\sa"]
@@ -6234,6 +6271,10 @@ extern "C" {
     #[doc = "   than 3.5 will result in the error ::CUDA_ERROR_UNSUPPORTED_LIMIT being"]
     #[doc = "   returned."]
     #[doc = ""]
+    #[doc = " - ::CU_LIMIT_MAX_L2_FETCH_GRANULARITY controls the L2 cache fetch granularity."]
+    #[doc = "   Values can range from 0B to 128B. This is purely a performance hint and"]
+    #[doc = "   it can be ignored or clamped depending on the platform."]
+    #[doc = ""]
     #[doc = " \\param limit - Limit to set"]
     #[doc = " \\param value - Size of limit"]
     #[doc = ""]
@@ -6274,6 +6315,7 @@ extern "C" {
     #[doc = "   child grid launches to complete."]
     #[doc = " - ::CU_LIMIT_DEV_RUNTIME_PENDING_LAUNCH_COUNT: maximum number of outstanding"]
     #[doc = "   device runtime launches that can be made from this context."]
+    #[doc = " - ::CU_LIMIT_MAX_L2_FETCH_GRANULARITY: L2 cache fetch granularity."]
     #[doc = ""]
     #[doc = " \\param limit  - Limit to query"]
     #[doc = " \\param pvalue - Returned size of limit"]
@@ -7389,8 +7431,7 @@ extern "C" {
     #[doc = ""]
     #[doc = " IPC functionality is restricted to devices with support for unified"]
     #[doc = " addressing on Linux and Windows operating systems."]
-    #[doc = " IPC functionality on Windows is restricted to GPUs in TCC mode."]
-    #[doc = " IPC functionality is not supported on Tegra platforms."]
+    #[doc = " IPC functionality on Windows is restricted to GPUs in TCC mode"]
     #[doc = ""]
     #[doc = " \\param pHandle - Pointer to a user allocated CUipcEventHandle"]
     #[doc = "                    in which to return the opaque event handle"]
@@ -7430,8 +7471,7 @@ extern "C" {
     #[doc = ""]
     #[doc = " IPC functionality is restricted to devices with support for unified"]
     #[doc = " addressing on Linux and Windows operating systems."]
-    #[doc = " IPC functionality on Windows is restricted to GPUs in TCC mode."]
-    #[doc = " IPC functionality is not supported on Tegra platforms."]
+    #[doc = " IPC functionality on Windows is restricted to GPUs in TCC mode"]
     #[doc = ""]
     #[doc = " \\param phEvent - Returns the imported event"]
     #[doc = " \\param handle  - Interprocess handle to open"]
@@ -7473,8 +7513,7 @@ extern "C" {
     #[doc = ""]
     #[doc = " IPC functionality is restricted to devices with support for unified"]
     #[doc = " addressing on Linux and Windows operating systems."]
-    #[doc = " IPC functionality on Windows is restricted to GPUs in TCC mode."]
-    #[doc = " IPC functionality is not supported on Tegra platforms."]
+    #[doc = " IPC functionality on Windows is restricted to GPUs in TCC mode"]
     #[doc = ""]
     #[doc = " \\param pHandle - Pointer to user allocated ::CUipcMemHandle to return"]
     #[doc = "                    the handle in."]
@@ -7508,6 +7547,9 @@ extern "C" {
     #[doc = " controlled by the ::CU_IPC_MEM_LAZY_ENABLE_PEER_ACCESS flag."]
     #[doc = " ::cuDeviceCanAccessPeer can determine if a mapping is possible."]
     #[doc = ""]
+    #[doc = " ::cuIpcOpenMemHandle can open handles to devices that may not be visible"]
+    #[doc = " in the process calling the API."]
+    #[doc = ""]
     #[doc = " Contexts that may open ::CUipcMemHandles are restricted in the following way."]
     #[doc = " ::CUipcMemHandles from each ::CUdevice in a given process may only be opened"]
     #[doc = " by one ::CUcontext per ::CUdevice per other process."]
@@ -7521,8 +7563,7 @@ extern "C" {
     #[doc = ""]
     #[doc = " IPC functionality is restricted to devices with support for unified"]
     #[doc = " addressing on Linux and Windows operating systems."]
-    #[doc = " IPC functionality on Windows is restricted to GPUs in TCC mode."]
-    #[doc = " IPC functionality is not supported on Tegra platforms."]
+    #[doc = " IPC functionality on Windows is restricted to GPUs in TCC mode"]
     #[doc = ""]
     #[doc = " \\param pdptr  - Returned device pointer"]
     #[doc = " \\param handle - ::CUipcMemHandle to open"]
@@ -7567,8 +7608,7 @@ extern "C" {
     #[doc = ""]
     #[doc = " IPC functionality is restricted to devices with support for unified"]
     #[doc = " addressing on Linux and Windows operating systems."]
-    #[doc = " IPC functionality on Windows is restricted to GPUs in TCC mode."]
-    #[doc = " IPC functionality is not supported on Tegra platforms."]
+    #[doc = " IPC functionality on Windows is restricted to GPUs in TCC mode"]
     #[doc = ""]
     #[doc = " \\param dptr - Device pointer returned by ::cuIpcOpenMemHandle"]
     #[doc = ""]
@@ -9361,20 +9401,48 @@ extern "C" {
     ) -> CUresult;
 }
 extern "C" {
-    #[doc = " \\brief Begins graph capture on a stream"]
+    pub fn cuStreamBeginCapture_v2(hStream: CUstream, mode: CUstreamCaptureMode) -> CUresult;
+}
+extern "C" {
+    #[doc = " \\brief Swaps the stream capture interaction mode for a thread"]
     #[doc = ""]
-    #[doc = " Begin graph capture on \\p hStream. When a stream is in capture mode, all operations"]
-    #[doc = " pushed into the stream will not be executed, but will instead be captured into"]
-    #[doc = " a graph, which will be returned via ::cuStreamEndCapture. Capture may not be initiated"]
-    #[doc = " if \\p stream is CU_STREAM_LEGACY. Capture must be ended on the same stream in which"]
-    #[doc = " it was initiated, and it may only be initiated if the stream is not already in capture"]
-    #[doc = " mode. The capture mode may be queried via ::cuStreamIsCapturing."]
+    #[doc = " Sets the calling thread\'s stream capture interaction mode to the value contained"]
+    #[doc = " in \\p *mode, and overwrites \\p *mode with the previous mode for the thread. To"]
+    #[doc = " facilitate deterministic behavior across function or module boundaries, callers"]
+    #[doc = " are encouraged to use this API in a push-pop fashion: \\code"]
+    #[doc = "CUstreamCaptureMode mode = desiredMode;"]
+    #[doc = "cuThreadExchangeStreamCaptureMode(&mode);"]
+    #[doc = "..."]
+    #[doc = "cuThreadExchangeStreamCaptureMode(&mode); // restore previous mode"]
+    #[doc = " \\endcode"]
     #[doc = ""]
-    #[doc = " \\param hStream - Stream in which to initiate capture"]
+    #[doc = " During stream capture (see ::cuStreamBeginCapture), some actions, such as a call"]
+    #[doc = " to ::cudaMalloc, may be unsafe. In the case of ::cudaMalloc, the operation is"]
+    #[doc = " not enqueued asynchronously to a stream, and is not observed by stream capture."]
+    #[doc = " Therefore, if the sequence of operations captured via ::cuStreamBeginCapture"]
+    #[doc = " depended on the allocation being replayed whenever the graph is launched, the"]
+    #[doc = " captured graph would be invalid."]
     #[doc = ""]
-    #[doc = " \\note Kernels captured using this API must not use texture and surface references."]
-    #[doc = "       Reading or writing through any texture or surface reference is undefined"]
-    #[doc = "       behavior. This restriction does not apply to texture and surface objects."]
+    #[doc = " Therefore, stream capture places restrictions on API calls that can be made within"]
+    #[doc = " or concurrently to a ::cuStreamBeginCapture-::cuStreamEndCapture sequence. This"]
+    #[doc = " behavior can be controlled via this API and flags to ::cuStreamBeginCapture."]
+    #[doc = ""]
+    #[doc = " A thread\'s mode is one of the following:"]
+    #[doc = " - \\p CU_STREAM_CAPTURE_MODE_GLOBAL: This is the default mode. If the local thread has"]
+    #[doc = "   an ongoing capture sequence that was not initiated with"]
+    #[doc = "   \\p CU_STREAM_CAPTURE_MODE_RELAXED at \\p cuStreamBeginCapture, or if any other thread"]
+    #[doc = "   has a concurrent capture sequence initiated with \\p CU_STREAM_CAPTURE_MODE_GLOBAL,"]
+    #[doc = "   this thread is prohibited from potentially unsafe API calls."]
+    #[doc = " - \\p CU_STREAM_CAPTURE_MODE_THREAD_LOCAL: If the local thread has an ongoing capture"]
+    #[doc = "   sequence not initiated with \\p CU_STREAM_CAPTURE_MODE_RELAXED, it is prohibited"]
+    #[doc = "   from potentially unsafe API calls. Concurrent capture sequences in other threads"]
+    #[doc = "   are ignored."]
+    #[doc = " - \\p CU_STREAM_CAPTURE_MODE_RELAXED: The local thread is not prohibited from potentially"]
+    #[doc = "   unsafe API calls. Note that the thread is still prohibited from API calls which"]
+    #[doc = "   necessarily conflict with stream capture, for example, attempting ::cuEventQuery"]
+    #[doc = "   on an event that was last recorded inside a capture sequence."]
+    #[doc = ""]
+    #[doc = " \\param mode - Pointer to mode value to swap with the current mode"]
     #[doc = ""]
     #[doc = " \\return"]
     #[doc = " ::CUDA_SUCCESS,"]
@@ -9384,10 +9452,8 @@ extern "C" {
     #[doc = " \\notefnerr"]
     #[doc = ""]
     #[doc = " \\sa"]
-    #[doc = " ::cuStreamCreate,"]
-    #[doc = " ::cuStreamIsCapturing,"]
-    #[doc = " ::cuStreamEndCapture"]
-    pub fn cuStreamBeginCapture(hStream: CUstream) -> CUresult;
+    #[doc = " ::cuStreamBeginCapture"]
+    pub fn cuThreadExchangeStreamCaptureMode(mode: *mut CUstreamCaptureMode) -> CUresult;
 }
 extern "C" {
     #[doc = " \\brief Ends capture on a stream, returning the captured graph"]
@@ -9397,6 +9463,10 @@ extern "C" {
     #[doc = " If capture was invalidated, due to a violation of the rules of stream capture, then"]
     #[doc = " a NULL graph will be returned."]
     #[doc = ""]
+    #[doc = " If the \\p mode argument to ::cuStreamBeginCapture was not"]
+    #[doc = " ::CU_STREAM_CAPTURE_MODE_RELAXED, this call must be from the same thread as"]
+    #[doc = " ::cuStreamBeginCapture."]
+    #[doc = ""]
     #[doc = " \\param hStream - Stream to query"]
     #[doc = " \\param phGraph - The captured graph"]
     #[doc = ""]
@@ -9404,7 +9474,8 @@ extern "C" {
     #[doc = " ::CUDA_SUCCESS,"]
     #[doc = " ::CUDA_ERROR_DEINITIALIZED,"]
     #[doc = " ::CUDA_ERROR_NOT_INITIALIZED,"]
-    #[doc = " ::CUDA_ERROR_INVALID_VALUE"]
+    #[doc = " ::CUDA_ERROR_INVALID_VALUE,"]
+    #[doc = " ::CUDA_ERROR_STREAM_CAPTURE_WRONG_THREAD"]
     #[doc = " \\notefnerr"]
     #[doc = ""]
     #[doc = " \\sa"]
@@ -9453,6 +9524,33 @@ extern "C" {
     pub fn cuStreamIsCapturing(
         hStream: CUstream,
         captureStatus: *mut CUstreamCaptureStatus,
+    ) -> CUresult;
+}
+extern "C" {
+    #[doc = " \\brief Query capture status of a stream"]
+    #[doc = ""]
+    #[doc = " Query the capture status of a stream and and get an id for"]
+    #[doc = " the capture sequence, which is unique over the lifetime of the process."]
+    #[doc = ""]
+    #[doc = " If called on ::CU_STREAM_LEGACY (the \"null stream\") while a stream not created"]
+    #[doc = " with ::CU_STREAM_NON_BLOCKING is capturing, returns ::CUDA_ERROR_STREAM_CAPTURE_IMPLICIT."]
+    #[doc = ""]
+    #[doc = " A valid id is returned only if both of the following are true:"]
+    #[doc = " - the call returns CUDA_SUCCESS"]
+    #[doc = " - captureStatus is set to ::CU_STREAM_CAPTURE_STATUS_ACTIVE"]
+    #[doc = ""]
+    #[doc = " \\return"]
+    #[doc = " ::CUDA_SUCCESS,"]
+    #[doc = " ::CUDA_ERROR_STREAM_CAPTURE_IMPLICIT"]
+    #[doc = " \\notefnerr"]
+    #[doc = ""]
+    #[doc = " \\sa"]
+    #[doc = " ::cuStreamBeginCapture,"]
+    #[doc = " ::cuStreamIsCapturing"]
+    pub fn cuStreamGetCaptureInfo(
+        hStream: CUstream,
+        captureStatus: *mut CUstreamCaptureStatus,
+        id: *mut cuuint64_t,
     ) -> CUresult;
 }
 extern "C" {
@@ -9814,6 +9912,7 @@ extern "C" {
     #[doc = "const void *name;"]
     #[doc = "} win32;"]
     #[doc = "} handle;"]
+    #[doc = "unsigned long long size;"]
     #[doc = "unsigned int flags;"]
     #[doc = "} CUDA_EXTERNAL_MEMORY_HANDLE_DESC;"]
     #[doc = " \\endcode"]
@@ -9888,6 +9987,9 @@ extern "C" {
     #[doc = " is not NULL, then it must point to a NULL-terminated array of"]
     #[doc = " UTF-16 characters that refers to a ID3D12Resource object."]
     #[doc = ""]
+    #[doc = " The size of the memory object must be specified in"]
+    #[doc = " ::CUDA_EXTERNAL_MEMORY_HANDLE_DESC::size."]
+    #[doc = ""]
     #[doc = " Specifying the flag ::CUDA_EXTERNAL_MEMORY_DEDICATED in"]
     #[doc = " ::CUDA_EXTERNAL_MEMORY_HANDLE_DESC::flags indicates that the"]
     #[doc = " resource is a dedicated resource. The definition of what a"]
@@ -9951,6 +10053,8 @@ extern "C" {
     #[doc = " appropriate offsets to the returned pointer to derive the"]
     #[doc = " individual buffers."]
     #[doc = ""]
+    #[doc = " The returned pointer \\p devPtr must be freed using ::cuMemFree."]
+    #[doc = ""]
     #[doc = " \\param devPtr     - Returned device pointer to buffer"]
     #[doc = " \\param extMem     - Handle to external memory object"]
     #[doc = " \\param bufferDesc - Buffer descriptor"]
@@ -10001,6 +10105,8 @@ extern "C" {
     #[doc = " ::CUDA_EXTERNAL_MEMORY_MIPMAPPED_ARRAY_DESC::numLevels specifies"]
     #[doc = " the total number of levels in the mipmap chain."]
     #[doc = ""]
+    #[doc = " The returned CUDA mipmapped array must be freed using ::cuMipmappedArrayDestroy."]
+    #[doc = ""]
     #[doc = " \\param mipmap     - Returned CUDA mipmapped array"]
     #[doc = " \\param extMem     - Handle to external memory object"]
     #[doc = " \\param mipmapDesc - CUDA array descriptor"]
@@ -10021,12 +10127,12 @@ extern "C" {
     ) -> CUresult;
 }
 extern "C" {
-    #[doc = " \\brief Releases all resources associated with an external memory"]
-    #[doc = " object."]
+    #[doc = " \\brief Destroys an external memory object."]
     #[doc = ""]
-    #[doc = " Frees all buffers and CUDA mipmapped arrays that were"]
-    #[doc = " mapped onto this external memory object and releases any reference"]
-    #[doc = " on the underlying memory itself."]
+    #[doc = " Destroys the specified external memory object. Any existing buffers"]
+    #[doc = " and CUDA mipmapped arrays mapped onto this object must no longer be"]
+    #[doc = " used and must be explicitly freed using ::cuMemFree and"]
+    #[doc = " ::cuMipmappedArrayDestroy respectively."]
     #[doc = ""]
     #[doc = " \\param extMem - External memory object to be destroyed"]
     #[doc = ""]
@@ -10089,7 +10195,7 @@ extern "C" {
     #[doc = " If ::CUDA_EXTERNAL_SEMAPHORE_HANDLE_DESC::type is"]
     #[doc = " ::CU_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_WIN32, then exactly one"]
     #[doc = " of ::CUDA_EXTERNAL_SEMAPHORE_HANDLE_DESC::handle::win32::handle and"]
-    #[doc = " ::cudaExternalSemaphoreHandleDesc::handle::win32::name must not be"]
+    #[doc = " ::CUDA_EXTERNAL_SEMAPHORE_HANDLE_DESC::handle::win32::name must not be"]
     #[doc = " NULL. If"]
     #[doc = " ::CUDA_EXTERNAL_SEMAPHORE_HANDLE_DESC::handle::win32::handle"]
     #[doc = " is not NULL, then it must represent a valid shared NT handle that"]
@@ -10112,7 +10218,7 @@ extern "C" {
     #[doc = " If ::CUDA_EXTERNAL_SEMAPHORE_HANDLE_DESC::type is"]
     #[doc = " ::CU_EXTERNAL_SEMAPHORE_HANDLE_TYPE_D3D12_FENCE, then exactly one"]
     #[doc = " of ::CUDA_EXTERNAL_SEMAPHORE_HANDLE_DESC::handle::win32::handle and"]
-    #[doc = " ::cudaExternalSemaphoreHandleDesc::handle::win32::name must not be"]
+    #[doc = " ::CUDA_EXTERNAL_SEMAPHORE_HANDLE_DESC::handle::win32::name must not be"]
     #[doc = " NULL. If"]
     #[doc = " ::CUDA_EXTERNAL_SEMAPHORE_HANDLE_DESC::handle::win32::handle"]
     #[doc = " is not NULL, then it must represent a valid shared NT handle that"]
@@ -10481,7 +10587,7 @@ extern "C" {
     #[doc = " - ::CU_FUNC_ATTRIBUTE_MAX_DYNAMIC_SHARED_SIZE_BYTES: The maximum size in bytes of"]
     #[doc = "   dynamically-allocated shared memory."]
     #[doc = " - ::CU_FUNC_ATTRIBUTE_PREFERRED_SHARED_MEMORY_CARVEOUT: Preferred shared memory-L1"]
-    #[doc = "   cache split ratio in percent of shared memory."]
+    #[doc = "   cache split ratio in percent of total shared memory."]
     #[doc = ""]
     #[doc = " \\param pi     - Returned attribute value"]
     #[doc = " \\param attrib - Attribute requested"]
@@ -10528,8 +10634,9 @@ extern "C" {
     #[doc = "   architecture."]
     #[doc = " - ::CU_FUNC_ATTRIBUTE_PREFERRED_SHARED_MEMORY_CARVEOUT: On devices where the L1"]
     #[doc = "   cache and shared memory use the same hardware resources, this sets the shared memory"]
-    #[doc = "   carveout preference, in percent of the total resources. This is only a hint, and the"]
-    #[doc = "   driver can choose a different ratio if required to execute the function."]
+    #[doc = "   carveout preference, in percent of the total shared memory."]
+    #[doc = "   See ::CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_MULTIPROCESSOR"]
+    #[doc = "   This is only a hint, and the driver can choose a different ratio if required to execute the function."]
     #[doc = ""]
     #[doc = " \\param hfunc  - Function to query attribute of"]
     #[doc = " \\param attrib - Attribute requested"]
@@ -11565,7 +11672,7 @@ extern "C" {
     pub fn cuGraphAddKernelNode(
         phGraphNode: *mut CUgraphNode,
         hGraph: CUgraph,
-        dependencies: *mut CUgraphNode,
+        dependencies: *const CUgraphNode,
         numDependencies: usize,
         nodeParams: *const CUDA_KERNEL_NODE_PARAMS,
     ) -> CUresult;
@@ -11677,7 +11784,7 @@ extern "C" {
     pub fn cuGraphAddMemcpyNode(
         phGraphNode: *mut CUgraphNode,
         hGraph: CUgraph,
-        dependencies: *mut CUgraphNode,
+        dependencies: *const CUgraphNode,
         numDependencies: usize,
         copyParams: *const CUDA_MEMCPY3D,
         ctx: CUcontext,
@@ -11775,7 +11882,7 @@ extern "C" {
     pub fn cuGraphAddMemsetNode(
         phGraphNode: *mut CUgraphNode,
         hGraph: CUgraph,
-        dependencies: *mut CUgraphNode,
+        dependencies: *const CUgraphNode,
         numDependencies: usize,
         memsetParams: *const CUDA_MEMSET_NODE_PARAMS,
         ctx: CUcontext,
@@ -11841,6 +11948,7 @@ extern "C" {
     #[doc = " A handle to the new node will be returned in \\p phGraphNode."]
     #[doc = ""]
     #[doc = " When the graph is launched, the node will invoke the specified CPU function."]
+    #[doc = " Host nodes are not supported under MPS with pre-Volta GPUs."]
     #[doc = ""]
     #[doc = " \\param phGraphNode     - Returns newly created node"]
     #[doc = " \\param hGraph          - Graph to which to add the node"]
@@ -11852,6 +11960,7 @@ extern "C" {
     #[doc = " ::CUDA_SUCCESS,"]
     #[doc = " ::CUDA_ERROR_DEINITIALIZED,"]
     #[doc = " ::CUDA_ERROR_NOT_INITIALIZED,"]
+    #[doc = " ::CUDA_ERROR_NOT_SUPPORTED,"]
     #[doc = " ::CUDA_ERROR_INVALID_VALUE"]
     #[doc = " \\note_graph_thread_safety"]
     #[doc = " \\notefnerr"]
@@ -11870,7 +11979,7 @@ extern "C" {
     pub fn cuGraphAddHostNode(
         phGraphNode: *mut CUgraphNode,
         hGraph: CUgraph,
-        dependencies: *mut CUgraphNode,
+        dependencies: *const CUgraphNode,
         numDependencies: usize,
         nodeParams: *const CUDA_HOST_NODE_PARAMS,
     ) -> CUresult;
@@ -11963,7 +12072,7 @@ extern "C" {
     pub fn cuGraphAddChildGraphNode(
         phGraphNode: *mut CUgraphNode,
         hGraph: CUgraph,
-        dependencies: *mut CUgraphNode,
+        dependencies: *const CUgraphNode,
         numDependencies: usize,
         childGraph: CUgraph,
     ) -> CUresult;
@@ -12029,7 +12138,7 @@ extern "C" {
     pub fn cuGraphAddEmptyNode(
         phGraphNode: *mut CUgraphNode,
         hGraph: CUgraph,
-        dependencies: *mut CUgraphNode,
+        dependencies: *const CUgraphNode,
         numDependencies: usize,
     ) -> CUresult;
 }
@@ -12319,8 +12428,8 @@ extern "C" {
     #[doc = " ::cuGraphNodeGetDependentNodes"]
     pub fn cuGraphAddDependencies(
         hGraph: CUgraph,
-        from: *mut CUgraphNode,
-        to: *mut CUgraphNode,
+        from: *const CUgraphNode,
+        to: *const CUgraphNode,
         numDependencies: usize,
     ) -> CUresult;
 }
@@ -12352,8 +12461,8 @@ extern "C" {
     #[doc = " ::cuGraphNodeGetDependentNodes"]
     pub fn cuGraphRemoveDependencies(
         hGraph: CUgraph,
-        from: *mut CUgraphNode,
-        to: *mut CUgraphNode,
+        from: *const CUgraphNode,
+        to: *const CUgraphNode,
         numDependencies: usize,
     ) -> CUresult;
 }
@@ -12419,6 +12528,41 @@ extern "C" {
         phErrorNode: *mut CUgraphNode,
         logBuffer: *mut ::std::os::raw::c_char,
         bufferSize: usize,
+    ) -> CUresult;
+}
+extern "C" {
+    #[doc = " \\brief Sets the parameters for a kernel node in the given graphExec"]
+    #[doc = ""]
+    #[doc = " Sets the parameters of a kernel node in an executable graph \\p hGraphExec."]
+    #[doc = " The node is identified by the corresponding node \\p hNode in the"]
+    #[doc = " non-executable graph, from which the executable graph was instantiated."]
+    #[doc = ""]
+    #[doc = " \\p hNode must not have been removed from the original graph. The \\p func field"]
+    #[doc = " of \\p nodeParams cannot be modified and must match the original value."]
+    #[doc = " All other values can be modified."]
+    #[doc = ""]
+    #[doc = " The modifications take effect at the next launch of \\p hGraphExec. Already"]
+    #[doc = " enqueued or running launches of \\p hGraphExec are not affected by this call."]
+    #[doc = " \\p hNode is also not modified by this call."]
+    #[doc = ""]
+    #[doc = " \\param hGraphExec  - The executable graph in which to set the specified node"]
+    #[doc = " \\param hNode       - kernel node from the graph from which graphExec was instantiated"]
+    #[doc = " \\param nodeParams  - Updated Parameters to set"]
+    #[doc = ""]
+    #[doc = " \\return"]
+    #[doc = " ::CUDA_SUCCESS,"]
+    #[doc = " ::CUDA_ERROR_INVALID_VALUE,"]
+    #[doc = " \\note_graph_thread_safety"]
+    #[doc = " \\notefnerr"]
+    #[doc = ""]
+    #[doc = " \\sa"]
+    #[doc = " ::cuGraphAddKernelNode,"]
+    #[doc = " ::cuGraphKernelNodeSetParams,"]
+    #[doc = " ::cuGraphInstantiate"]
+    pub fn cuGraphExecKernelNodeSetParams(
+        hGraphExec: CUgraphExec,
+        hNode: CUgraphNode,
+        nodeParams: *const CUDA_KERNEL_NODE_PARAMS,
     ) -> CUresult;
 }
 extern "C" {
@@ -12677,6 +12821,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Binds an array as a texture reference"]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Binds the CUDA array \\p hArray to the texture reference \\p hTexRef. Any"]
     #[doc = " previous address or CUDA array state associated with the texture reference"]
     #[doc = " is superseded by this function. \\p Flags must be set to"]
@@ -12708,6 +12854,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Binds a mipmapped array to a texture reference"]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Binds the CUDA mipmapped array \\p hMipmappedArray to the texture reference \\p hTexRef."]
     #[doc = " Any previous address or CUDA array state associated with the texture reference"]
@@ -12756,6 +12904,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Sets the format for a texture reference"]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Specifies the format of the data to be read by the texture reference"]
     #[doc = " \\p hTexRef. \\p fmt and \\p NumPackedComponents are exactly analogous to the"]
     #[doc = " ::Format and ::NumChannels members of the ::CUDA_ARRAY_DESCRIPTOR structure:"]
@@ -12791,6 +12941,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Sets the addressing mode for a texture reference"]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Specifies the addressing mode \\p am for the given dimension \\p dim of the"]
     #[doc = " texture reference \\p hTexRef. If \\p dim is zero, the addressing mode is"]
@@ -12839,6 +12991,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Sets the filtering mode for a texture reference"]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Specifies the filtering mode \\p fm to be used when reading memory through"]
     #[doc = " the texture reference \\p hTexRef. ::CUfilter_mode_enum is defined as:"]
     #[doc = ""]
@@ -12871,6 +13025,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Sets the mipmap filtering mode for a texture reference"]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Specifies the mipmap filtering mode \\p fm to be used when reading memory through"]
     #[doc = " the texture reference \\p hTexRef. ::CUfilter_mode_enum is defined as:"]
@@ -12905,6 +13061,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Sets the mipmap level bias for a texture reference"]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Specifies the mipmap level bias \\p bias to be added to the specified mipmap level when"]
     #[doc = " reading memory through the texture reference \\p hTexRef."]
     #[doc = ""]
@@ -12930,6 +13088,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Sets the mipmap min/max mipmap level clamps for a texture reference"]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Specifies the min/max mipmap level clamps, \\p minMipmapLevelClamp and \\p maxMipmapLevelClamp"]
     #[doc = " respectively, to be used when reading memory through the texture reference"]
@@ -12963,6 +13123,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Sets the maximum anisotropy for a texture reference"]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Specifies the maximum anisotropy \\p maxAniso to be used when reading memory through"]
     #[doc = " the texture reference \\p hTexRef."]
     #[doc = ""]
@@ -12992,6 +13154,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Sets the border color for a texture reference"]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Specifies the value of the RGBA color via the \\p pBorderColor to the texture reference"]
     #[doc = " \\p hTexRef. The color value supports only float type and holds color components in"]
@@ -13025,6 +13189,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Sets the flags for a texture reference"]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Specifies optional flags via \\p Flags to specify the behavior of data"]
     #[doc = " returned through the texture reference \\p hTexRef. The valid flags are:"]
@@ -13067,6 +13233,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Gets the array bound to a texture reference"]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Returns in \\p *phArray the CUDA array bound to the texture reference"]
     #[doc = " \\p hTexRef, or returns ::CUDA_ERROR_INVALID_VALUE if the texture reference"]
     #[doc = " is not bound to any CUDA array."]
@@ -13090,6 +13258,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Gets the mipmapped array bound to a texture reference"]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Returns in \\p *phMipmappedArray the CUDA mipmapped array bound to the texture"]
     #[doc = " reference \\p hTexRef, or returns ::CUDA_ERROR_INVALID_VALUE if the texture reference"]
@@ -13117,6 +13287,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Gets the addressing mode used by a texture reference"]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Returns in \\p *pam the addressing mode corresponding to the"]
     #[doc = " dimension \\p dim of the texture reference \\p hTexRef. Currently, the only"]
@@ -13147,6 +13319,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Gets the filter-mode used by a texture reference"]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Returns in \\p *pfm the filtering mode of the texture reference"]
     #[doc = " \\p hTexRef."]
     #[doc = ""]
@@ -13169,6 +13343,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Gets the format used by a texture reference"]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Returns in \\p *pFormat and \\p *pNumChannels the format and number"]
     #[doc = " of components of the CUDA array bound to the texture reference \\p hTexRef."]
@@ -13199,6 +13375,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Gets the mipmap filtering mode for a texture reference"]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Returns the mipmap filtering mode in \\p pfm that\'s used when reading memory through"]
     #[doc = " the texture reference \\p hTexRef."]
     #[doc = ""]
@@ -13222,6 +13400,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Gets the mipmap level bias for a texture reference"]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Returns the mipmap level bias in \\p pBias that\'s added to the specified mipmap"]
     #[doc = " level when reading memory through the texture reference \\p hTexRef."]
     #[doc = ""]
@@ -13244,6 +13424,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Gets the min/max mipmap level clamps for a texture reference"]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Returns the min/max mipmap level clamps in \\p pminMipmapLevelClamp and \\p pmaxMipmapLevelClamp"]
     #[doc = " that\'s used when reading memory through the texture reference \\p hTexRef."]
@@ -13273,6 +13455,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Gets the maximum anisotropy for a texture reference"]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Returns the maximum anisotropy in \\p pmaxAniso that\'s used when reading memory through"]
     #[doc = " the texture reference \\p hTexRef."]
     #[doc = ""]
@@ -13299,6 +13483,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Gets the border color used by a texture reference"]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Returns in \\p pBorderColor, values of the RGBA color used by"]
     #[doc = " the texture reference \\p hTexRef."]
     #[doc = " The color value is of type float and holds color components in"]
@@ -13324,6 +13510,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Gets the flags used by a texture reference"]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Returns in \\p *pFlags the flags of the texture reference \\p hTexRef."]
     #[doc = ""]
@@ -13390,6 +13578,8 @@ extern "C" {
 extern "C" {
     #[doc = " \\brief Sets the CUDA array for a surface reference."]
     #[doc = ""]
+    #[doc = " \\deprecated"]
+    #[doc = ""]
     #[doc = " Sets the CUDA array \\p hArray to be read and written by the surface reference"]
     #[doc = " \\p hSurfRef.  Any previous CUDA array state associated with the surface"]
     #[doc = " reference is superseded by this function.  \\p Flags must be set to 0."]
@@ -13419,6 +13609,8 @@ extern "C" {
 }
 extern "C" {
     #[doc = " \\brief Passes back the CUDA array bound to a surface reference."]
+    #[doc = ""]
+    #[doc = " \\deprecated"]
     #[doc = ""]
     #[doc = " Returns in \\p *phArray the CUDA array bound to the surface reference"]
     #[doc = " \\p hSurfRef, or returns ::CUDA_ERROR_INVALID_VALUE if the surface reference"]

@@ -19,6 +19,7 @@ pub enum cublasStatus_t {
 pub enum cublasFillMode_t {
     CUBLAS_FILL_MODE_LOWER = 0,
     CUBLAS_FILL_MODE_UPPER = 1,
+    CUBLAS_FILL_MODE_FULL = 2,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
@@ -32,12 +33,16 @@ pub enum cublasSideMode_t {
     CUBLAS_SIDE_LEFT = 0,
     CUBLAS_SIDE_RIGHT = 1,
 }
+impl cublasOperation_t {
+    pub const CUBLAS_OP_HERMITAN: cublasOperation_t = cublasOperation_t::CUBLAS_OP_C;
+}
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum cublasOperation_t {
     CUBLAS_OP_N = 0,
     CUBLAS_OP_T = 1,
     CUBLAS_OP_C = 2,
+    CUBLAS_OP_CONJG = 3,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
@@ -134,6 +139,9 @@ extern "C" {
         type_: libraryPropertyType,
         value: *mut ::std::os::raw::c_int,
     ) -> cublasStatus_t;
+}
+extern "C" {
+    pub fn cublasGetCudartVersion() -> usize;
 }
 extern "C" {
     pub fn cublasSetStream_v2(handle: cublasHandle_t, streamId: cudaStream_t) -> cublasStatus_t;
@@ -551,6 +559,18 @@ extern "C" {
     ) -> cublasStatus_t;
 }
 extern "C" {
+    pub fn cublasCopyEx(
+        handle: cublasHandle_t,
+        n: ::std::os::raw::c_int,
+        x: *const ::std::os::raw::c_void,
+        xType: cudaDataType,
+        incx: ::std::os::raw::c_int,
+        y: *mut ::std::os::raw::c_void,
+        yType: cudaDataType,
+        incy: ::std::os::raw::c_int,
+    ) -> cublasStatus_t;
+}
+extern "C" {
     pub fn cublasScopy_v2(
         handle: cublasHandle_t,
         n: ::std::os::raw::c_int,
@@ -631,6 +651,18 @@ extern "C" {
     ) -> cublasStatus_t;
 }
 extern "C" {
+    pub fn cublasSwapEx(
+        handle: cublasHandle_t,
+        n: ::std::os::raw::c_int,
+        x: *mut ::std::os::raw::c_void,
+        xType: cudaDataType,
+        incx: ::std::os::raw::c_int,
+        y: *mut ::std::os::raw::c_void,
+        yType: cudaDataType,
+        incy: ::std::os::raw::c_int,
+    ) -> cublasStatus_t;
+}
+extern "C" {
     pub fn cublasIsamax_v2(
         handle: cublasHandle_t,
         n: ::std::os::raw::c_int,
@@ -662,6 +694,16 @@ extern "C" {
         handle: cublasHandle_t,
         n: ::std::os::raw::c_int,
         x: *const cuDoubleComplex,
+        incx: ::std::os::raw::c_int,
+        result: *mut ::std::os::raw::c_int,
+    ) -> cublasStatus_t;
+}
+extern "C" {
+    pub fn cublasIamaxEx(
+        handle: cublasHandle_t,
+        n: ::std::os::raw::c_int,
+        x: *const ::std::os::raw::c_void,
+        xType: cudaDataType,
         incx: ::std::os::raw::c_int,
         result: *mut ::std::os::raw::c_int,
     ) -> cublasStatus_t;
@@ -700,6 +742,28 @@ extern "C" {
         x: *const cuDoubleComplex,
         incx: ::std::os::raw::c_int,
         result: *mut ::std::os::raw::c_int,
+    ) -> cublasStatus_t;
+}
+extern "C" {
+    pub fn cublasIaminEx(
+        handle: cublasHandle_t,
+        n: ::std::os::raw::c_int,
+        x: *const ::std::os::raw::c_void,
+        xType: cudaDataType,
+        incx: ::std::os::raw::c_int,
+        result: *mut ::std::os::raw::c_int,
+    ) -> cublasStatus_t;
+}
+extern "C" {
+    pub fn cublasAsumEx(
+        handle: cublasHandle_t,
+        n: ::std::os::raw::c_int,
+        x: *const ::std::os::raw::c_void,
+        xType: cudaDataType,
+        incx: ::std::os::raw::c_int,
+        result: *mut ::std::os::raw::c_void,
+        resultType: cudaDataType,
+        executiontype: cudaDataType,
     ) -> cublasStatus_t;
 }
 extern "C" {
@@ -811,6 +875,22 @@ extern "C" {
     ) -> cublasStatus_t;
 }
 extern "C" {
+    pub fn cublasRotEx(
+        handle: cublasHandle_t,
+        n: ::std::os::raw::c_int,
+        x: *mut ::std::os::raw::c_void,
+        xType: cudaDataType,
+        incx: ::std::os::raw::c_int,
+        y: *mut ::std::os::raw::c_void,
+        yType: cudaDataType,
+        incy: ::std::os::raw::c_int,
+        c: *const ::std::os::raw::c_void,
+        s: *const ::std::os::raw::c_void,
+        csType: cudaDataType,
+        executiontype: cudaDataType,
+    ) -> cublasStatus_t;
+}
+extern "C" {
     pub fn cublasSrotg_v2(
         handle: cublasHandle_t,
         a: *mut f32,
@@ -847,6 +927,18 @@ extern "C" {
     ) -> cublasStatus_t;
 }
 extern "C" {
+    pub fn cublasRotgEx(
+        handle: cublasHandle_t,
+        a: *mut ::std::os::raw::c_void,
+        b: *mut ::std::os::raw::c_void,
+        abType: cudaDataType,
+        c: *mut ::std::os::raw::c_void,
+        s: *mut ::std::os::raw::c_void,
+        csType: cudaDataType,
+        executiontype: cudaDataType,
+    ) -> cublasStatus_t;
+}
+extern "C" {
     pub fn cublasSrotm_v2(
         handle: cublasHandle_t,
         n: ::std::os::raw::c_int,
@@ -869,6 +961,21 @@ extern "C" {
     ) -> cublasStatus_t;
 }
 extern "C" {
+    pub fn cublasRotmEx(
+        handle: cublasHandle_t,
+        n: ::std::os::raw::c_int,
+        x: *mut ::std::os::raw::c_void,
+        xType: cudaDataType,
+        incx: ::std::os::raw::c_int,
+        y: *mut ::std::os::raw::c_void,
+        yType: cudaDataType,
+        incy: ::std::os::raw::c_int,
+        param: *const ::std::os::raw::c_void,
+        paramType: cudaDataType,
+        executiontype: cudaDataType,
+    ) -> cublasStatus_t;
+}
+extern "C" {
     pub fn cublasSrotmg_v2(
         handle: cublasHandle_t,
         d1: *mut f32,
@@ -886,6 +993,22 @@ extern "C" {
         x1: *mut f64,
         y1: *const f64,
         param: *mut f64,
+    ) -> cublasStatus_t;
+}
+extern "C" {
+    pub fn cublasRotmgEx(
+        handle: cublasHandle_t,
+        d1: *mut ::std::os::raw::c_void,
+        d1Type: cudaDataType,
+        d2: *mut ::std::os::raw::c_void,
+        d2Type: cudaDataType,
+        x1: *mut ::std::os::raw::c_void,
+        x1Type: cudaDataType,
+        y1: *const ::std::os::raw::c_void,
+        y1Type: cudaDataType,
+        param: *mut ::std::os::raw::c_void,
+        paramType: cudaDataType,
+        executiontype: cudaDataType,
     ) -> cublasStatus_t;
 }
 extern "C" {
