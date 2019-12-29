@@ -1,7 +1,6 @@
 cuda-sys
 =========
 
-[![CircleCI](https://circleci.com/gh/rust-cuda/cuda-sys/tree/master.svg?style=shield)](https://circleci.com/gh/rust-cuda/cuda-sys/tree/master)
 [![Crate](http://meritbadge.herokuapp.com/cuda-sys)](https://crates.io/crates/cuda-sys)
 [![docs.rs](https://docs.rs/cuda-sys/badge.svg)](https://docs.rs/cuda-sys)
 
