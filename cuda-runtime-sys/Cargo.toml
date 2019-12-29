@@ -2,6 +2,7 @@
 name = "cuda-runtime-sys"
 version = "0.2.0"
 authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
+edition = "2018"
 
 build = "build.rs"
 links = "cuda"
@@ -15,4 +16,4 @@ readme        = "README.md"
 categories    = []
 
 [build-dependencies]
-glob = "*"
+glob = "0.3.0"

@@ -1,5 +1,3 @@
-extern crate glob;
-
 use glob::glob;
 use std::{env, path::PathBuf};
 
