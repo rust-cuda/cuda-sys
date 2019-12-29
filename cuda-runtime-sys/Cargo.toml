@@ -15,5 +15,6 @@ license       = "MIT"
 readme        = "../README.md"
 categories    = []
 
-[build-dependencies]
-glob = "0.3.0"
+[build-dependencies.cuda-config]
+path = "../cuda-config"
+version = "0.1.0"

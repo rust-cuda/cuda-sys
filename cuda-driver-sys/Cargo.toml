@@ -14,3 +14,7 @@ keywords      = ["GPGPU", "CUDA", "ffi"]
 license       = "MIT"
 readme        = "../README.md"
 categories    = []
+
+[build-dependencies.cuda-config]
+path = "../cuda-config"
+version = "0.1.0"
