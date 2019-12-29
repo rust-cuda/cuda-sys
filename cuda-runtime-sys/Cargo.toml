@@ -5,14 +5,14 @@ authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
 edition = "2018"
 
 build = "build.rs"
-links = "cuda"
+links = "cudart"
 
-description   = "Rust binding to CUDA Driver/Runtime APIs"
+description   = "Rust binding to CUDA Runtime APIs"
 documentation = "https://docs.rs/cuda-sys/"
-repository    = "https://github.com/termoshtt/accel"
+repository    = "https://github.com/rust-cuda/cuda-sys"
 keywords      = ["GPGPU", "CUDA", "ffi"]
 license       = "MIT"
-readme        = "README.md"
+readme        = "../README.md"
 categories    = []
 
 [build-dependencies]

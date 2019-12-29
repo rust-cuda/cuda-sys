@@ -1,9 +1,15 @@
 [package]
 name = "cuda-driver-sys"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+links = "cuda"
 
-[dependencies]
+description   = "Rust binding to CUDA Driver APIs"
+documentation = "https://docs.rs/cuda-runtime-sys/"
+repository    = "https://github.com/rust-cuda/cuda-sys"
+keywords      = ["GPGPU", "CUDA", "ffi"]
+license       = "MIT"
+readme        = "../README.md"
+categories    = []
