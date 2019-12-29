@@ -1,6 +1,7 @@
 [workspace]
 members = [
   "cublas-sys",
+  "cuda-config",
   "cuda-driver-sys",
   "cuda-runtime-sys",
 ]
