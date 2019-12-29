@@ -1,5 +1,6 @@
 [workspace]
 members = [
-  "cuda-runtime-sys",
   "cuda-bindgen",
+  "cuda-driver-sys",
+  "cuda-runtime-sys",
 ]
