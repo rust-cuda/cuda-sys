@@ -1,19 +1,16 @@
 [package]
-name = "cuda-runtime-sys"
+name = "cublas-sys"
 version = "0.2.0"
 authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
 edition = "2018"
 
 build = "build.rs"
-links = "cudart"
+links = "cublas"
 
-description   = "Rust binding to CUDA Runtime APIs"
-documentation = "https://docs.rs/cuda-runtime-sys/"
+description   = "Rust binding to CUDA BLAS API"
+documentation = "https://docs.rs/cublas-sys/"
 repository    = "https://github.com/rust-cuda/cuda-sys"
 keywords      = ["GPGPU", "CUDA", "ffi"]
 license       = "MIT"
 readme        = "../README.md"
 categories    = []
-
-[build-dependencies]
-glob = "0.3.0"
