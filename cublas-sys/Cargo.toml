@@ -11,7 +11,7 @@ description   = "Rust binding to CUDA BLAS API"
 documentation = "https://docs.rs/cublas-sys/"
 repository    = "https://github.com/rust-cuda/cuda-sys"
 keywords      = ["GPGPU", "CUDA", "ffi"]
-license       = "MIT"
+license       = "MIT/Apache-2.0"
 readme        = "../README.md"
 categories    = []
 
