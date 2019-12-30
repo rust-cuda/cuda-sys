@@ -39,6 +39,10 @@ pub const cudaOccupancyDisableCachingOverride: u32 = 1;
 pub const cudaCooperativeLaunchMultiDeviceNoPreSync: u32 = 1;
 pub const cudaCooperativeLaunchMultiDeviceNoPostSync: u32 = 2;
 pub const cudaExternalMemoryDedicated: u32 = 1;
+pub const cudaExternalSemaphoreSignalSkipNvSciBufMemSync: u32 = 1;
+pub const cudaExternalSemaphoreWaitSkipNvSciBufMemSync: u32 = 2;
+pub const cudaNvSciSyncAttrSignal: u32 = 1;
+pub const cudaNvSciSyncAttrWait: u32 = 2;
 pub const cudaSurfaceType1D: u32 = 1;
 pub const cudaSurfaceType2D: u32 = 2;
 pub const cudaSurfaceType3D: u32 = 3;
@@ -145,7 +149,7 @@ pub enum cudaError {
     cudaErrorInvalidDevice = 101,
     cudaErrorStartupFailure = 127,
     cudaErrorInvalidKernelImage = 200,
-    cudaErrorDeviceUninitilialized = 201,
+    cudaErrorDeviceUninitialized = 201,
     cudaErrorMapBufferObjectFailed = 205,
     cudaErrorUnmapBufferObjectFailed = 206,
     cudaErrorArrayIsMapped = 207,
@@ -205,6 +209,8 @@ pub enum cudaError {
     cudaErrorStreamCaptureImplicit = 906,
     cudaErrorCapturedEvent = 907,
     cudaErrorStreamCaptureWrongThread = 908,
+    cudaErrorTimeout = 909,
+    cudaErrorGraphExecUpdateFailure = 910,
     cudaErrorUnknown = 999,
     cudaErrorApiFailureBase = 10000,
 }
@@ -2903,6 +2909,9 @@ pub enum cudaExternalMemoryHandleType {
     cudaExternalMemoryHandleTypeOpaqueWin32Kmt = 3,
     cudaExternalMemoryHandleTypeD3D12Heap = 4,
     cudaExternalMemoryHandleTypeD3D12Resource = 5,
+    cudaExternalMemoryHandleTypeD3D11Resource = 6,
+    cudaExternalMemoryHandleTypeD3D11ResourceKmt = 7,
+    cudaExternalMemoryHandleTypeNvSciBuf = 8,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -2917,6 +2926,7 @@ pub struct cudaExternalMemoryHandleDesc {
 pub union cudaExternalMemoryHandleDesc__bindgen_ty_1 {
     pub fd: ::std::os::raw::c_int,
     pub win32: cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1,
+    pub nvSciBufObject: *const ::std::os::raw::c_void,
     _bindgen_union_align: [u64; 2usize],
 }
 #[repr(C)]
@@ -3017,6 +3027,19 @@ fn bindgen_test_layout_cudaExternalMemoryHandleDesc__bindgen_ty_1() {
             stringify!(cudaExternalMemoryHandleDesc__bindgen_ty_1),
             "::",
             stringify!(win32)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalMemoryHandleDesc__bindgen_ty_1>())).nvSciBufObject
+                as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalMemoryHandleDesc__bindgen_ty_1),
+            "::",
+            stringify!(nvSciBufObject)
         )
     );
 }
@@ -3252,6 +3275,10 @@ pub enum cudaExternalSemaphoreHandleType {
     cudaExternalSemaphoreHandleTypeOpaqueWin32 = 2,
     cudaExternalSemaphoreHandleTypeOpaqueWin32Kmt = 3,
     cudaExternalSemaphoreHandleTypeD3D12Fence = 4,
+    cudaExternalSemaphoreHandleTypeD3D11Fence = 5,
+    cudaExternalSemaphoreHandleTypeNvSciSync = 6,
+    cudaExternalSemaphoreHandleTypeKeyedMutex = 7,
+    cudaExternalSemaphoreHandleTypeKeyedMutexKmt = 8,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -3265,6 +3292,7 @@ pub struct cudaExternalSemaphoreHandleDesc {
 pub union cudaExternalSemaphoreHandleDesc__bindgen_ty_1 {
     pub fd: ::std::os::raw::c_int,
     pub win32: cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1,
+    pub nvSciSyncObj: *const ::std::os::raw::c_void,
     _bindgen_union_align: [u64; 2usize],
 }
 #[repr(C)]
@@ -3367,6 +3395,19 @@ fn bindgen_test_layout_cudaExternalSemaphoreHandleDesc__bindgen_ty_1() {
             stringify!(win32)
         )
     );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreHandleDesc__bindgen_ty_1>())).nvSciSyncObj
+                as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreHandleDesc__bindgen_ty_1),
+            "::",
+            stringify!(nvSciSyncObj)
+        )
+    );
 }
 impl Default for cudaExternalSemaphoreHandleDesc__bindgen_ty_1 {
     fn default() -> Self {
@@ -3435,9 +3476,10 @@ pub struct cudaExternalSemaphoreSignalParams {
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
-pub union cudaExternalSemaphoreSignalParams__bindgen_ty_1 {
+pub struct cudaExternalSemaphoreSignalParams__bindgen_ty_1 {
     pub fence: cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_1,
-    _bindgen_union_align: u64,
+    pub nvSciSync: cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2,
+    pub keyedMutex: cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3,
 }
 #[repr(C)]
 #[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
@@ -3477,11 +3519,108 @@ fn bindgen_test_layout_cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_
         )
     );
 }
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2 {
+    pub fence: *mut ::std::os::raw::c_void,
+    pub reserved: ::std::os::raw::c_ulonglong,
+    _bindgen_union_align: u64,
+}
+#[test]
+fn bindgen_test_layout_cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2>(
+            )))
+            .fence as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2),
+            "::",
+            stringify!(fence)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2>(
+            )))
+            .reserved as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2),
+            "::",
+            stringify!(reserved)
+        )
+    );
+}
+impl Default for cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2 {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3 {
+    pub key: ::std::os::raw::c_ulonglong,
+}
+#[test]
+fn bindgen_test_layout_cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3() {
+    assert_eq!(
+        ::std::mem::size_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3>(
+            )))
+            .key as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3),
+            "::",
+            stringify!(key)
+        )
+    );
+}
 #[test]
 fn bindgen_test_layout_cudaExternalSemaphoreSignalParams__bindgen_ty_1() {
     assert_eq!(
         ::std::mem::size_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1>(),
-        8usize,
+        24usize,
         concat!(
             "Size of: ",
             stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1)
@@ -3508,6 +3647,32 @@ fn bindgen_test_layout_cudaExternalSemaphoreSignalParams__bindgen_ty_1() {
             stringify!(fence)
         )
     );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1>())).nvSciSync
+                as *const _ as usize
+        },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1),
+            "::",
+            stringify!(nvSciSync)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1>())).keyedMutex
+                as *const _ as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1),
+            "::",
+            stringify!(keyedMutex)
+        )
+    );
 }
 impl Default for cudaExternalSemaphoreSignalParams__bindgen_ty_1 {
     fn default() -> Self {
@@ -3518,7 +3683,7 @@ impl Default for cudaExternalSemaphoreSignalParams__bindgen_ty_1 {
 fn bindgen_test_layout_cudaExternalSemaphoreSignalParams() {
     assert_eq!(
         ::std::mem::size_of::<cudaExternalSemaphoreSignalParams>(),
-        16usize,
+        32usize,
         concat!("Size of: ", stringify!(cudaExternalSemaphoreSignalParams))
     );
     assert_eq!(
@@ -3546,7 +3711,7 @@ fn bindgen_test_layout_cudaExternalSemaphoreSignalParams() {
         unsafe {
             &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams>())).flags as *const _ as usize
         },
-        8usize,
+        24usize,
         concat!(
             "Offset of field: ",
             stringify!(cudaExternalSemaphoreSignalParams),
@@ -3568,9 +3733,10 @@ pub struct cudaExternalSemaphoreWaitParams {
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
-pub union cudaExternalSemaphoreWaitParams__bindgen_ty_1 {
+pub struct cudaExternalSemaphoreWaitParams__bindgen_ty_1 {
     pub fence: cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_1,
-    _bindgen_union_align: u64,
+    pub nvSciSync: cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2,
+    pub keyedMutex: cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3,
 }
 #[repr(C)]
 #[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
@@ -3609,11 +3775,119 @@ fn bindgen_test_layout_cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty
         )
     );
 }
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2 {
+    pub fence: *mut ::std::os::raw::c_void,
+    pub reserved: ::std::os::raw::c_ulonglong,
+    _bindgen_union_align: u64,
+}
+#[test]
+fn bindgen_test_layout_cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2() {
+    assert_eq!(
+        ::std::mem::size_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2>()))
+                .fence as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2),
+            "::",
+            stringify!(fence)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2>()))
+                .reserved as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2),
+            "::",
+            stringify!(reserved)
+        )
+    );
+}
+impl Default for cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2 {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
+pub struct cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3 {
+    pub key: ::std::os::raw::c_ulonglong,
+    pub timeoutMs: ::std::os::raw::c_uint,
+}
+#[test]
+fn bindgen_test_layout_cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3() {
+    assert_eq!(
+        ::std::mem::size_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3>(),
+        16usize,
+        concat!(
+            "Size of: ",
+            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3>()))
+                .key as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3),
+            "::",
+            stringify!(key)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3>()))
+                .timeoutMs as *const _ as usize
+        },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3),
+            "::",
+            stringify!(timeoutMs)
+        )
+    );
+}
 #[test]
 fn bindgen_test_layout_cudaExternalSemaphoreWaitParams__bindgen_ty_1() {
     assert_eq!(
         ::std::mem::size_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1>(),
-        8usize,
+        32usize,
         concat!(
             "Size of: ",
             stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1)
@@ -3640,6 +3914,32 @@ fn bindgen_test_layout_cudaExternalSemaphoreWaitParams__bindgen_ty_1() {
             stringify!(fence)
         )
     );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1>())).nvSciSync
+                as *const _ as usize
+        },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1),
+            "::",
+            stringify!(nvSciSync)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1>())).keyedMutex
+                as *const _ as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1),
+            "::",
+            stringify!(keyedMutex)
+        )
+    );
 }
 impl Default for cudaExternalSemaphoreWaitParams__bindgen_ty_1 {
     fn default() -> Self {
@@ -3650,7 +3950,7 @@ impl Default for cudaExternalSemaphoreWaitParams__bindgen_ty_1 {
 fn bindgen_test_layout_cudaExternalSemaphoreWaitParams() {
     assert_eq!(
         ::std::mem::size_of::<cudaExternalSemaphoreWaitParams>(),
-        16usize,
+        40usize,
         concat!("Size of: ", stringify!(cudaExternalSemaphoreWaitParams))
     );
     assert_eq!(
@@ -3674,7 +3974,7 @@ fn bindgen_test_layout_cudaExternalSemaphoreWaitParams() {
         unsafe {
             &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams>())).flags as *const _ as usize
         },
-        8usize,
+        32usize,
         concat!(
             "Offset of field: ",
             stringify!(cudaExternalSemaphoreWaitParams),
@@ -3931,6 +4231,17 @@ pub struct CUgraphExec_st {
     _unused: [u8; 0],
 }
 pub type cudaGraphExec_t = *mut CUgraphExec_st;
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum cudaGraphExecUpdateResult {
+    cudaGraphExecUpdateSuccess = 0,
+    cudaGraphExecUpdateError = 1,
+    cudaGraphExecUpdateErrorTopologyChanged = 2,
+    cudaGraphExecUpdateErrorNodeTypeChanged = 3,
+    cudaGraphExecUpdateErrorFunctionChanged = 4,
+    cudaGraphExecUpdateErrorParametersChanged = 5,
+    cudaGraphExecUpdateErrorNotSupported = 6,
+}
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum cudaSurfaceBoundaryMode {
@@ -4435,6 +4746,13 @@ extern "C" {
         value: *mut ::std::os::raw::c_int,
         attr: cudaDeviceAttr,
         device: ::std::os::raw::c_int,
+    ) -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaDeviceGetNvSciSyncAttributes(
+        nvSciSyncAttrList: *mut ::std::os::raw::c_void,
+        device: ::std::os::raw::c_int,
+        flags: ::std::os::raw::c_int,
     ) -> cudaError_t;
 }
 extern "C" {
@@ -5537,6 +5855,35 @@ extern "C" {
         hGraphExec: cudaGraphExec_t,
         node: cudaGraphNode_t,
         pNodeParams: *const cudaKernelNodeParams,
+    ) -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaGraphExecMemcpyNodeSetParams(
+        hGraphExec: cudaGraphExec_t,
+        node: cudaGraphNode_t,
+        pNodeParams: *const cudaMemcpy3DParms,
+    ) -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaGraphExecMemsetNodeSetParams(
+        hGraphExec: cudaGraphExec_t,
+        node: cudaGraphNode_t,
+        pNodeParams: *const cudaMemsetParams,
+    ) -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaGraphExecHostNodeSetParams(
+        hGraphExec: cudaGraphExec_t,
+        node: cudaGraphNode_t,
+        pNodeParams: *const cudaHostNodeParams,
+    ) -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaGraphExecUpdate(
+        hGraphExec: cudaGraphExec_t,
+        hGraph: cudaGraph_t,
+        hErrorNode_out: *mut cudaGraphNode_t,
+        updateResult_out: *mut cudaGraphExecUpdateResult,
     ) -> cudaError_t;
 }
 extern "C" {
