@@ -1,10 +1,10 @@
 cuda-sys
 =========
 
-|name |crate.io|docs.rs|
-|:---:|:------:|:-----:|
-|cuda-driver-sys| [![Crate](http://meritbadge.herokuapp.com/cuda-driver-sys)](https://crates.io/crates/cuda-driver-sys) | [![docs.rs](https://docs.rs/cuda-driver-sys/badge.svg)](https://docs.rs/cuda-driver-sys) |
-|cuda-runtime-sys| [![Crate](http://meritbadge.herokuapp.com/cuda-runtime-sys)](https://crates.io/crates/cuda-runtime-sys) | [![docs.rs](https://docs.rs/cuda-runtime-sys/badge.svg)](https://docs.rs/cuda-runtime-sys) |
+|name            |crate.io                                                                                               |docs.rs                                                                                   | CUDA |
+|:--------------:|:-----------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:----:|
+|cuda-driver-sys |[![Crate](http://meritbadge.herokuapp.com/cuda-driver-sys)](https://crates.io/crates/cuda-driver-sys)  |[![docs.rs](https://docs.rs/cuda-driver-sys/badge.svg)](https://docs.rs/cuda-driver-sys)  | 10.2 |
+|cuda-runtime-sys|[![Crate](http://meritbadge.herokuapp.com/cuda-runtime-sys)](https://crates.io/crates/cuda-runtime-sys)|[![docs.rs](https://docs.rs/cuda-runtime-sys/badge.svg)](https://docs.rs/cuda-runtime-sys)| 10.2 |
 
 Rust binding to [CUDA Driver (`libcuda.so`)](https://docs.nvidia.com/cuda/cuda-driver-api/index.html)
 and [Runtime (`libcudart.so`) APIs](https://docs.nvidia.com/cuda/cuda-runtime-api/index.html)
