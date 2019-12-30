@@ -28,7 +28,7 @@ CUDA_LIBRARY_PATH environment variable
 Q & A
 ------
 
-Q. Program does not start with following error message:
+Q. Program does not *start* (can be compiled) with following error message:
 
 ```
 error while loading shared libraries: libcuda.so.1: cannot open shared object file: No such file or directory
