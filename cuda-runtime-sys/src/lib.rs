@@ -5,6 +5,7 @@ include!("cuda_runtime.rs");
 mod tests {
     use super::*;
 
+    // This should work without GPU
     #[test]
     fn get_version() {
         let mut version: i32 = 0;

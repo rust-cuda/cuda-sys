@@ -5,13 +5,18 @@ include!("cuda.rs");
 mod tests {
     use super::*;
 
+    // not a test for get driver version, but a test for linking
     #[test]
-    fn get_version() {
+    fn link_test() {
         let mut version: i32 = 0;
         let result = unsafe { cuDriverGetVersion(&mut version as *mut i32) };
-        if result != CUresult::CUDA_SUCCESS {
-            panic!("Cannot get driver version: ERROR={:?}", result);
+        match result {
+            CUresult::CUDA_SUCCESS => {
+                println!("Deriver Version = {:?}", version);
+            }
+            _ => {
+                println!("Cannot get driver version");
+            }
         }
-        println!("Version = {}", version);
     }
 }
