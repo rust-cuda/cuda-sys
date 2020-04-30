@@ -6834,6 +6834,26 @@ extern "C" {
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum CUoutput_mode_enum {
+    CU_OUT_KEY_VALUE_PAIR = 0,
+    CU_OUT_CSV = 1,
+}
+pub use self::CUoutput_mode_enum as CUoutput_mode;
+extern "C" {
+    pub fn cuProfilerInitialize(
+        configFile: *const ::std::os::raw::c_char,
+        outputFile: *const ::std::os::raw::c_char,
+        outputMode: CUoutput_mode,
+    ) -> CUresult;
+}
+extern "C" {
+    pub fn cuProfilerStart() -> CUresult;
+}
+extern "C" {
+    pub fn cuProfilerStop() -> CUresult;
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum cudaDataType_t {
     CUDA_R_16F = 2,
     CUDA_C_16F = 6,
