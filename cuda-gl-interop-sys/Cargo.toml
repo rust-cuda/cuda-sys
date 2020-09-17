@@ -1,26 +1,25 @@
 [package]
-name = "cuda-driver-sys"
+name = "cuda-gl-interop-sys"
 version = "0.4.0-alpha.1"
-authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
+authors = ["Raniz <raniz@raneland.se>"]
 edition = "2018"
 
 build = "build.rs"
-links = "cuda"
 
-description   = "Rust binding to CUDA Driver APIs"
-documentation = "https://docs.rs/cuda-runtime-sys/"
+description   = "Rust binding to CUDA Runtime OpenGL Interop APIs"
+documentation = "https://docs.rs/cuda-gl-interop-sys/"
 repository    = "https://github.com/rust-cuda/cuda-sys"
 keywords      = ["GPGPU", "CUDA", "ffi"]
 license       = "MIT/Apache-2.0"
 readme        = "../README.md"
 categories    = []
 
-[build-dependencies.bindgen]
-version = "~0.55"
-
 [build-dependencies.cuda-config]
 path = "../cuda-config"
 version = "0.1.0"
+
+[dependencies.gl]
+version = "~0.14"
 
 [dependencies.cuda-types-sys]
 path = "../cuda-types-sys"

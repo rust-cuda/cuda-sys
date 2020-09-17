@@ -57,4580 +57,6 @@ pub const cudaTextureTypeCubemap: u32 = 12;
 pub const cudaTextureType1DLayered: u32 = 241;
 pub const cudaTextureType2DLayered: u32 = 242;
 pub const cudaTextureTypeCubemapLayered: u32 = 252;
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaRoundMode {
-    cudaRoundNearest = 0,
-    cudaRoundZero = 1,
-    cudaRoundPosInf = 2,
-    cudaRoundMinInf = 3,
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct dim3 {
-    pub x: ::std::os::raw::c_uint,
-    pub y: ::std::os::raw::c_uint,
-    pub z: ::std::os::raw::c_uint,
-}
-#[test]
-fn bindgen_test_layout_dim3() {
-    assert_eq!(
-        ::std::mem::size_of::<dim3>(),
-        12usize,
-        concat!("Size of: ", stringify!(dim3))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<dim3>(),
-        4usize,
-        concat!("Alignment of ", stringify!(dim3))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<dim3>())).x as *const _ as usize },
-        0usize,
-        concat!("Offset of field: ", stringify!(dim3), "::", stringify!(x))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<dim3>())).y as *const _ as usize },
-        4usize,
-        concat!("Offset of field: ", stringify!(dim3), "::", stringify!(y))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<dim3>())).z as *const _ as usize },
-        8usize,
-        concat!("Offset of field: ", stringify!(dim3), "::", stringify!(z))
-    );
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaError {
-    cudaSuccess = 0,
-    cudaErrorInvalidValue = 1,
-    cudaErrorMemoryAllocation = 2,
-    cudaErrorInitializationError = 3,
-    cudaErrorCudartUnloading = 4,
-    cudaErrorProfilerDisabled = 5,
-    cudaErrorProfilerNotInitialized = 6,
-    cudaErrorProfilerAlreadyStarted = 7,
-    cudaErrorProfilerAlreadyStopped = 8,
-    cudaErrorInvalidConfiguration = 9,
-    cudaErrorInvalidPitchValue = 12,
-    cudaErrorInvalidSymbol = 13,
-    cudaErrorInvalidHostPointer = 16,
-    cudaErrorInvalidDevicePointer = 17,
-    cudaErrorInvalidTexture = 18,
-    cudaErrorInvalidTextureBinding = 19,
-    cudaErrorInvalidChannelDescriptor = 20,
-    cudaErrorInvalidMemcpyDirection = 21,
-    cudaErrorAddressOfConstant = 22,
-    cudaErrorTextureFetchFailed = 23,
-    cudaErrorTextureNotBound = 24,
-    cudaErrorSynchronizationError = 25,
-    cudaErrorInvalidFilterSetting = 26,
-    cudaErrorInvalidNormSetting = 27,
-    cudaErrorMixedDeviceExecution = 28,
-    cudaErrorNotYetImplemented = 31,
-    cudaErrorMemoryValueTooLarge = 32,
-    cudaErrorInsufficientDriver = 35,
-    cudaErrorInvalidSurface = 37,
-    cudaErrorDuplicateVariableName = 43,
-    cudaErrorDuplicateTextureName = 44,
-    cudaErrorDuplicateSurfaceName = 45,
-    cudaErrorDevicesUnavailable = 46,
-    cudaErrorIncompatibleDriverContext = 49,
-    cudaErrorMissingConfiguration = 52,
-    cudaErrorPriorLaunchFailure = 53,
-    cudaErrorLaunchMaxDepthExceeded = 65,
-    cudaErrorLaunchFileScopedTex = 66,
-    cudaErrorLaunchFileScopedSurf = 67,
-    cudaErrorSyncDepthExceeded = 68,
-    cudaErrorLaunchPendingCountExceeded = 69,
-    cudaErrorInvalidDeviceFunction = 98,
-    cudaErrorNoDevice = 100,
-    cudaErrorInvalidDevice = 101,
-    cudaErrorStartupFailure = 127,
-    cudaErrorInvalidKernelImage = 200,
-    cudaErrorDeviceUninitialized = 201,
-    cudaErrorMapBufferObjectFailed = 205,
-    cudaErrorUnmapBufferObjectFailed = 206,
-    cudaErrorArrayIsMapped = 207,
-    cudaErrorAlreadyMapped = 208,
-    cudaErrorNoKernelImageForDevice = 209,
-    cudaErrorAlreadyAcquired = 210,
-    cudaErrorNotMapped = 211,
-    cudaErrorNotMappedAsArray = 212,
-    cudaErrorNotMappedAsPointer = 213,
-    cudaErrorECCUncorrectable = 214,
-    cudaErrorUnsupportedLimit = 215,
-    cudaErrorDeviceAlreadyInUse = 216,
-    cudaErrorPeerAccessUnsupported = 217,
-    cudaErrorInvalidPtx = 218,
-    cudaErrorInvalidGraphicsContext = 219,
-    cudaErrorNvlinkUncorrectable = 220,
-    cudaErrorJitCompilerNotFound = 221,
-    cudaErrorInvalidSource = 300,
-    cudaErrorFileNotFound = 301,
-    cudaErrorSharedObjectSymbolNotFound = 302,
-    cudaErrorSharedObjectInitFailed = 303,
-    cudaErrorOperatingSystem = 304,
-    cudaErrorInvalidResourceHandle = 400,
-    cudaErrorIllegalState = 401,
-    cudaErrorSymbolNotFound = 500,
-    cudaErrorNotReady = 600,
-    cudaErrorIllegalAddress = 700,
-    cudaErrorLaunchOutOfResources = 701,
-    cudaErrorLaunchTimeout = 702,
-    cudaErrorLaunchIncompatibleTexturing = 703,
-    cudaErrorPeerAccessAlreadyEnabled = 704,
-    cudaErrorPeerAccessNotEnabled = 705,
-    cudaErrorSetOnActiveProcess = 708,
-    cudaErrorContextIsDestroyed = 709,
-    cudaErrorAssert = 710,
-    cudaErrorTooManyPeers = 711,
-    cudaErrorHostMemoryAlreadyRegistered = 712,
-    cudaErrorHostMemoryNotRegistered = 713,
-    cudaErrorHardwareStackError = 714,
-    cudaErrorIllegalInstruction = 715,
-    cudaErrorMisalignedAddress = 716,
-    cudaErrorInvalidAddressSpace = 717,
-    cudaErrorInvalidPc = 718,
-    cudaErrorLaunchFailure = 719,
-    cudaErrorCooperativeLaunchTooLarge = 720,
-    cudaErrorNotPermitted = 800,
-    cudaErrorNotSupported = 801,
-    cudaErrorSystemNotReady = 802,
-    cudaErrorSystemDriverMismatch = 803,
-    cudaErrorCompatNotSupportedOnDevice = 804,
-    cudaErrorStreamCaptureUnsupported = 900,
-    cudaErrorStreamCaptureInvalidated = 901,
-    cudaErrorStreamCaptureMerge = 902,
-    cudaErrorStreamCaptureUnmatched = 903,
-    cudaErrorStreamCaptureUnjoined = 904,
-    cudaErrorStreamCaptureIsolation = 905,
-    cudaErrorStreamCaptureImplicit = 906,
-    cudaErrorCapturedEvent = 907,
-    cudaErrorStreamCaptureWrongThread = 908,
-    cudaErrorTimeout = 909,
-    cudaErrorGraphExecUpdateFailure = 910,
-    cudaErrorUnknown = 999,
-    cudaErrorApiFailureBase = 10000,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaChannelFormatKind {
-    cudaChannelFormatKindSigned = 0,
-    cudaChannelFormatKindUnsigned = 1,
-    cudaChannelFormatKindFloat = 2,
-    cudaChannelFormatKindNone = 3,
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaChannelFormatDesc {
-    pub x: ::std::os::raw::c_int,
-    pub y: ::std::os::raw::c_int,
-    pub z: ::std::os::raw::c_int,
-    pub w: ::std::os::raw::c_int,
-    pub f: cudaChannelFormatKind,
-}
-#[test]
-fn bindgen_test_layout_cudaChannelFormatDesc() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaChannelFormatDesc>(),
-        20usize,
-        concat!("Size of: ", stringify!(cudaChannelFormatDesc))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaChannelFormatDesc>(),
-        4usize,
-        concat!("Alignment of ", stringify!(cudaChannelFormatDesc))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaChannelFormatDesc>())).x as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaChannelFormatDesc),
-            "::",
-            stringify!(x)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaChannelFormatDesc>())).y as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaChannelFormatDesc),
-            "::",
-            stringify!(y)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaChannelFormatDesc>())).z as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaChannelFormatDesc),
-            "::",
-            stringify!(z)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaChannelFormatDesc>())).w as *const _ as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaChannelFormatDesc),
-            "::",
-            stringify!(w)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaChannelFormatDesc>())).f as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaChannelFormatDesc),
-            "::",
-            stringify!(f)
-        )
-    );
-}
-impl Default for cudaChannelFormatDesc {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct cudaArray {
-    _unused: [u8; 0],
-}
-pub type cudaArray_t = *mut cudaArray;
-pub type cudaArray_const_t = *const cudaArray;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct cudaMipmappedArray {
-    _unused: [u8; 0],
-}
-pub type cudaMipmappedArray_t = *mut cudaMipmappedArray;
-pub type cudaMipmappedArray_const_t = *const cudaMipmappedArray;
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaMemoryType {
-    cudaMemoryTypeUnregistered = 0,
-    cudaMemoryTypeHost = 1,
-    cudaMemoryTypeDevice = 2,
-    cudaMemoryTypeManaged = 3,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaMemcpyKind {
-    cudaMemcpyHostToHost = 0,
-    cudaMemcpyHostToDevice = 1,
-    cudaMemcpyDeviceToHost = 2,
-    cudaMemcpyDeviceToDevice = 3,
-    cudaMemcpyDefault = 4,
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaPitchedPtr {
-    pub ptr: *mut ::std::os::raw::c_void,
-    pub pitch: usize,
-    pub xsize: usize,
-    pub ysize: usize,
-}
-#[test]
-fn bindgen_test_layout_cudaPitchedPtr() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaPitchedPtr>(),
-        32usize,
-        concat!("Size of: ", stringify!(cudaPitchedPtr))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaPitchedPtr>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaPitchedPtr))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaPitchedPtr>())).ptr as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPitchedPtr),
-            "::",
-            stringify!(ptr)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaPitchedPtr>())).pitch as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPitchedPtr),
-            "::",
-            stringify!(pitch)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaPitchedPtr>())).xsize as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPitchedPtr),
-            "::",
-            stringify!(xsize)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaPitchedPtr>())).ysize as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPitchedPtr),
-            "::",
-            stringify!(ysize)
-        )
-    );
-}
-impl Default for cudaPitchedPtr {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaExtent {
-    pub width: usize,
-    pub height: usize,
-    pub depth: usize,
-}
-#[test]
-fn bindgen_test_layout_cudaExtent() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExtent>(),
-        24usize,
-        concat!("Size of: ", stringify!(cudaExtent))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExtent>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaExtent))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaExtent>())).width as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExtent),
-            "::",
-            stringify!(width)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaExtent>())).height as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExtent),
-            "::",
-            stringify!(height)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaExtent>())).depth as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExtent),
-            "::",
-            stringify!(depth)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaPos {
-    pub x: usize,
-    pub y: usize,
-    pub z: usize,
-}
-#[test]
-fn bindgen_test_layout_cudaPos() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaPos>(),
-        24usize,
-        concat!("Size of: ", stringify!(cudaPos))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaPos>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaPos))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaPos>())).x as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPos),
-            "::",
-            stringify!(x)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaPos>())).y as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPos),
-            "::",
-            stringify!(y)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaPos>())).z as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPos),
-            "::",
-            stringify!(z)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaMemcpy3DParms {
-    pub srcArray: cudaArray_t,
-    pub srcPos: cudaPos,
-    pub srcPtr: cudaPitchedPtr,
-    pub dstArray: cudaArray_t,
-    pub dstPos: cudaPos,
-    pub dstPtr: cudaPitchedPtr,
-    pub extent: cudaExtent,
-    pub kind: cudaMemcpyKind,
-}
-#[test]
-fn bindgen_test_layout_cudaMemcpy3DParms() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaMemcpy3DParms>(),
-        160usize,
-        concat!("Size of: ", stringify!(cudaMemcpy3DParms))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaMemcpy3DParms>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaMemcpy3DParms))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DParms>())).srcArray as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DParms),
-            "::",
-            stringify!(srcArray)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DParms>())).srcPos as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DParms),
-            "::",
-            stringify!(srcPos)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DParms>())).srcPtr as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DParms),
-            "::",
-            stringify!(srcPtr)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DParms>())).dstArray as *const _ as usize },
-        64usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DParms),
-            "::",
-            stringify!(dstArray)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DParms>())).dstPos as *const _ as usize },
-        72usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DParms),
-            "::",
-            stringify!(dstPos)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DParms>())).dstPtr as *const _ as usize },
-        96usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DParms),
-            "::",
-            stringify!(dstPtr)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DParms>())).extent as *const _ as usize },
-        128usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DParms),
-            "::",
-            stringify!(extent)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DParms>())).kind as *const _ as usize },
-        152usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DParms),
-            "::",
-            stringify!(kind)
-        )
-    );
-}
-impl Default for cudaMemcpy3DParms {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaMemcpy3DPeerParms {
-    pub srcArray: cudaArray_t,
-    pub srcPos: cudaPos,
-    pub srcPtr: cudaPitchedPtr,
-    pub srcDevice: ::std::os::raw::c_int,
-    pub dstArray: cudaArray_t,
-    pub dstPos: cudaPos,
-    pub dstPtr: cudaPitchedPtr,
-    pub dstDevice: ::std::os::raw::c_int,
-    pub extent: cudaExtent,
-}
-#[test]
-fn bindgen_test_layout_cudaMemcpy3DPeerParms() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaMemcpy3DPeerParms>(),
-        168usize,
-        concat!("Size of: ", stringify!(cudaMemcpy3DPeerParms))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaMemcpy3DPeerParms>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaMemcpy3DPeerParms))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DPeerParms>())).srcArray as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DPeerParms),
-            "::",
-            stringify!(srcArray)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DPeerParms>())).srcPos as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DPeerParms),
-            "::",
-            stringify!(srcPos)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DPeerParms>())).srcPtr as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DPeerParms),
-            "::",
-            stringify!(srcPtr)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DPeerParms>())).srcDevice as *const _ as usize },
-        64usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DPeerParms),
-            "::",
-            stringify!(srcDevice)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DPeerParms>())).dstArray as *const _ as usize },
-        72usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DPeerParms),
-            "::",
-            stringify!(dstArray)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DPeerParms>())).dstPos as *const _ as usize },
-        80usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DPeerParms),
-            "::",
-            stringify!(dstPos)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DPeerParms>())).dstPtr as *const _ as usize },
-        104usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DPeerParms),
-            "::",
-            stringify!(dstPtr)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DPeerParms>())).dstDevice as *const _ as usize },
-        136usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DPeerParms),
-            "::",
-            stringify!(dstDevice)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemcpy3DPeerParms>())).extent as *const _ as usize },
-        144usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemcpy3DPeerParms),
-            "::",
-            stringify!(extent)
-        )
-    );
-}
-impl Default for cudaMemcpy3DPeerParms {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaMemsetParams {
-    pub dst: *mut ::std::os::raw::c_void,
-    pub pitch: usize,
-    pub value: ::std::os::raw::c_uint,
-    pub elementSize: ::std::os::raw::c_uint,
-    pub width: usize,
-    pub height: usize,
-}
-#[test]
-fn bindgen_test_layout_cudaMemsetParams() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaMemsetParams>(),
-        40usize,
-        concat!("Size of: ", stringify!(cudaMemsetParams))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaMemsetParams>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaMemsetParams))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemsetParams>())).dst as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemsetParams),
-            "::",
-            stringify!(dst)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemsetParams>())).pitch as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemsetParams),
-            "::",
-            stringify!(pitch)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemsetParams>())).value as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemsetParams),
-            "::",
-            stringify!(value)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemsetParams>())).elementSize as *const _ as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemsetParams),
-            "::",
-            stringify!(elementSize)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemsetParams>())).width as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemsetParams),
-            "::",
-            stringify!(width)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaMemsetParams>())).height as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaMemsetParams),
-            "::",
-            stringify!(height)
-        )
-    );
-}
-impl Default for cudaMemsetParams {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-pub type cudaHostFn_t =
-    ::std::option::Option<unsafe extern "C" fn(userData: *mut ::std::os::raw::c_void)>;
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaHostNodeParams {
-    pub fn_: cudaHostFn_t,
-    pub userData: *mut ::std::os::raw::c_void,
-}
-#[test]
-fn bindgen_test_layout_cudaHostNodeParams() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaHostNodeParams>(),
-        16usize,
-        concat!("Size of: ", stringify!(cudaHostNodeParams))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaHostNodeParams>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaHostNodeParams))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaHostNodeParams>())).fn_ as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaHostNodeParams),
-            "::",
-            stringify!(fn_)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaHostNodeParams>())).userData as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaHostNodeParams),
-            "::",
-            stringify!(userData)
-        )
-    );
-}
-impl Default for cudaHostNodeParams {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaStreamCaptureStatus {
-    cudaStreamCaptureStatusNone = 0,
-    cudaStreamCaptureStatusActive = 1,
-    cudaStreamCaptureStatusInvalidated = 2,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaStreamCaptureMode {
-    cudaStreamCaptureModeGlobal = 0,
-    cudaStreamCaptureModeThreadLocal = 1,
-    cudaStreamCaptureModeRelaxed = 2,
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct cudaGraphicsResource {
-    _unused: [u8; 0],
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaGraphicsRegisterFlags {
-    cudaGraphicsRegisterFlagsNone = 0,
-    cudaGraphicsRegisterFlagsReadOnly = 1,
-    cudaGraphicsRegisterFlagsWriteDiscard = 2,
-    cudaGraphicsRegisterFlagsSurfaceLoadStore = 4,
-    cudaGraphicsRegisterFlagsTextureGather = 8,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaGraphicsMapFlags {
-    cudaGraphicsMapFlagsNone = 0,
-    cudaGraphicsMapFlagsReadOnly = 1,
-    cudaGraphicsMapFlagsWriteDiscard = 2,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaGraphicsCubeFace {
-    cudaGraphicsCubeFacePositiveX = 0,
-    cudaGraphicsCubeFaceNegativeX = 1,
-    cudaGraphicsCubeFacePositiveY = 2,
-    cudaGraphicsCubeFaceNegativeY = 3,
-    cudaGraphicsCubeFacePositiveZ = 4,
-    cudaGraphicsCubeFaceNegativeZ = 5,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaResourceType {
-    cudaResourceTypeArray = 0,
-    cudaResourceTypeMipmappedArray = 1,
-    cudaResourceTypeLinear = 2,
-    cudaResourceTypePitch2D = 3,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaResourceViewFormat {
-    cudaResViewFormatNone = 0,
-    cudaResViewFormatUnsignedChar1 = 1,
-    cudaResViewFormatUnsignedChar2 = 2,
-    cudaResViewFormatUnsignedChar4 = 3,
-    cudaResViewFormatSignedChar1 = 4,
-    cudaResViewFormatSignedChar2 = 5,
-    cudaResViewFormatSignedChar4 = 6,
-    cudaResViewFormatUnsignedShort1 = 7,
-    cudaResViewFormatUnsignedShort2 = 8,
-    cudaResViewFormatUnsignedShort4 = 9,
-    cudaResViewFormatSignedShort1 = 10,
-    cudaResViewFormatSignedShort2 = 11,
-    cudaResViewFormatSignedShort4 = 12,
-    cudaResViewFormatUnsignedInt1 = 13,
-    cudaResViewFormatUnsignedInt2 = 14,
-    cudaResViewFormatUnsignedInt4 = 15,
-    cudaResViewFormatSignedInt1 = 16,
-    cudaResViewFormatSignedInt2 = 17,
-    cudaResViewFormatSignedInt4 = 18,
-    cudaResViewFormatHalf1 = 19,
-    cudaResViewFormatHalf2 = 20,
-    cudaResViewFormatHalf4 = 21,
-    cudaResViewFormatFloat1 = 22,
-    cudaResViewFormatFloat2 = 23,
-    cudaResViewFormatFloat4 = 24,
-    cudaResViewFormatUnsignedBlockCompressed1 = 25,
-    cudaResViewFormatUnsignedBlockCompressed2 = 26,
-    cudaResViewFormatUnsignedBlockCompressed3 = 27,
-    cudaResViewFormatUnsignedBlockCompressed4 = 28,
-    cudaResViewFormatSignedBlockCompressed4 = 29,
-    cudaResViewFormatUnsignedBlockCompressed5 = 30,
-    cudaResViewFormatSignedBlockCompressed5 = 31,
-    cudaResViewFormatUnsignedBlockCompressed6H = 32,
-    cudaResViewFormatSignedBlockCompressed6H = 33,
-    cudaResViewFormatUnsignedBlockCompressed7 = 34,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct cudaResourceDesc {
-    pub resType: cudaResourceType,
-    pub res: cudaResourceDesc__bindgen_ty_1,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub union cudaResourceDesc__bindgen_ty_1 {
-    pub array: cudaResourceDesc__bindgen_ty_1__bindgen_ty_1,
-    pub mipmap: cudaResourceDesc__bindgen_ty_1__bindgen_ty_2,
-    pub linear: cudaResourceDesc__bindgen_ty_1__bindgen_ty_3,
-    pub pitch2D: cudaResourceDesc__bindgen_ty_1__bindgen_ty_4,
-    _bindgen_union_align: [u64; 7usize],
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaResourceDesc__bindgen_ty_1__bindgen_ty_1 {
-    pub array: cudaArray_t,
-}
-#[test]
-fn bindgen_test_layout_cudaResourceDesc__bindgen_ty_1__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_1>())).array
-                as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_1),
-            "::",
-            stringify!(array)
-        )
-    );
-}
-impl Default for cudaResourceDesc__bindgen_ty_1__bindgen_ty_1 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaResourceDesc__bindgen_ty_1__bindgen_ty_2 {
-    pub mipmap: cudaMipmappedArray_t,
-}
-#[test]
-fn bindgen_test_layout_cudaResourceDesc__bindgen_ty_1__bindgen_ty_2() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_2>(),
-        8usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_2)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_2>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_2)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_2>())).mipmap
-                as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_2),
-            "::",
-            stringify!(mipmap)
-        )
-    );
-}
-impl Default for cudaResourceDesc__bindgen_ty_1__bindgen_ty_2 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaResourceDesc__bindgen_ty_1__bindgen_ty_3 {
-    pub devPtr: *mut ::std::os::raw::c_void,
-    pub desc: cudaChannelFormatDesc,
-    pub sizeInBytes: usize,
-}
-#[test]
-fn bindgen_test_layout_cudaResourceDesc__bindgen_ty_1__bindgen_ty_3() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_3>(),
-        40usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_3)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_3>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_3)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_3>())).devPtr
-                as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_3),
-            "::",
-            stringify!(devPtr)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_3>())).desc
-                as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_3),
-            "::",
-            stringify!(desc)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_3>())).sizeInBytes
-                as *const _ as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_3),
-            "::",
-            stringify!(sizeInBytes)
-        )
-    );
-}
-impl Default for cudaResourceDesc__bindgen_ty_1__bindgen_ty_3 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaResourceDesc__bindgen_ty_1__bindgen_ty_4 {
-    pub devPtr: *mut ::std::os::raw::c_void,
-    pub desc: cudaChannelFormatDesc,
-    pub width: usize,
-    pub height: usize,
-    pub pitchInBytes: usize,
-}
-#[test]
-fn bindgen_test_layout_cudaResourceDesc__bindgen_ty_1__bindgen_ty_4() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_4>(),
-        56usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_4)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_4>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_4)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_4>())).devPtr
-                as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_4),
-            "::",
-            stringify!(devPtr)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_4>())).desc
-                as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_4),
-            "::",
-            stringify!(desc)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_4>())).width
-                as *const _ as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_4),
-            "::",
-            stringify!(width)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_4>())).height
-                as *const _ as usize
-        },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_4),
-            "::",
-            stringify!(height)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1__bindgen_ty_4>())).pitchInBytes
-                as *const _ as usize
-        },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1__bindgen_ty_4),
-            "::",
-            stringify!(pitchInBytes)
-        )
-    );
-}
-impl Default for cudaResourceDesc__bindgen_ty_1__bindgen_ty_4 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[test]
-fn bindgen_test_layout_cudaResourceDesc__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaResourceDesc__bindgen_ty_1>(),
-        56usize,
-        concat!("Size of: ", stringify!(cudaResourceDesc__bindgen_ty_1))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaResourceDesc__bindgen_ty_1>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaResourceDesc__bindgen_ty_1))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1>())).array as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1),
-            "::",
-            stringify!(array)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1>())).mipmap as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1),
-            "::",
-            stringify!(mipmap)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1>())).linear as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1),
-            "::",
-            stringify!(linear)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceDesc__bindgen_ty_1>())).pitch2D as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc__bindgen_ty_1),
-            "::",
-            stringify!(pitch2D)
-        )
-    );
-}
-impl Default for cudaResourceDesc__bindgen_ty_1 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[test]
-fn bindgen_test_layout_cudaResourceDesc() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaResourceDesc>(),
-        64usize,
-        concat!("Size of: ", stringify!(cudaResourceDesc))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaResourceDesc>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaResourceDesc))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaResourceDesc>())).resType as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc),
-            "::",
-            stringify!(resType)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaResourceDesc>())).res as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceDesc),
-            "::",
-            stringify!(res)
-        )
-    );
-}
-impl Default for cudaResourceDesc {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaResourceViewDesc {
-    pub format: cudaResourceViewFormat,
-    pub width: usize,
-    pub height: usize,
-    pub depth: usize,
-    pub firstMipmapLevel: ::std::os::raw::c_uint,
-    pub lastMipmapLevel: ::std::os::raw::c_uint,
-    pub firstLayer: ::std::os::raw::c_uint,
-    pub lastLayer: ::std::os::raw::c_uint,
-}
-#[test]
-fn bindgen_test_layout_cudaResourceViewDesc() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaResourceViewDesc>(),
-        48usize,
-        concat!("Size of: ", stringify!(cudaResourceViewDesc))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaResourceViewDesc>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaResourceViewDesc))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaResourceViewDesc>())).format as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceViewDesc),
-            "::",
-            stringify!(format)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaResourceViewDesc>())).width as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceViewDesc),
-            "::",
-            stringify!(width)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaResourceViewDesc>())).height as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceViewDesc),
-            "::",
-            stringify!(height)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaResourceViewDesc>())).depth as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceViewDesc),
-            "::",
-            stringify!(depth)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceViewDesc>())).firstMipmapLevel as *const _ as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceViewDesc),
-            "::",
-            stringify!(firstMipmapLevel)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaResourceViewDesc>())).lastMipmapLevel as *const _ as usize
-        },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceViewDesc),
-            "::",
-            stringify!(lastMipmapLevel)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaResourceViewDesc>())).firstLayer as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceViewDesc),
-            "::",
-            stringify!(firstLayer)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaResourceViewDesc>())).lastLayer as *const _ as usize },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaResourceViewDesc),
-            "::",
-            stringify!(lastLayer)
-        )
-    );
-}
-impl Default for cudaResourceViewDesc {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaPointerAttributes {
-    pub memoryType: cudaMemoryType,
-    pub type_: cudaMemoryType,
-    pub device: ::std::os::raw::c_int,
-    pub devicePointer: *mut ::std::os::raw::c_void,
-    pub hostPointer: *mut ::std::os::raw::c_void,
-    pub isManaged: ::std::os::raw::c_int,
-}
-#[test]
-fn bindgen_test_layout_cudaPointerAttributes() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaPointerAttributes>(),
-        40usize,
-        concat!("Size of: ", stringify!(cudaPointerAttributes))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaPointerAttributes>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaPointerAttributes))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaPointerAttributes>())).memoryType as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPointerAttributes),
-            "::",
-            stringify!(memoryType)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaPointerAttributes>())).type_ as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPointerAttributes),
-            "::",
-            stringify!(type_)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaPointerAttributes>())).device as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPointerAttributes),
-            "::",
-            stringify!(device)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaPointerAttributes>())).devicePointer as *const _ as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPointerAttributes),
-            "::",
-            stringify!(devicePointer)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaPointerAttributes>())).hostPointer as *const _ as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPointerAttributes),
-            "::",
-            stringify!(hostPointer)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaPointerAttributes>())).isManaged as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaPointerAttributes),
-            "::",
-            stringify!(isManaged)
-        )
-    );
-}
-impl Default for cudaPointerAttributes {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaFuncAttributes {
-    pub sharedSizeBytes: usize,
-    pub constSizeBytes: usize,
-    pub localSizeBytes: usize,
-    pub maxThreadsPerBlock: ::std::os::raw::c_int,
-    pub numRegs: ::std::os::raw::c_int,
-    pub ptxVersion: ::std::os::raw::c_int,
-    pub binaryVersion: ::std::os::raw::c_int,
-    pub cacheModeCA: ::std::os::raw::c_int,
-    pub maxDynamicSharedSizeBytes: ::std::os::raw::c_int,
-    pub preferredShmemCarveout: ::std::os::raw::c_int,
-}
-#[test]
-fn bindgen_test_layout_cudaFuncAttributes() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaFuncAttributes>(),
-        56usize,
-        concat!("Size of: ", stringify!(cudaFuncAttributes))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaFuncAttributes>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaFuncAttributes))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaFuncAttributes>())).sharedSizeBytes as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaFuncAttributes),
-            "::",
-            stringify!(sharedSizeBytes)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaFuncAttributes>())).constSizeBytes as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaFuncAttributes),
-            "::",
-            stringify!(constSizeBytes)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaFuncAttributes>())).localSizeBytes as *const _ as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaFuncAttributes),
-            "::",
-            stringify!(localSizeBytes)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaFuncAttributes>())).maxThreadsPerBlock as *const _ as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaFuncAttributes),
-            "::",
-            stringify!(maxThreadsPerBlock)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaFuncAttributes>())).numRegs as *const _ as usize },
-        28usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaFuncAttributes),
-            "::",
-            stringify!(numRegs)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaFuncAttributes>())).ptxVersion as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaFuncAttributes),
-            "::",
-            stringify!(ptxVersion)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaFuncAttributes>())).binaryVersion as *const _ as usize
-        },
-        36usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaFuncAttributes),
-            "::",
-            stringify!(binaryVersion)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaFuncAttributes>())).cacheModeCA as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaFuncAttributes),
-            "::",
-            stringify!(cacheModeCA)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaFuncAttributes>())).maxDynamicSharedSizeBytes as *const _
-                as usize
-        },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaFuncAttributes),
-            "::",
-            stringify!(maxDynamicSharedSizeBytes)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaFuncAttributes>())).preferredShmemCarveout as *const _
-                as usize
-        },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaFuncAttributes),
-            "::",
-            stringify!(preferredShmemCarveout)
-        )
-    );
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaFuncAttribute {
-    cudaFuncAttributeMaxDynamicSharedMemorySize = 8,
-    cudaFuncAttributePreferredSharedMemoryCarveout = 9,
-    cudaFuncAttributeMax = 10,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaFuncCache {
-    cudaFuncCachePreferNone = 0,
-    cudaFuncCachePreferShared = 1,
-    cudaFuncCachePreferL1 = 2,
-    cudaFuncCachePreferEqual = 3,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaSharedMemConfig {
-    cudaSharedMemBankSizeDefault = 0,
-    cudaSharedMemBankSizeFourByte = 1,
-    cudaSharedMemBankSizeEightByte = 2,
-}
-#[repr(i32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaSharedCarveout {
-    cudaSharedmemCarveoutDefault = -1,
-    cudaSharedmemCarveoutMaxShared = 100,
-    cudaSharedmemCarveoutMaxL1 = 0,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaComputeMode {
-    cudaComputeModeDefault = 0,
-    cudaComputeModeExclusive = 1,
-    cudaComputeModeProhibited = 2,
-    cudaComputeModeExclusiveProcess = 3,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaLimit {
-    cudaLimitStackSize = 0,
-    cudaLimitPrintfFifoSize = 1,
-    cudaLimitMallocHeapSize = 2,
-    cudaLimitDevRuntimeSyncDepth = 3,
-    cudaLimitDevRuntimePendingLaunchCount = 4,
-    cudaLimitMaxL2FetchGranularity = 5,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaMemoryAdvise {
-    cudaMemAdviseSetReadMostly = 1,
-    cudaMemAdviseUnsetReadMostly = 2,
-    cudaMemAdviseSetPreferredLocation = 3,
-    cudaMemAdviseUnsetPreferredLocation = 4,
-    cudaMemAdviseSetAccessedBy = 5,
-    cudaMemAdviseUnsetAccessedBy = 6,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaMemRangeAttribute {
-    cudaMemRangeAttributeReadMostly = 1,
-    cudaMemRangeAttributePreferredLocation = 2,
-    cudaMemRangeAttributeAccessedBy = 3,
-    cudaMemRangeAttributeLastPrefetchLocation = 4,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaOutputMode {
-    cudaKeyValuePair = 0,
-    cudaCSV = 1,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaDeviceAttr {
-    cudaDevAttrMaxThreadsPerBlock = 1,
-    cudaDevAttrMaxBlockDimX = 2,
-    cudaDevAttrMaxBlockDimY = 3,
-    cudaDevAttrMaxBlockDimZ = 4,
-    cudaDevAttrMaxGridDimX = 5,
-    cudaDevAttrMaxGridDimY = 6,
-    cudaDevAttrMaxGridDimZ = 7,
-    cudaDevAttrMaxSharedMemoryPerBlock = 8,
-    cudaDevAttrTotalConstantMemory = 9,
-    cudaDevAttrWarpSize = 10,
-    cudaDevAttrMaxPitch = 11,
-    cudaDevAttrMaxRegistersPerBlock = 12,
-    cudaDevAttrClockRate = 13,
-    cudaDevAttrTextureAlignment = 14,
-    cudaDevAttrGpuOverlap = 15,
-    cudaDevAttrMultiProcessorCount = 16,
-    cudaDevAttrKernelExecTimeout = 17,
-    cudaDevAttrIntegrated = 18,
-    cudaDevAttrCanMapHostMemory = 19,
-    cudaDevAttrComputeMode = 20,
-    cudaDevAttrMaxTexture1DWidth = 21,
-    cudaDevAttrMaxTexture2DWidth = 22,
-    cudaDevAttrMaxTexture2DHeight = 23,
-    cudaDevAttrMaxTexture3DWidth = 24,
-    cudaDevAttrMaxTexture3DHeight = 25,
-    cudaDevAttrMaxTexture3DDepth = 26,
-    cudaDevAttrMaxTexture2DLayeredWidth = 27,
-    cudaDevAttrMaxTexture2DLayeredHeight = 28,
-    cudaDevAttrMaxTexture2DLayeredLayers = 29,
-    cudaDevAttrSurfaceAlignment = 30,
-    cudaDevAttrConcurrentKernels = 31,
-    cudaDevAttrEccEnabled = 32,
-    cudaDevAttrPciBusId = 33,
-    cudaDevAttrPciDeviceId = 34,
-    cudaDevAttrTccDriver = 35,
-    cudaDevAttrMemoryClockRate = 36,
-    cudaDevAttrGlobalMemoryBusWidth = 37,
-    cudaDevAttrL2CacheSize = 38,
-    cudaDevAttrMaxThreadsPerMultiProcessor = 39,
-    cudaDevAttrAsyncEngineCount = 40,
-    cudaDevAttrUnifiedAddressing = 41,
-    cudaDevAttrMaxTexture1DLayeredWidth = 42,
-    cudaDevAttrMaxTexture1DLayeredLayers = 43,
-    cudaDevAttrMaxTexture2DGatherWidth = 45,
-    cudaDevAttrMaxTexture2DGatherHeight = 46,
-    cudaDevAttrMaxTexture3DWidthAlt = 47,
-    cudaDevAttrMaxTexture3DHeightAlt = 48,
-    cudaDevAttrMaxTexture3DDepthAlt = 49,
-    cudaDevAttrPciDomainId = 50,
-    cudaDevAttrTexturePitchAlignment = 51,
-    cudaDevAttrMaxTextureCubemapWidth = 52,
-    cudaDevAttrMaxTextureCubemapLayeredWidth = 53,
-    cudaDevAttrMaxTextureCubemapLayeredLayers = 54,
-    cudaDevAttrMaxSurface1DWidth = 55,
-    cudaDevAttrMaxSurface2DWidth = 56,
-    cudaDevAttrMaxSurface2DHeight = 57,
-    cudaDevAttrMaxSurface3DWidth = 58,
-    cudaDevAttrMaxSurface3DHeight = 59,
-    cudaDevAttrMaxSurface3DDepth = 60,
-    cudaDevAttrMaxSurface1DLayeredWidth = 61,
-    cudaDevAttrMaxSurface1DLayeredLayers = 62,
-    cudaDevAttrMaxSurface2DLayeredWidth = 63,
-    cudaDevAttrMaxSurface2DLayeredHeight = 64,
-    cudaDevAttrMaxSurface2DLayeredLayers = 65,
-    cudaDevAttrMaxSurfaceCubemapWidth = 66,
-    cudaDevAttrMaxSurfaceCubemapLayeredWidth = 67,
-    cudaDevAttrMaxSurfaceCubemapLayeredLayers = 68,
-    cudaDevAttrMaxTexture1DLinearWidth = 69,
-    cudaDevAttrMaxTexture2DLinearWidth = 70,
-    cudaDevAttrMaxTexture2DLinearHeight = 71,
-    cudaDevAttrMaxTexture2DLinearPitch = 72,
-    cudaDevAttrMaxTexture2DMipmappedWidth = 73,
-    cudaDevAttrMaxTexture2DMipmappedHeight = 74,
-    cudaDevAttrComputeCapabilityMajor = 75,
-    cudaDevAttrComputeCapabilityMinor = 76,
-    cudaDevAttrMaxTexture1DMipmappedWidth = 77,
-    cudaDevAttrStreamPrioritiesSupported = 78,
-    cudaDevAttrGlobalL1CacheSupported = 79,
-    cudaDevAttrLocalL1CacheSupported = 80,
-    cudaDevAttrMaxSharedMemoryPerMultiprocessor = 81,
-    cudaDevAttrMaxRegistersPerMultiprocessor = 82,
-    cudaDevAttrManagedMemory = 83,
-    cudaDevAttrIsMultiGpuBoard = 84,
-    cudaDevAttrMultiGpuBoardGroupID = 85,
-    cudaDevAttrHostNativeAtomicSupported = 86,
-    cudaDevAttrSingleToDoublePrecisionPerfRatio = 87,
-    cudaDevAttrPageableMemoryAccess = 88,
-    cudaDevAttrConcurrentManagedAccess = 89,
-    cudaDevAttrComputePreemptionSupported = 90,
-    cudaDevAttrCanUseHostPointerForRegisteredMem = 91,
-    cudaDevAttrReserved92 = 92,
-    cudaDevAttrReserved93 = 93,
-    cudaDevAttrReserved94 = 94,
-    cudaDevAttrCooperativeLaunch = 95,
-    cudaDevAttrCooperativeMultiDeviceLaunch = 96,
-    cudaDevAttrMaxSharedMemoryPerBlockOptin = 97,
-    cudaDevAttrCanFlushRemoteWrites = 98,
-    cudaDevAttrHostRegisterSupported = 99,
-    cudaDevAttrPageableMemoryAccessUsesHostPageTables = 100,
-    cudaDevAttrDirectManagedMemAccessFromHost = 101,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaDeviceP2PAttr {
-    cudaDevP2PAttrPerformanceRank = 1,
-    cudaDevP2PAttrAccessSupported = 2,
-    cudaDevP2PAttrNativeAtomicSupported = 3,
-    cudaDevP2PAttrCudaArrayAccessSupported = 4,
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct CUuuid_st {
-    pub bytes: [::std::os::raw::c_char; 16usize],
-}
-#[test]
-fn bindgen_test_layout_CUuuid_st() {
-    assert_eq!(
-        ::std::mem::size_of::<CUuuid_st>(),
-        16usize,
-        concat!("Size of: ", stringify!(CUuuid_st))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<CUuuid_st>(),
-        1usize,
-        concat!("Alignment of ", stringify!(CUuuid_st))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<CUuuid_st>())).bytes as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(CUuuid_st),
-            "::",
-            stringify!(bytes)
-        )
-    );
-}
-pub type cudaUUID_t = CUuuid_st;
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct cudaDeviceProp {
-    pub name: [::std::os::raw::c_char; 256usize],
-    pub uuid: cudaUUID_t,
-    pub luid: [::std::os::raw::c_char; 8usize],
-    pub luidDeviceNodeMask: ::std::os::raw::c_uint,
-    pub totalGlobalMem: usize,
-    pub sharedMemPerBlock: usize,
-    pub regsPerBlock: ::std::os::raw::c_int,
-    pub warpSize: ::std::os::raw::c_int,
-    pub memPitch: usize,
-    pub maxThreadsPerBlock: ::std::os::raw::c_int,
-    pub maxThreadsDim: [::std::os::raw::c_int; 3usize],
-    pub maxGridSize: [::std::os::raw::c_int; 3usize],
-    pub clockRate: ::std::os::raw::c_int,
-    pub totalConstMem: usize,
-    pub major: ::std::os::raw::c_int,
-    pub minor: ::std::os::raw::c_int,
-    pub textureAlignment: usize,
-    pub texturePitchAlignment: usize,
-    pub deviceOverlap: ::std::os::raw::c_int,
-    pub multiProcessorCount: ::std::os::raw::c_int,
-    pub kernelExecTimeoutEnabled: ::std::os::raw::c_int,
-    pub integrated: ::std::os::raw::c_int,
-    pub canMapHostMemory: ::std::os::raw::c_int,
-    pub computeMode: ::std::os::raw::c_int,
-    pub maxTexture1D: ::std::os::raw::c_int,
-    pub maxTexture1DMipmap: ::std::os::raw::c_int,
-    pub maxTexture1DLinear: ::std::os::raw::c_int,
-    pub maxTexture2D: [::std::os::raw::c_int; 2usize],
-    pub maxTexture2DMipmap: [::std::os::raw::c_int; 2usize],
-    pub maxTexture2DLinear: [::std::os::raw::c_int; 3usize],
-    pub maxTexture2DGather: [::std::os::raw::c_int; 2usize],
-    pub maxTexture3D: [::std::os::raw::c_int; 3usize],
-    pub maxTexture3DAlt: [::std::os::raw::c_int; 3usize],
-    pub maxTextureCubemap: ::std::os::raw::c_int,
-    pub maxTexture1DLayered: [::std::os::raw::c_int; 2usize],
-    pub maxTexture2DLayered: [::std::os::raw::c_int; 3usize],
-    pub maxTextureCubemapLayered: [::std::os::raw::c_int; 2usize],
-    pub maxSurface1D: ::std::os::raw::c_int,
-    pub maxSurface2D: [::std::os::raw::c_int; 2usize],
-    pub maxSurface3D: [::std::os::raw::c_int; 3usize],
-    pub maxSurface1DLayered: [::std::os::raw::c_int; 2usize],
-    pub maxSurface2DLayered: [::std::os::raw::c_int; 3usize],
-    pub maxSurfaceCubemap: ::std::os::raw::c_int,
-    pub maxSurfaceCubemapLayered: [::std::os::raw::c_int; 2usize],
-    pub surfaceAlignment: usize,
-    pub concurrentKernels: ::std::os::raw::c_int,
-    pub ECCEnabled: ::std::os::raw::c_int,
-    pub pciBusID: ::std::os::raw::c_int,
-    pub pciDeviceID: ::std::os::raw::c_int,
-    pub pciDomainID: ::std::os::raw::c_int,
-    pub tccDriver: ::std::os::raw::c_int,
-    pub asyncEngineCount: ::std::os::raw::c_int,
-    pub unifiedAddressing: ::std::os::raw::c_int,
-    pub memoryClockRate: ::std::os::raw::c_int,
-    pub memoryBusWidth: ::std::os::raw::c_int,
-    pub l2CacheSize: ::std::os::raw::c_int,
-    pub maxThreadsPerMultiProcessor: ::std::os::raw::c_int,
-    pub streamPrioritiesSupported: ::std::os::raw::c_int,
-    pub globalL1CacheSupported: ::std::os::raw::c_int,
-    pub localL1CacheSupported: ::std::os::raw::c_int,
-    pub sharedMemPerMultiprocessor: usize,
-    pub regsPerMultiprocessor: ::std::os::raw::c_int,
-    pub managedMemory: ::std::os::raw::c_int,
-    pub isMultiGpuBoard: ::std::os::raw::c_int,
-    pub multiGpuBoardGroupID: ::std::os::raw::c_int,
-    pub hostNativeAtomicSupported: ::std::os::raw::c_int,
-    pub singleToDoublePrecisionPerfRatio: ::std::os::raw::c_int,
-    pub pageableMemoryAccess: ::std::os::raw::c_int,
-    pub concurrentManagedAccess: ::std::os::raw::c_int,
-    pub computePreemptionSupported: ::std::os::raw::c_int,
-    pub canUseHostPointerForRegisteredMem: ::std::os::raw::c_int,
-    pub cooperativeLaunch: ::std::os::raw::c_int,
-    pub cooperativeMultiDeviceLaunch: ::std::os::raw::c_int,
-    pub sharedMemPerBlockOptin: usize,
-    pub pageableMemoryAccessUsesHostPageTables: ::std::os::raw::c_int,
-    pub directManagedMemAccessFromHost: ::std::os::raw::c_int,
-}
-#[test]
-fn bindgen_test_layout_cudaDeviceProp() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaDeviceProp>(),
-        712usize,
-        concat!("Size of: ", stringify!(cudaDeviceProp))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaDeviceProp>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaDeviceProp))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).name as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(name)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).uuid as *const _ as usize },
-        256usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(uuid)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).luid as *const _ as usize },
-        272usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(luid)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).luidDeviceNodeMask as *const _ as usize
-        },
-        280usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(luidDeviceNodeMask)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).totalGlobalMem as *const _ as usize },
-        288usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(totalGlobalMem)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).sharedMemPerBlock as *const _ as usize
-        },
-        296usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(sharedMemPerBlock)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).regsPerBlock as *const _ as usize },
-        304usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(regsPerBlock)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).warpSize as *const _ as usize },
-        308usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(warpSize)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).memPitch as *const _ as usize },
-        312usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(memPitch)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxThreadsPerBlock as *const _ as usize
-        },
-        320usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxThreadsPerBlock)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).maxThreadsDim as *const _ as usize },
-        324usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxThreadsDim)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).maxGridSize as *const _ as usize },
-        336usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxGridSize)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).clockRate as *const _ as usize },
-        348usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(clockRate)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).totalConstMem as *const _ as usize },
-        352usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(totalConstMem)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).major as *const _ as usize },
-        360usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(major)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).minor as *const _ as usize },
-        364usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(minor)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).textureAlignment as *const _ as usize },
-        368usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(textureAlignment)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).texturePitchAlignment as *const _ as usize
-        },
-        376usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(texturePitchAlignment)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).deviceOverlap as *const _ as usize },
-        384usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(deviceOverlap)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).multiProcessorCount as *const _ as usize
-        },
-        388usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(multiProcessorCount)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).kernelExecTimeoutEnabled as *const _ as usize
-        },
-        392usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(kernelExecTimeoutEnabled)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).integrated as *const _ as usize },
-        396usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(integrated)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).canMapHostMemory as *const _ as usize },
-        400usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(canMapHostMemory)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).computeMode as *const _ as usize },
-        404usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(computeMode)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).maxTexture1D as *const _ as usize },
-        408usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTexture1D)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxTexture1DMipmap as *const _ as usize
-        },
-        412usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTexture1DMipmap)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxTexture1DLinear as *const _ as usize
-        },
-        416usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTexture1DLinear)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).maxTexture2D as *const _ as usize },
-        420usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTexture2D)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxTexture2DMipmap as *const _ as usize
-        },
-        428usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTexture2DMipmap)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxTexture2DLinear as *const _ as usize
-        },
-        436usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTexture2DLinear)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxTexture2DGather as *const _ as usize
-        },
-        448usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTexture2DGather)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).maxTexture3D as *const _ as usize },
-        456usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTexture3D)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).maxTexture3DAlt as *const _ as usize },
-        468usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTexture3DAlt)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxTextureCubemap as *const _ as usize
-        },
-        480usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTextureCubemap)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxTexture1DLayered as *const _ as usize
-        },
-        484usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTexture1DLayered)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxTexture2DLayered as *const _ as usize
-        },
-        492usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTexture2DLayered)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxTextureCubemapLayered as *const _ as usize
-        },
-        504usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxTextureCubemapLayered)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).maxSurface1D as *const _ as usize },
-        512usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxSurface1D)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).maxSurface2D as *const _ as usize },
-        516usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxSurface2D)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).maxSurface3D as *const _ as usize },
-        524usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxSurface3D)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxSurface1DLayered as *const _ as usize
-        },
-        536usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxSurface1DLayered)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxSurface2DLayered as *const _ as usize
-        },
-        544usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxSurface2DLayered)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxSurfaceCubemap as *const _ as usize
-        },
-        556usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxSurfaceCubemap)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxSurfaceCubemapLayered as *const _ as usize
-        },
-        560usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxSurfaceCubemapLayered)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).surfaceAlignment as *const _ as usize },
-        568usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(surfaceAlignment)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).concurrentKernels as *const _ as usize
-        },
-        576usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(concurrentKernels)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).ECCEnabled as *const _ as usize },
-        580usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(ECCEnabled)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).pciBusID as *const _ as usize },
-        584usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(pciBusID)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).pciDeviceID as *const _ as usize },
-        588usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(pciDeviceID)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).pciDomainID as *const _ as usize },
-        592usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(pciDomainID)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).tccDriver as *const _ as usize },
-        596usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(tccDriver)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).asyncEngineCount as *const _ as usize },
-        600usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(asyncEngineCount)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).unifiedAddressing as *const _ as usize
-        },
-        604usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(unifiedAddressing)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).memoryClockRate as *const _ as usize },
-        608usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(memoryClockRate)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).memoryBusWidth as *const _ as usize },
-        612usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(memoryBusWidth)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).l2CacheSize as *const _ as usize },
-        616usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(l2CacheSize)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).maxThreadsPerMultiProcessor as *const _
-                as usize
-        },
-        620usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(maxThreadsPerMultiProcessor)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).streamPrioritiesSupported as *const _
-                as usize
-        },
-        624usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(streamPrioritiesSupported)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).globalL1CacheSupported as *const _ as usize
-        },
-        628usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(globalL1CacheSupported)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).localL1CacheSupported as *const _ as usize
-        },
-        632usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(localL1CacheSupported)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).sharedMemPerMultiprocessor as *const _
-                as usize
-        },
-        640usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(sharedMemPerMultiprocessor)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).regsPerMultiprocessor as *const _ as usize
-        },
-        648usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(regsPerMultiprocessor)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).managedMemory as *const _ as usize },
-        652usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(managedMemory)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaDeviceProp>())).isMultiGpuBoard as *const _ as usize },
-        656usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(isMultiGpuBoard)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).multiGpuBoardGroupID as *const _ as usize
-        },
-        660usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(multiGpuBoardGroupID)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).hostNativeAtomicSupported as *const _
-                as usize
-        },
-        664usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(hostNativeAtomicSupported)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).singleToDoublePrecisionPerfRatio as *const _
-                as usize
-        },
-        668usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(singleToDoublePrecisionPerfRatio)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).pageableMemoryAccess as *const _ as usize
-        },
-        672usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(pageableMemoryAccess)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).concurrentManagedAccess as *const _ as usize
-        },
-        676usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(concurrentManagedAccess)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).computePreemptionSupported as *const _
-                as usize
-        },
-        680usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(computePreemptionSupported)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).canUseHostPointerForRegisteredMem as *const _
-                as usize
-        },
-        684usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(canUseHostPointerForRegisteredMem)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).cooperativeLaunch as *const _ as usize
-        },
-        688usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(cooperativeLaunch)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).cooperativeMultiDeviceLaunch as *const _
-                as usize
-        },
-        692usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(cooperativeMultiDeviceLaunch)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).sharedMemPerBlockOptin as *const _ as usize
-        },
-        696usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(sharedMemPerBlockOptin)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).pageableMemoryAccessUsesHostPageTables
-                as *const _ as usize
-        },
-        704usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(pageableMemoryAccessUsesHostPageTables)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaDeviceProp>())).directManagedMemAccessFromHost as *const _
-                as usize
-        },
-        708usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaDeviceProp),
-            "::",
-            stringify!(directManagedMemAccessFromHost)
-        )
-    );
-}
-impl Default for cudaDeviceProp {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct cudaIpcEventHandle_st {
-    pub reserved: [::std::os::raw::c_char; 64usize],
-}
-#[test]
-fn bindgen_test_layout_cudaIpcEventHandle_st() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaIpcEventHandle_st>(),
-        64usize,
-        concat!("Size of: ", stringify!(cudaIpcEventHandle_st))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaIpcEventHandle_st>(),
-        1usize,
-        concat!("Alignment of ", stringify!(cudaIpcEventHandle_st))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaIpcEventHandle_st>())).reserved as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaIpcEventHandle_st),
-            "::",
-            stringify!(reserved)
-        )
-    );
-}
-impl Default for cudaIpcEventHandle_st {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-pub type cudaIpcEventHandle_t = cudaIpcEventHandle_st;
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct cudaIpcMemHandle_st {
-    pub reserved: [::std::os::raw::c_char; 64usize],
-}
-#[test]
-fn bindgen_test_layout_cudaIpcMemHandle_st() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaIpcMemHandle_st>(),
-        64usize,
-        concat!("Size of: ", stringify!(cudaIpcMemHandle_st))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaIpcMemHandle_st>(),
-        1usize,
-        concat!("Alignment of ", stringify!(cudaIpcMemHandle_st))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaIpcMemHandle_st>())).reserved as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaIpcMemHandle_st),
-            "::",
-            stringify!(reserved)
-        )
-    );
-}
-impl Default for cudaIpcMemHandle_st {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-pub type cudaIpcMemHandle_t = cudaIpcMemHandle_st;
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaExternalMemoryHandleType {
-    cudaExternalMemoryHandleTypeOpaqueFd = 1,
-    cudaExternalMemoryHandleTypeOpaqueWin32 = 2,
-    cudaExternalMemoryHandleTypeOpaqueWin32Kmt = 3,
-    cudaExternalMemoryHandleTypeD3D12Heap = 4,
-    cudaExternalMemoryHandleTypeD3D12Resource = 5,
-    cudaExternalMemoryHandleTypeD3D11Resource = 6,
-    cudaExternalMemoryHandleTypeD3D11ResourceKmt = 7,
-    cudaExternalMemoryHandleTypeNvSciBuf = 8,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct cudaExternalMemoryHandleDesc {
-    pub type_: cudaExternalMemoryHandleType,
-    pub handle: cudaExternalMemoryHandleDesc__bindgen_ty_1,
-    pub size: ::std::os::raw::c_ulonglong,
-    pub flags: ::std::os::raw::c_uint,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub union cudaExternalMemoryHandleDesc__bindgen_ty_1 {
-    pub fd: ::std::os::raw::c_int,
-    pub win32: cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1,
-    pub nvSciBufObject: *const ::std::os::raw::c_void,
-    _bindgen_union_align: [u64; 2usize],
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1 {
-    pub handle: *mut ::std::os::raw::c_void,
-    pub name: *const ::std::os::raw::c_void,
-}
-#[test]
-fn bindgen_test_layout_cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1>(),
-        16usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1>()))
-                .handle as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1),
-            "::",
-            stringify!(handle)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1>()))
-                .name as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1),
-            "::",
-            stringify!(name)
-        )
-    );
-}
-impl Default for cudaExternalMemoryHandleDesc__bindgen_ty_1__bindgen_ty_1 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[test]
-fn bindgen_test_layout_cudaExternalMemoryHandleDesc__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalMemoryHandleDesc__bindgen_ty_1>(),
-        16usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalMemoryHandleDesc__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalMemoryHandleDesc__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalMemoryHandleDesc__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryHandleDesc__bindgen_ty_1>())).fd as *const _
-                as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryHandleDesc__bindgen_ty_1),
-            "::",
-            stringify!(fd)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryHandleDesc__bindgen_ty_1>())).win32 as *const _
-                as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryHandleDesc__bindgen_ty_1),
-            "::",
-            stringify!(win32)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryHandleDesc__bindgen_ty_1>())).nvSciBufObject
-                as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryHandleDesc__bindgen_ty_1),
-            "::",
-            stringify!(nvSciBufObject)
-        )
-    );
-}
-impl Default for cudaExternalMemoryHandleDesc__bindgen_ty_1 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[test]
-fn bindgen_test_layout_cudaExternalMemoryHandleDesc() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalMemoryHandleDesc>(),
-        40usize,
-        concat!("Size of: ", stringify!(cudaExternalMemoryHandleDesc))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalMemoryHandleDesc>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaExternalMemoryHandleDesc))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryHandleDesc>())).type_ as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryHandleDesc),
-            "::",
-            stringify!(type_)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryHandleDesc>())).handle as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryHandleDesc),
-            "::",
-            stringify!(handle)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryHandleDesc>())).size as *const _ as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryHandleDesc),
-            "::",
-            stringify!(size)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryHandleDesc>())).flags as *const _ as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryHandleDesc),
-            "::",
-            stringify!(flags)
-        )
-    );
-}
-impl Default for cudaExternalMemoryHandleDesc {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaExternalMemoryBufferDesc {
-    pub offset: ::std::os::raw::c_ulonglong,
-    pub size: ::std::os::raw::c_ulonglong,
-    pub flags: ::std::os::raw::c_uint,
-}
-#[test]
-fn bindgen_test_layout_cudaExternalMemoryBufferDesc() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalMemoryBufferDesc>(),
-        24usize,
-        concat!("Size of: ", stringify!(cudaExternalMemoryBufferDesc))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalMemoryBufferDesc>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaExternalMemoryBufferDesc))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryBufferDesc>())).offset as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryBufferDesc),
-            "::",
-            stringify!(offset)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryBufferDesc>())).size as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryBufferDesc),
-            "::",
-            stringify!(size)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryBufferDesc>())).flags as *const _ as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryBufferDesc),
-            "::",
-            stringify!(flags)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaExternalMemoryMipmappedArrayDesc {
-    pub offset: ::std::os::raw::c_ulonglong,
-    pub formatDesc: cudaChannelFormatDesc,
-    pub extent: cudaExtent,
-    pub flags: ::std::os::raw::c_uint,
-    pub numLevels: ::std::os::raw::c_uint,
-}
-#[test]
-fn bindgen_test_layout_cudaExternalMemoryMipmappedArrayDesc() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalMemoryMipmappedArrayDesc>(),
-        64usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalMemoryMipmappedArrayDesc)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalMemoryMipmappedArrayDesc>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalMemoryMipmappedArrayDesc)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryMipmappedArrayDesc>())).offset as *const _
-                as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryMipmappedArrayDesc),
-            "::",
-            stringify!(offset)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryMipmappedArrayDesc>())).formatDesc as *const _
-                as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryMipmappedArrayDesc),
-            "::",
-            stringify!(formatDesc)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryMipmappedArrayDesc>())).extent as *const _
-                as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryMipmappedArrayDesc),
-            "::",
-            stringify!(extent)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryMipmappedArrayDesc>())).flags as *const _
-                as usize
-        },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryMipmappedArrayDesc),
-            "::",
-            stringify!(flags)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalMemoryMipmappedArrayDesc>())).numLevels as *const _
-                as usize
-        },
-        60usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalMemoryMipmappedArrayDesc),
-            "::",
-            stringify!(numLevels)
-        )
-    );
-}
-impl Default for cudaExternalMemoryMipmappedArrayDesc {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaExternalSemaphoreHandleType {
-    cudaExternalSemaphoreHandleTypeOpaqueFd = 1,
-    cudaExternalSemaphoreHandleTypeOpaqueWin32 = 2,
-    cudaExternalSemaphoreHandleTypeOpaqueWin32Kmt = 3,
-    cudaExternalSemaphoreHandleTypeD3D12Fence = 4,
-    cudaExternalSemaphoreHandleTypeD3D11Fence = 5,
-    cudaExternalSemaphoreHandleTypeNvSciSync = 6,
-    cudaExternalSemaphoreHandleTypeKeyedMutex = 7,
-    cudaExternalSemaphoreHandleTypeKeyedMutexKmt = 8,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct cudaExternalSemaphoreHandleDesc {
-    pub type_: cudaExternalSemaphoreHandleType,
-    pub handle: cudaExternalSemaphoreHandleDesc__bindgen_ty_1,
-    pub flags: ::std::os::raw::c_uint,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub union cudaExternalSemaphoreHandleDesc__bindgen_ty_1 {
-    pub fd: ::std::os::raw::c_int,
-    pub win32: cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1,
-    pub nvSciSyncObj: *const ::std::os::raw::c_void,
-    _bindgen_union_align: [u64; 2usize],
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1 {
-    pub handle: *mut ::std::os::raw::c_void,
-    pub name: *const ::std::os::raw::c_void,
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1>(),
-        16usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1>()))
-                .handle as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1),
-            "::",
-            stringify!(handle)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1>()))
-                .name as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1),
-            "::",
-            stringify!(name)
-        )
-    );
-}
-impl Default for cudaExternalSemaphoreHandleDesc__bindgen_ty_1__bindgen_ty_1 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreHandleDesc__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreHandleDesc__bindgen_ty_1>(),
-        16usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalSemaphoreHandleDesc__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreHandleDesc__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalSemaphoreHandleDesc__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreHandleDesc__bindgen_ty_1>())).fd as *const _
-                as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreHandleDesc__bindgen_ty_1),
-            "::",
-            stringify!(fd)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreHandleDesc__bindgen_ty_1>())).win32
-                as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreHandleDesc__bindgen_ty_1),
-            "::",
-            stringify!(win32)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreHandleDesc__bindgen_ty_1>())).nvSciSyncObj
-                as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreHandleDesc__bindgen_ty_1),
-            "::",
-            stringify!(nvSciSyncObj)
-        )
-    );
-}
-impl Default for cudaExternalSemaphoreHandleDesc__bindgen_ty_1 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreHandleDesc() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreHandleDesc>(),
-        32usize,
-        concat!("Size of: ", stringify!(cudaExternalSemaphoreHandleDesc))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreHandleDesc>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaExternalSemaphoreHandleDesc))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreHandleDesc>())).type_ as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreHandleDesc),
-            "::",
-            stringify!(type_)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreHandleDesc>())).handle as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreHandleDesc),
-            "::",
-            stringify!(handle)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreHandleDesc>())).flags as *const _ as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreHandleDesc),
-            "::",
-            stringify!(flags)
-        )
-    );
-}
-impl Default for cudaExternalSemaphoreHandleDesc {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct cudaExternalSemaphoreSignalParams {
-    pub params: cudaExternalSemaphoreSignalParams__bindgen_ty_1,
-    pub flags: ::std::os::raw::c_uint,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct cudaExternalSemaphoreSignalParams__bindgen_ty_1 {
-    pub fence: cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_1,
-    pub nvSciSync: cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2,
-    pub keyedMutex: cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3,
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_1 {
-    pub value: ::std::os::raw::c_ulonglong,
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_1>(
-            )))
-            .value as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_1),
-            "::",
-            stringify!(value)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub union cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2 {
-    pub fence: *mut ::std::os::raw::c_void,
-    pub reserved: ::std::os::raw::c_ulonglong,
-    _bindgen_union_align: u64,
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2>(),
-        8usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2>(
-            )))
-            .fence as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2),
-            "::",
-            stringify!(fence)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2>(
-            )))
-            .reserved as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2),
-            "::",
-            stringify!(reserved)
-        )
-    );
-}
-impl Default for cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_2 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3 {
-    pub key: ::std::os::raw::c_ulonglong,
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3>(),
-        8usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3>(
-            )))
-            .key as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1__bindgen_ty_3),
-            "::",
-            stringify!(key)
-        )
-    );
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreSignalParams__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1>(),
-        24usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreSignalParams__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1>())).fence
-                as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1),
-            "::",
-            stringify!(fence)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1>())).nvSciSync
-                as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1),
-            "::",
-            stringify!(nvSciSync)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams__bindgen_ty_1>())).keyedMutex
-                as *const _ as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreSignalParams__bindgen_ty_1),
-            "::",
-            stringify!(keyedMutex)
-        )
-    );
-}
-impl Default for cudaExternalSemaphoreSignalParams__bindgen_ty_1 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreSignalParams() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreSignalParams>(),
-        32usize,
-        concat!("Size of: ", stringify!(cudaExternalSemaphoreSignalParams))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreSignalParams>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalSemaphoreSignalParams)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams>())).params as *const _
-                as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreSignalParams),
-            "::",
-            stringify!(params)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreSignalParams>())).flags as *const _ as usize
-        },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreSignalParams),
-            "::",
-            stringify!(flags)
-        )
-    );
-}
-impl Default for cudaExternalSemaphoreSignalParams {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct cudaExternalSemaphoreWaitParams {
-    pub params: cudaExternalSemaphoreWaitParams__bindgen_ty_1,
-    pub flags: ::std::os::raw::c_uint,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct cudaExternalSemaphoreWaitParams__bindgen_ty_1 {
-    pub fence: cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_1,
-    pub nvSciSync: cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2,
-    pub keyedMutex: cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3,
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_1 {
-    pub value: ::std::os::raw::c_ulonglong,
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_1>()))
-                .value as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_1),
-            "::",
-            stringify!(value)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub union cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2 {
-    pub fence: *mut ::std::os::raw::c_void,
-    pub reserved: ::std::os::raw::c_ulonglong,
-    _bindgen_union_align: u64,
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2>(),
-        8usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2>()))
-                .fence as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2),
-            "::",
-            stringify!(fence)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2>()))
-                .reserved as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2),
-            "::",
-            stringify!(reserved)
-        )
-    );
-}
-impl Default for cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_2 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3 {
-    pub key: ::std::os::raw::c_ulonglong,
-    pub timeoutMs: ::std::os::raw::c_uint,
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3>(),
-        16usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3>()))
-                .key as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3),
-            "::",
-            stringify!(key)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3>()))
-                .timeoutMs as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1__bindgen_ty_3),
-            "::",
-            stringify!(timeoutMs)
-        )
-    );
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreWaitParams__bindgen_ty_1() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1>(),
-        32usize,
-        concat!(
-            "Size of: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreWaitParams__bindgen_ty_1>(),
-        8usize,
-        concat!(
-            "Alignment of ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1>())).fence
-                as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1),
-            "::",
-            stringify!(fence)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1>())).nvSciSync
-                as *const _ as usize
-        },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1),
-            "::",
-            stringify!(nvSciSync)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams__bindgen_ty_1>())).keyedMutex
-                as *const _ as usize
-        },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreWaitParams__bindgen_ty_1),
-            "::",
-            stringify!(keyedMutex)
-        )
-    );
-}
-impl Default for cudaExternalSemaphoreWaitParams__bindgen_ty_1 {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[test]
-fn bindgen_test_layout_cudaExternalSemaphoreWaitParams() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaExternalSemaphoreWaitParams>(),
-        40usize,
-        concat!("Size of: ", stringify!(cudaExternalSemaphoreWaitParams))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaExternalSemaphoreWaitParams>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaExternalSemaphoreWaitParams))
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams>())).params as *const _ as usize
-        },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreWaitParams),
-            "::",
-            stringify!(params)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaExternalSemaphoreWaitParams>())).flags as *const _ as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaExternalSemaphoreWaitParams),
-            "::",
-            stringify!(flags)
-        )
-    );
-}
-impl Default for cudaExternalSemaphoreWaitParams {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-pub use self::cudaError as cudaError_t;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct CUstream_st {
-    _unused: [u8; 0],
-}
-pub type cudaStream_t = *mut CUstream_st;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct CUevent_st {
-    _unused: [u8; 0],
-}
-pub type cudaEvent_t = *mut CUevent_st;
-pub type cudaGraphicsResource_t = *mut cudaGraphicsResource;
-pub use self::cudaOutputMode as cudaOutputMode_t;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct CUexternalMemory_st {
-    _unused: [u8; 0],
-}
-pub type cudaExternalMemory_t = *mut CUexternalMemory_st;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct CUexternalSemaphore_st {
-    _unused: [u8; 0],
-}
-pub type cudaExternalSemaphore_t = *mut CUexternalSemaphore_st;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct CUgraph_st {
-    _unused: [u8; 0],
-}
-pub type cudaGraph_t = *mut CUgraph_st;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct CUgraphNode_st {
-    _unused: [u8; 0],
-}
-pub type cudaGraphNode_t = *mut CUgraphNode_st;
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaCGScope {
-    cudaCGScopeInvalid = 0,
-    cudaCGScopeGrid = 1,
-    cudaCGScopeMultiGrid = 2,
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaLaunchParams {
-    pub func: *mut ::std::os::raw::c_void,
-    pub gridDim: dim3,
-    pub blockDim: dim3,
-    pub args: *mut *mut ::std::os::raw::c_void,
-    pub sharedMem: usize,
-    pub stream: cudaStream_t,
-}
-#[test]
-fn bindgen_test_layout_cudaLaunchParams() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaLaunchParams>(),
-        56usize,
-        concat!("Size of: ", stringify!(cudaLaunchParams))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaLaunchParams>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaLaunchParams))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaLaunchParams>())).func as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaLaunchParams),
-            "::",
-            stringify!(func)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaLaunchParams>())).gridDim as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaLaunchParams),
-            "::",
-            stringify!(gridDim)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaLaunchParams>())).blockDim as *const _ as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaLaunchParams),
-            "::",
-            stringify!(blockDim)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaLaunchParams>())).args as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaLaunchParams),
-            "::",
-            stringify!(args)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaLaunchParams>())).sharedMem as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaLaunchParams),
-            "::",
-            stringify!(sharedMem)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaLaunchParams>())).stream as *const _ as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaLaunchParams),
-            "::",
-            stringify!(stream)
-        )
-    );
-}
-impl Default for cudaLaunchParams {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct cudaKernelNodeParams {
-    pub func: *mut ::std::os::raw::c_void,
-    pub gridDim: dim3,
-    pub blockDim: dim3,
-    pub sharedMemBytes: ::std::os::raw::c_uint,
-    pub kernelParams: *mut *mut ::std::os::raw::c_void,
-    pub extra: *mut *mut ::std::os::raw::c_void,
-}
-#[test]
-fn bindgen_test_layout_cudaKernelNodeParams() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaKernelNodeParams>(),
-        56usize,
-        concat!("Size of: ", stringify!(cudaKernelNodeParams))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaKernelNodeParams>(),
-        8usize,
-        concat!("Alignment of ", stringify!(cudaKernelNodeParams))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaKernelNodeParams>())).func as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaKernelNodeParams),
-            "::",
-            stringify!(func)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaKernelNodeParams>())).gridDim as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaKernelNodeParams),
-            "::",
-            stringify!(gridDim)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaKernelNodeParams>())).blockDim as *const _ as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaKernelNodeParams),
-            "::",
-            stringify!(blockDim)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaKernelNodeParams>())).sharedMemBytes as *const _ as usize
-        },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaKernelNodeParams),
-            "::",
-            stringify!(sharedMemBytes)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaKernelNodeParams>())).kernelParams as *const _ as usize
-        },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaKernelNodeParams),
-            "::",
-            stringify!(kernelParams)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaKernelNodeParams>())).extra as *const _ as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaKernelNodeParams),
-            "::",
-            stringify!(extra)
-        )
-    );
-}
-impl Default for cudaKernelNodeParams {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaGraphNodeType {
-    cudaGraphNodeTypeKernel = 0,
-    cudaGraphNodeTypeMemcpy = 1,
-    cudaGraphNodeTypeMemset = 2,
-    cudaGraphNodeTypeHost = 3,
-    cudaGraphNodeTypeGraph = 4,
-    cudaGraphNodeTypeEmpty = 5,
-    cudaGraphNodeTypeCount = 6,
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct CUgraphExec_st {
-    _unused: [u8; 0],
-}
-pub type cudaGraphExec_t = *mut CUgraphExec_st;
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaGraphExecUpdateResult {
-    cudaGraphExecUpdateSuccess = 0,
-    cudaGraphExecUpdateError = 1,
-    cudaGraphExecUpdateErrorTopologyChanged = 2,
-    cudaGraphExecUpdateErrorNodeTypeChanged = 3,
-    cudaGraphExecUpdateErrorFunctionChanged = 4,
-    cudaGraphExecUpdateErrorParametersChanged = 5,
-    cudaGraphExecUpdateErrorNotSupported = 6,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaSurfaceBoundaryMode {
-    cudaBoundaryModeZero = 0,
-    cudaBoundaryModeClamp = 1,
-    cudaBoundaryModeTrap = 2,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaSurfaceFormatMode {
-    cudaFormatModeForced = 0,
-    cudaFormatModeAuto = 1,
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
-pub struct surfaceReference {
-    pub channelDesc: cudaChannelFormatDesc,
-}
-#[test]
-fn bindgen_test_layout_surfaceReference() {
-    assert_eq!(
-        ::std::mem::size_of::<surfaceReference>(),
-        20usize,
-        concat!("Size of: ", stringify!(surfaceReference))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<surfaceReference>(),
-        4usize,
-        concat!("Alignment of ", stringify!(surfaceReference))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<surfaceReference>())).channelDesc as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(surfaceReference),
-            "::",
-            stringify!(channelDesc)
-        )
-    );
-}
-impl Default for surfaceReference {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-pub type cudaSurfaceObject_t = ::std::os::raw::c_ulonglong;
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaTextureAddressMode {
-    cudaAddressModeWrap = 0,
-    cudaAddressModeClamp = 1,
-    cudaAddressModeMirror = 2,
-    cudaAddressModeBorder = 3,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaTextureFilterMode {
-    cudaFilterModePoint = 0,
-    cudaFilterModeLinear = 1,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaTextureReadMode {
-    cudaReadModeElementType = 0,
-    cudaReadModeNormalizedFloat = 1,
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, PartialOrd, PartialEq)]
-pub struct textureReference {
-    pub normalized: ::std::os::raw::c_int,
-    pub filterMode: cudaTextureFilterMode,
-    pub addressMode: [cudaTextureAddressMode; 3usize],
-    pub channelDesc: cudaChannelFormatDesc,
-    pub sRGB: ::std::os::raw::c_int,
-    pub maxAnisotropy: ::std::os::raw::c_uint,
-    pub mipmapFilterMode: cudaTextureFilterMode,
-    pub mipmapLevelBias: f32,
-    pub minMipmapLevelClamp: f32,
-    pub maxMipmapLevelClamp: f32,
-    pub __cudaReserved: [::std::os::raw::c_int; 15usize],
-}
-#[test]
-fn bindgen_test_layout_textureReference() {
-    assert_eq!(
-        ::std::mem::size_of::<textureReference>(),
-        124usize,
-        concat!("Size of: ", stringify!(textureReference))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<textureReference>(),
-        4usize,
-        concat!("Alignment of ", stringify!(textureReference))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<textureReference>())).normalized as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(textureReference),
-            "::",
-            stringify!(normalized)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<textureReference>())).filterMode as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(textureReference),
-            "::",
-            stringify!(filterMode)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<textureReference>())).addressMode as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(textureReference),
-            "::",
-            stringify!(addressMode)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<textureReference>())).channelDesc as *const _ as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(textureReference),
-            "::",
-            stringify!(channelDesc)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<textureReference>())).sRGB as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(textureReference),
-            "::",
-            stringify!(sRGB)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<textureReference>())).maxAnisotropy as *const _ as usize },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(textureReference),
-            "::",
-            stringify!(maxAnisotropy)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<textureReference>())).mipmapFilterMode as *const _ as usize
-        },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(textureReference),
-            "::",
-            stringify!(mipmapFilterMode)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<textureReference>())).mipmapLevelBias as *const _ as usize
-        },
-        52usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(textureReference),
-            "::",
-            stringify!(mipmapLevelBias)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<textureReference>())).minMipmapLevelClamp as *const _ as usize
-        },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(textureReference),
-            "::",
-            stringify!(minMipmapLevelClamp)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<textureReference>())).maxMipmapLevelClamp as *const _ as usize
-        },
-        60usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(textureReference),
-            "::",
-            stringify!(maxMipmapLevelClamp)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<textureReference>())).__cudaReserved as *const _ as usize },
-        64usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(textureReference),
-            "::",
-            stringify!(__cudaReserved)
-        )
-    );
-}
-impl Default for textureReference {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone, PartialOrd, PartialEq)]
-pub struct cudaTextureDesc {
-    pub addressMode: [cudaTextureAddressMode; 3usize],
-    pub filterMode: cudaTextureFilterMode,
-    pub readMode: cudaTextureReadMode,
-    pub sRGB: ::std::os::raw::c_int,
-    pub borderColor: [f32; 4usize],
-    pub normalizedCoords: ::std::os::raw::c_int,
-    pub maxAnisotropy: ::std::os::raw::c_uint,
-    pub mipmapFilterMode: cudaTextureFilterMode,
-    pub mipmapLevelBias: f32,
-    pub minMipmapLevelClamp: f32,
-    pub maxMipmapLevelClamp: f32,
-}
-#[test]
-fn bindgen_test_layout_cudaTextureDesc() {
-    assert_eq!(
-        ::std::mem::size_of::<cudaTextureDesc>(),
-        64usize,
-        concat!("Size of: ", stringify!(cudaTextureDesc))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<cudaTextureDesc>(),
-        4usize,
-        concat!("Alignment of ", stringify!(cudaTextureDesc))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaTextureDesc>())).addressMode as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaTextureDesc),
-            "::",
-            stringify!(addressMode)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaTextureDesc>())).filterMode as *const _ as usize },
-        12usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaTextureDesc),
-            "::",
-            stringify!(filterMode)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaTextureDesc>())).readMode as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaTextureDesc),
-            "::",
-            stringify!(readMode)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaTextureDesc>())).sRGB as *const _ as usize },
-        20usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaTextureDesc),
-            "::",
-            stringify!(sRGB)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaTextureDesc>())).borderColor as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaTextureDesc),
-            "::",
-            stringify!(borderColor)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaTextureDesc>())).normalizedCoords as *const _ as usize
-        },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaTextureDesc),
-            "::",
-            stringify!(normalizedCoords)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaTextureDesc>())).maxAnisotropy as *const _ as usize },
-        44usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaTextureDesc),
-            "::",
-            stringify!(maxAnisotropy)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaTextureDesc>())).mipmapFilterMode as *const _ as usize
-        },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaTextureDesc),
-            "::",
-            stringify!(mipmapFilterMode)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<cudaTextureDesc>())).mipmapLevelBias as *const _ as usize },
-        52usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaTextureDesc),
-            "::",
-            stringify!(mipmapLevelBias)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaTextureDesc>())).minMipmapLevelClamp as *const _ as usize
-        },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaTextureDesc),
-            "::",
-            stringify!(minMipmapLevelClamp)
-        )
-    );
-    assert_eq!(
-        unsafe {
-            &(*(::std::ptr::null::<cudaTextureDesc>())).maxMipmapLevelClamp as *const _ as usize
-        },
-        60usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(cudaTextureDesc),
-            "::",
-            stringify!(maxMipmapLevelClamp)
-        )
-    );
-}
-impl Default for cudaTextureDesc {
-    fn default() -> Self {
-        unsafe { ::std::mem::zeroed() }
-    }
-}
-pub type cudaTextureObject_t = ::std::os::raw::c_ulonglong;
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum cudaDataType_t {
-    CUDA_R_16F = 2,
-    CUDA_C_16F = 6,
-    CUDA_R_32F = 0,
-    CUDA_C_32F = 4,
-    CUDA_R_64F = 1,
-    CUDA_C_64F = 5,
-    CUDA_R_8I = 3,
-    CUDA_C_8I = 7,
-    CUDA_R_8U = 8,
-    CUDA_C_8U = 9,
-    CUDA_R_32I = 10,
-    CUDA_C_32I = 11,
-    CUDA_R_32U = 12,
-    CUDA_C_32U = 13,
-}
-pub use self::cudaDataType_t as cudaDataType;
 extern "C" {
     pub fn cudaDeviceReset() -> cudaError_t;
 }
@@ -4638,10 +64,10 @@ extern "C" {
     pub fn cudaDeviceSynchronize() -> cudaError_t;
 }
 extern "C" {
-    pub fn cudaDeviceSetLimit(limit: cudaLimit, value: usize) -> cudaError_t;
+    pub fn cudaDeviceSetLimit(limit: cudaLimit, value: size_t) -> cudaError_t;
 }
 extern "C" {
-    pub fn cudaDeviceGetLimit(pValue: *mut usize, limit: cudaLimit) -> cudaError_t;
+    pub fn cudaDeviceGetLimit(pValue: *mut size_t, limit: cudaLimit) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaDeviceGetCacheConfig(pCacheConfig: *mut cudaFuncCache) -> cudaError_t;
@@ -4709,10 +135,10 @@ extern "C" {
     pub fn cudaThreadSynchronize() -> cudaError_t;
 }
 extern "C" {
-    pub fn cudaThreadSetLimit(limit: cudaLimit, value: usize) -> cudaError_t;
+    pub fn cudaThreadSetLimit(limit: cudaLimit, value: size_t) -> cudaError_t;
 }
 extern "C" {
-    pub fn cudaThreadGetLimit(pValue: *mut usize, limit: cudaLimit) -> cudaError_t;
+    pub fn cudaThreadGetLimit(pValue: *mut size_t, limit: cudaLimit) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaThreadGetCacheConfig(pCacheConfig: *mut cudaFuncCache) -> cudaError_t;
@@ -4816,6 +242,26 @@ extern "C" {
     ) -> cudaError_t;
 }
 extern "C" {
+    pub fn cudaCtxResetPersistingL2Cache() -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaStreamCopyAttributes(dst: cudaStream_t, src: cudaStream_t) -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaStreamGetAttribute(
+        hStream: cudaStream_t,
+        attr: cudaStreamAttrID,
+        value_out: *mut cudaStreamAttrValue,
+    ) -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaStreamSetAttribute(
+        hStream: cudaStream_t,
+        attr: cudaStreamAttrID,
+        value: *const cudaStreamAttrValue,
+    ) -> cudaError_t;
+}
+extern "C" {
     pub fn cudaStreamDestroy(stream: cudaStream_t) -> cudaError_t;
 }
 extern "C" {
@@ -4825,13 +271,6 @@ extern "C" {
         flags: ::std::os::raw::c_uint,
     ) -> cudaError_t;
 }
-pub type cudaStreamCallback_t = ::std::option::Option<
-    unsafe extern "C" fn(
-        stream: cudaStream_t,
-        status: cudaError_t,
-        userData: *mut ::std::os::raw::c_void,
-    ),
->;
 extern "C" {
     pub fn cudaStreamAddCallback(
         stream: cudaStream_t,
@@ -4850,7 +289,7 @@ extern "C" {
     pub fn cudaStreamAttachMemAsync(
         stream: cudaStream_t,
         devPtr: *mut ::std::os::raw::c_void,
-        length: usize,
+        length: size_t,
         flags: ::std::os::raw::c_uint,
     ) -> cudaError_t;
 }
@@ -4955,7 +394,7 @@ extern "C" {
         gridDim: dim3,
         blockDim: dim3,
         args: *mut *mut ::std::os::raw::c_void,
-        sharedMem: usize,
+        sharedMem: size_t,
         stream: cudaStream_t,
     ) -> cudaError_t;
 }
@@ -4965,7 +404,7 @@ extern "C" {
         gridDim: dim3,
         blockDim: dim3,
         args: *mut *mut ::std::os::raw::c_void,
-        sharedMem: usize,
+        sharedMem: size_t,
         stream: cudaStream_t,
     ) -> cudaError_t;
 }
@@ -5019,7 +458,15 @@ extern "C" {
         numBlocks: *mut ::std::os::raw::c_int,
         func: *const ::std::os::raw::c_void,
         blockSize: ::std::os::raw::c_int,
-        dynamicSMemSize: usize,
+        dynamicSMemSize: size_t,
+    ) -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaOccupancyAvailableDynamicSMemPerBlock(
+        dynamicSmemSize: *mut size_t,
+        func: *const ::std::os::raw::c_void,
+        numBlocks: ::std::os::raw::c_int,
+        blockSize: ::std::os::raw::c_int,
     ) -> cudaError_t;
 }
 extern "C" {
@@ -5027,37 +474,37 @@ extern "C" {
         numBlocks: *mut ::std::os::raw::c_int,
         func: *const ::std::os::raw::c_void,
         blockSize: ::std::os::raw::c_int,
-        dynamicSMemSize: usize,
+        dynamicSMemSize: size_t,
         flags: ::std::os::raw::c_uint,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMallocManaged(
         devPtr: *mut *mut ::std::os::raw::c_void,
-        size: usize,
+        size: size_t,
         flags: ::std::os::raw::c_uint,
     ) -> cudaError_t;
 }
 extern "C" {
-    pub fn cudaMalloc(devPtr: *mut *mut ::std::os::raw::c_void, size: usize) -> cudaError_t;
+    pub fn cudaMalloc(devPtr: *mut *mut ::std::os::raw::c_void, size: size_t) -> cudaError_t;
 }
 extern "C" {
-    pub fn cudaMallocHost(ptr: *mut *mut ::std::os::raw::c_void, size: usize) -> cudaError_t;
+    pub fn cudaMallocHost(ptr: *mut *mut ::std::os::raw::c_void, size: size_t) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMallocPitch(
         devPtr: *mut *mut ::std::os::raw::c_void,
-        pitch: *mut usize,
-        width: usize,
-        height: usize,
+        pitch: *mut size_t,
+        width: size_t,
+        height: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMallocArray(
         array: *mut cudaArray_t,
         desc: *const cudaChannelFormatDesc,
-        width: usize,
-        height: usize,
+        width: size_t,
+        height: size_t,
         flags: ::std::os::raw::c_uint,
     ) -> cudaError_t;
 }
@@ -5076,14 +523,14 @@ extern "C" {
 extern "C" {
     pub fn cudaHostAlloc(
         pHost: *mut *mut ::std::os::raw::c_void,
-        size: usize,
+        size: size_t,
         flags: ::std::os::raw::c_uint,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaHostRegister(
         ptr: *mut ::std::os::raw::c_void,
-        size: usize,
+        size: size_t,
         flags: ::std::os::raw::c_uint,
     ) -> cudaError_t;
 }
@@ -5146,7 +593,7 @@ extern "C" {
     ) -> cudaError_t;
 }
 extern "C" {
-    pub fn cudaMemGetInfo(free: *mut usize, total: *mut usize) -> cudaError_t;
+    pub fn cudaMemGetInfo(free: *mut size_t, total: *mut size_t) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaArrayGetInfo(
@@ -5160,7 +607,7 @@ extern "C" {
     pub fn cudaMemcpy(
         dst: *mut ::std::os::raw::c_void,
         src: *const ::std::os::raw::c_void,
-        count: usize,
+        count: size_t,
         kind: cudaMemcpyKind,
     ) -> cudaError_t;
 }
@@ -5170,54 +617,54 @@ extern "C" {
         dstDevice: ::std::os::raw::c_int,
         src: *const ::std::os::raw::c_void,
         srcDevice: ::std::os::raw::c_int,
-        count: usize,
+        count: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemcpy2D(
         dst: *mut ::std::os::raw::c_void,
-        dpitch: usize,
+        dpitch: size_t,
         src: *const ::std::os::raw::c_void,
-        spitch: usize,
-        width: usize,
-        height: usize,
+        spitch: size_t,
+        width: size_t,
+        height: size_t,
         kind: cudaMemcpyKind,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemcpy2DToArray(
         dst: cudaArray_t,
-        wOffset: usize,
-        hOffset: usize,
+        wOffset: size_t,
+        hOffset: size_t,
         src: *const ::std::os::raw::c_void,
-        spitch: usize,
-        width: usize,
-        height: usize,
+        spitch: size_t,
+        width: size_t,
+        height: size_t,
         kind: cudaMemcpyKind,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemcpy2DFromArray(
         dst: *mut ::std::os::raw::c_void,
-        dpitch: usize,
+        dpitch: size_t,
         src: cudaArray_const_t,
-        wOffset: usize,
-        hOffset: usize,
-        width: usize,
-        height: usize,
+        wOffset: size_t,
+        hOffset: size_t,
+        width: size_t,
+        height: size_t,
         kind: cudaMemcpyKind,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemcpy2DArrayToArray(
         dst: cudaArray_t,
-        wOffsetDst: usize,
-        hOffsetDst: usize,
+        wOffsetDst: size_t,
+        hOffsetDst: size_t,
         src: cudaArray_const_t,
-        wOffsetSrc: usize,
-        hOffsetSrc: usize,
-        width: usize,
-        height: usize,
+        wOffsetSrc: size_t,
+        hOffsetSrc: size_t,
+        width: size_t,
+        height: size_t,
         kind: cudaMemcpyKind,
     ) -> cudaError_t;
 }
@@ -5225,8 +672,8 @@ extern "C" {
     pub fn cudaMemcpyToSymbol(
         symbol: *const ::std::os::raw::c_void,
         src: *const ::std::os::raw::c_void,
-        count: usize,
-        offset: usize,
+        count: size_t,
+        offset: size_t,
         kind: cudaMemcpyKind,
     ) -> cudaError_t;
 }
@@ -5234,8 +681,8 @@ extern "C" {
     pub fn cudaMemcpyFromSymbol(
         dst: *mut ::std::os::raw::c_void,
         symbol: *const ::std::os::raw::c_void,
-        count: usize,
-        offset: usize,
+        count: size_t,
+        offset: size_t,
         kind: cudaMemcpyKind,
     ) -> cudaError_t;
 }
@@ -5243,7 +690,7 @@ extern "C" {
     pub fn cudaMemcpyAsync(
         dst: *mut ::std::os::raw::c_void,
         src: *const ::std::os::raw::c_void,
-        count: usize,
+        count: size_t,
         kind: cudaMemcpyKind,
         stream: cudaStream_t,
     ) -> cudaError_t;
@@ -5254,18 +701,18 @@ extern "C" {
         dstDevice: ::std::os::raw::c_int,
         src: *const ::std::os::raw::c_void,
         srcDevice: ::std::os::raw::c_int,
-        count: usize,
+        count: size_t,
         stream: cudaStream_t,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemcpy2DAsync(
         dst: *mut ::std::os::raw::c_void,
-        dpitch: usize,
+        dpitch: size_t,
         src: *const ::std::os::raw::c_void,
-        spitch: usize,
-        width: usize,
-        height: usize,
+        spitch: size_t,
+        width: size_t,
+        height: size_t,
         kind: cudaMemcpyKind,
         stream: cudaStream_t,
     ) -> cudaError_t;
@@ -5273,12 +720,12 @@ extern "C" {
 extern "C" {
     pub fn cudaMemcpy2DToArrayAsync(
         dst: cudaArray_t,
-        wOffset: usize,
-        hOffset: usize,
+        wOffset: size_t,
+        hOffset: size_t,
         src: *const ::std::os::raw::c_void,
-        spitch: usize,
-        width: usize,
-        height: usize,
+        spitch: size_t,
+        width: size_t,
+        height: size_t,
         kind: cudaMemcpyKind,
         stream: cudaStream_t,
     ) -> cudaError_t;
@@ -5286,12 +733,12 @@ extern "C" {
 extern "C" {
     pub fn cudaMemcpy2DFromArrayAsync(
         dst: *mut ::std::os::raw::c_void,
-        dpitch: usize,
+        dpitch: size_t,
         src: cudaArray_const_t,
-        wOffset: usize,
-        hOffset: usize,
-        width: usize,
-        height: usize,
+        wOffset: size_t,
+        hOffset: size_t,
+        width: size_t,
+        height: size_t,
         kind: cudaMemcpyKind,
         stream: cudaStream_t,
     ) -> cudaError_t;
@@ -5300,8 +747,8 @@ extern "C" {
     pub fn cudaMemcpyToSymbolAsync(
         symbol: *const ::std::os::raw::c_void,
         src: *const ::std::os::raw::c_void,
-        count: usize,
-        offset: usize,
+        count: size_t,
+        offset: size_t,
         kind: cudaMemcpyKind,
         stream: cudaStream_t,
     ) -> cudaError_t;
@@ -5310,8 +757,8 @@ extern "C" {
     pub fn cudaMemcpyFromSymbolAsync(
         dst: *mut ::std::os::raw::c_void,
         symbol: *const ::std::os::raw::c_void,
-        count: usize,
-        offset: usize,
+        count: size_t,
+        offset: size_t,
         kind: cudaMemcpyKind,
         stream: cudaStream_t,
     ) -> cudaError_t;
@@ -5320,16 +767,16 @@ extern "C" {
     pub fn cudaMemset(
         devPtr: *mut ::std::os::raw::c_void,
         value: ::std::os::raw::c_int,
-        count: usize,
+        count: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemset2D(
         devPtr: *mut ::std::os::raw::c_void,
-        pitch: usize,
+        pitch: size_t,
         value: ::std::os::raw::c_int,
-        width: usize,
-        height: usize,
+        width: size_t,
+        height: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
@@ -5343,17 +790,17 @@ extern "C" {
     pub fn cudaMemsetAsync(
         devPtr: *mut ::std::os::raw::c_void,
         value: ::std::os::raw::c_int,
-        count: usize,
+        count: size_t,
         stream: cudaStream_t,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemset2DAsync(
         devPtr: *mut ::std::os::raw::c_void,
-        pitch: usize,
+        pitch: size_t,
         value: ::std::os::raw::c_int,
-        width: usize,
-        height: usize,
+        width: size_t,
+        height: size_t,
         stream: cudaStream_t,
     ) -> cudaError_t;
 }
@@ -5373,14 +820,14 @@ extern "C" {
 }
 extern "C" {
     pub fn cudaGetSymbolSize(
-        size: *mut usize,
+        size: *mut size_t,
         symbol: *const ::std::os::raw::c_void,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemPrefetchAsync(
         devPtr: *const ::std::os::raw::c_void,
-        count: usize,
+        count: size_t,
         dstDevice: ::std::os::raw::c_int,
         stream: cudaStream_t,
     ) -> cudaError_t;
@@ -5388,7 +835,7 @@ extern "C" {
 extern "C" {
     pub fn cudaMemAdvise(
         devPtr: *const ::std::os::raw::c_void,
-        count: usize,
+        count: size_t,
         advice: cudaMemoryAdvise,
         device: ::std::os::raw::c_int,
     ) -> cudaError_t;
@@ -5396,29 +843,29 @@ extern "C" {
 extern "C" {
     pub fn cudaMemRangeGetAttribute(
         data: *mut ::std::os::raw::c_void,
-        dataSize: usize,
+        dataSize: size_t,
         attribute: cudaMemRangeAttribute,
         devPtr: *const ::std::os::raw::c_void,
-        count: usize,
+        count: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemRangeGetAttributes(
         data: *mut *mut ::std::os::raw::c_void,
-        dataSizes: *mut usize,
+        dataSizes: *mut size_t,
         attributes: *mut cudaMemRangeAttribute,
-        numAttributes: usize,
+        numAttributes: size_t,
         devPtr: *const ::std::os::raw::c_void,
-        count: usize,
+        count: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemcpyToArray(
         dst: cudaArray_t,
-        wOffset: usize,
-        hOffset: usize,
+        wOffset: size_t,
+        hOffset: size_t,
         src: *const ::std::os::raw::c_void,
-        count: usize,
+        count: size_t,
         kind: cudaMemcpyKind,
     ) -> cudaError_t;
 }
@@ -5426,31 +873,31 @@ extern "C" {
     pub fn cudaMemcpyFromArray(
         dst: *mut ::std::os::raw::c_void,
         src: cudaArray_const_t,
-        wOffset: usize,
-        hOffset: usize,
-        count: usize,
+        wOffset: size_t,
+        hOffset: size_t,
+        count: size_t,
         kind: cudaMemcpyKind,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemcpyArrayToArray(
         dst: cudaArray_t,
-        wOffsetDst: usize,
-        hOffsetDst: usize,
+        wOffsetDst: size_t,
+        hOffsetDst: size_t,
         src: cudaArray_const_t,
-        wOffsetSrc: usize,
-        hOffsetSrc: usize,
-        count: usize,
+        wOffsetSrc: size_t,
+        hOffsetSrc: size_t,
+        count: size_t,
         kind: cudaMemcpyKind,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaMemcpyToArrayAsync(
         dst: cudaArray_t,
-        wOffset: usize,
-        hOffset: usize,
+        wOffset: size_t,
+        hOffset: size_t,
         src: *const ::std::os::raw::c_void,
-        count: usize,
+        count: size_t,
         kind: cudaMemcpyKind,
         stream: cudaStream_t,
     ) -> cudaError_t;
@@ -5459,9 +906,9 @@ extern "C" {
     pub fn cudaMemcpyFromArrayAsync(
         dst: *mut ::std::os::raw::c_void,
         src: cudaArray_const_t,
-        wOffset: usize,
-        hOffset: usize,
-        count: usize,
+        wOffset: size_t,
+        hOffset: size_t,
+        count: size_t,
         kind: cudaMemcpyKind,
         stream: cudaStream_t,
     ) -> cudaError_t;
@@ -5514,7 +961,7 @@ extern "C" {
 extern "C" {
     pub fn cudaGraphicsResourceGetMappedPointer(
         devPtr: *mut *mut ::std::os::raw::c_void,
-        size: *mut usize,
+        size: *mut size_t,
         resource: cudaGraphicsResource_t,
     ) -> cudaError_t;
 }
@@ -5534,22 +981,22 @@ extern "C" {
 }
 extern "C" {
     pub fn cudaBindTexture(
-        offset: *mut usize,
+        offset: *mut size_t,
         texref: *const textureReference,
         devPtr: *const ::std::os::raw::c_void,
         desc: *const cudaChannelFormatDesc,
-        size: usize,
+        size: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaBindTexture2D(
-        offset: *mut usize,
+        offset: *mut size_t,
         texref: *const textureReference,
         devPtr: *const ::std::os::raw::c_void,
         desc: *const cudaChannelFormatDesc,
-        width: usize,
-        height: usize,
-        pitch: usize,
+        width: size_t,
+        height: size_t,
+        pitch: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
@@ -5571,7 +1018,7 @@ extern "C" {
 }
 extern "C" {
     pub fn cudaGetTextureAlignmentOffset(
-        offset: *mut usize,
+        offset: *mut size_t,
         texref: *const textureReference,
     ) -> cudaError_t;
 }
@@ -5667,7 +1114,7 @@ extern "C" {
         pGraphNode: *mut cudaGraphNode_t,
         graph: cudaGraph_t,
         pDependencies: *const cudaGraphNode_t,
-        numDependencies: usize,
+        numDependencies: size_t,
         pNodeParams: *const cudaKernelNodeParams,
     ) -> cudaError_t;
 }
@@ -5684,11 +1131,31 @@ extern "C" {
     ) -> cudaError_t;
 }
 extern "C" {
+    pub fn cudaGraphKernelNodeCopyAttributes(
+        hSrc: cudaGraphNode_t,
+        hDst: cudaGraphNode_t,
+    ) -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaGraphKernelNodeGetAttribute(
+        hNode: cudaGraphNode_t,
+        attr: cudaKernelNodeAttrID,
+        value_out: *mut cudaKernelNodeAttrValue,
+    ) -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaGraphKernelNodeSetAttribute(
+        hNode: cudaGraphNode_t,
+        attr: cudaKernelNodeAttrID,
+        value: *const cudaKernelNodeAttrValue,
+    ) -> cudaError_t;
+}
+extern "C" {
     pub fn cudaGraphAddMemcpyNode(
         pGraphNode: *mut cudaGraphNode_t,
         graph: cudaGraph_t,
         pDependencies: *const cudaGraphNode_t,
-        numDependencies: usize,
+        numDependencies: size_t,
         pCopyParams: *const cudaMemcpy3DParms,
     ) -> cudaError_t;
 }
@@ -5709,7 +1176,7 @@ extern "C" {
         pGraphNode: *mut cudaGraphNode_t,
         graph: cudaGraph_t,
         pDependencies: *const cudaGraphNode_t,
-        numDependencies: usize,
+        numDependencies: size_t,
         pMemsetParams: *const cudaMemsetParams,
     ) -> cudaError_t;
 }
@@ -5730,7 +1197,7 @@ extern "C" {
         pGraphNode: *mut cudaGraphNode_t,
         graph: cudaGraph_t,
         pDependencies: *const cudaGraphNode_t,
-        numDependencies: usize,
+        numDependencies: size_t,
         pNodeParams: *const cudaHostNodeParams,
     ) -> cudaError_t;
 }
@@ -5751,7 +1218,7 @@ extern "C" {
         pGraphNode: *mut cudaGraphNode_t,
         graph: cudaGraph_t,
         pDependencies: *const cudaGraphNode_t,
-        numDependencies: usize,
+        numDependencies: size_t,
         childGraph: cudaGraph_t,
     ) -> cudaError_t;
 }
@@ -5766,7 +1233,7 @@ extern "C" {
         pGraphNode: *mut cudaGraphNode_t,
         graph: cudaGraph_t,
         pDependencies: *const cudaGraphNode_t,
-        numDependencies: usize,
+        numDependencies: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
@@ -5790,14 +1257,14 @@ extern "C" {
     pub fn cudaGraphGetNodes(
         graph: cudaGraph_t,
         nodes: *mut cudaGraphNode_t,
-        numNodes: *mut usize,
+        numNodes: *mut size_t,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaGraphGetRootNodes(
         graph: cudaGraph_t,
         pRootNodes: *mut cudaGraphNode_t,
-        pNumRootNodes: *mut usize,
+        pNumRootNodes: *mut size_t,
     ) -> cudaError_t;
 }
 extern "C" {
@@ -5805,21 +1272,21 @@ extern "C" {
         graph: cudaGraph_t,
         from: *mut cudaGraphNode_t,
         to: *mut cudaGraphNode_t,
-        numEdges: *mut usize,
+        numEdges: *mut size_t,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaGraphNodeGetDependencies(
         node: cudaGraphNode_t,
         pDependencies: *mut cudaGraphNode_t,
-        pNumDependencies: *mut usize,
+        pNumDependencies: *mut size_t,
     ) -> cudaError_t;
 }
 extern "C" {
     pub fn cudaGraphNodeGetDependentNodes(
         node: cudaGraphNode_t,
         pDependentNodes: *mut cudaGraphNode_t,
-        pNumDependentNodes: *mut usize,
+        pNumDependentNodes: *mut size_t,
     ) -> cudaError_t;
 }
 extern "C" {
@@ -5827,7 +1294,7 @@ extern "C" {
         graph: cudaGraph_t,
         from: *const cudaGraphNode_t,
         to: *const cudaGraphNode_t,
-        numDependencies: usize,
+        numDependencies: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
@@ -5835,7 +1302,7 @@ extern "C" {
         graph: cudaGraph_t,
         from: *const cudaGraphNode_t,
         to: *const cudaGraphNode_t,
-        numDependencies: usize,
+        numDependencies: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
@@ -5847,7 +1314,7 @@ extern "C" {
         graph: cudaGraph_t,
         pErrorNode: *mut cudaGraphNode_t,
         pLogBuffer: *mut ::std::os::raw::c_char,
-        bufferSize: usize,
+        bufferSize: size_t,
     ) -> cudaError_t;
 }
 extern "C" {
@@ -5899,5 +1366,11 @@ extern "C" {
     pub fn cudaGetExportTable(
         ppExportTable: *mut *const ::std::os::raw::c_void,
         pExportTableId: *const cudaUUID_t,
+    ) -> cudaError_t;
+}
+extern "C" {
+    pub fn cudaGetFuncBySymbol(
+        functionPtr: *mut cudaFunction_t,
+        symbolPtr: *const ::std::os::raw::c_void,
     ) -> cudaError_t;
 }

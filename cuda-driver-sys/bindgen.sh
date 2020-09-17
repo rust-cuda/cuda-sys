@@ -2,12 +2,7 @@
 set -exu
 
 bindgen \
-  --whitelist-type="^CU.*" \
-  --whitelist-type="^cuuint(32|64)_t" \
-  --whitelist-type="^cudaError_enum" \
-  --whitelist-type="^cu.*Complex$" \
-  --whitelist-type="^cuda.*" \
-  --whitelist-type="^libraryPropertyType.*" \
+  --blacklist-type="^.*" \
   --whitelist-var="^CU.*" \
   --whitelist-function="^cu.*" \
   --default-enum-style=rust \

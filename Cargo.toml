@@ -3,5 +3,7 @@ members = [
   "cublas-sys",
   "cuda-config",
   "cuda-driver-sys",
+  "cuda-gl-interop-sys",
   "cuda-runtime-sys",
+  "cuda-types-sys",
 ]
