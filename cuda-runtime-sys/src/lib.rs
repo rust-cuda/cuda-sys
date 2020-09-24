@@ -1,4 +1,7 @@
 #![allow(non_snake_case, non_upper_case_globals, non_camel_case_types)]
+
+use cuda_types_sys::*;
+
 include!("cuda_runtime.rs");
 
 #[cfg(test)]

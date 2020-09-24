@@ -1,26 +1,19 @@
 [package]
-name = "cuda-driver-sys"
+name = "cuda-types-sys"
 version = "0.4.0-alpha.1"
-authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
+authors = ["Daniel Raneland <raniz@raneland.se>"]
 edition = "2018"
 
 build = "build.rs"
-links = "cuda"
 
-description   = "Rust binding to CUDA Driver APIs"
-documentation = "https://docs.rs/cuda-runtime-sys/"
+description   = "Rust binding to CUDA driver and runtime types"
+documentation = "https://docs.rs/cuda-types-sys/"
 repository    = "https://github.com/rust-cuda/cuda-sys"
 keywords      = ["GPGPU", "CUDA", "ffi"]
 license       = "MIT/Apache-2.0"
 readme        = "../README.md"
 categories    = []
 
-[build-dependencies.bindgen]
-version = "~0.55"
-
 [build-dependencies.cuda-config]
 path = "../cuda-config"
 version = "0.1.0"
-
-[dependencies.cuda-types-sys]
-path = "../cuda-types-sys"
