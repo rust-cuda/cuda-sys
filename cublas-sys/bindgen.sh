@@ -10,7 +10,7 @@ bindgen \
   --with-derive-eq \
   --with-derive-hash \
   --with-derive-ord \
-  /opt/cuda/include/cublas.h \
-  -- -I/opt/cuda/include \
   --size_t-is-usize \
+  "$CUDA_PATH/include/cublas.h" \
+  -- -I"$CUDA_PATH/include" \
   > src/cublas.rs
