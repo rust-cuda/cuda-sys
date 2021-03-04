@@ -12,4 +12,5 @@ bindgen \
   --with-derive-ord \
   /opt/cuda/include/cublas.h \
   -- -I/opt/cuda/include \
+  --size_t-is-usize \
   > src/cublas.rs

@@ -14,4 +14,5 @@ bindgen \
   --with-derive-hash \
   --with-derive-ord \
   /opt/cuda/include/cuda_runtime.h \
+  --size_t-is-usize \
   > src/cuda_runtime.rs
