@@ -1,10 +1,10 @@
 cuda-sys
 =========
 
-|name            |crate.io                                                                                               |docs.rs                                                                                   | CUDA |
-|:--------------:|:-----------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:----:|
-|cuda-driver-sys |[![Crate](http://meritbadge.herokuapp.com/cuda-driver-sys)](https://crates.io/crates/cuda-driver-sys)  |[![docs.rs](https://docs.rs/cuda-driver-sys/badge.svg)](https://docs.rs/cuda-driver-sys)  | 10.2 |
-|cuda-runtime-sys|[![Crate](http://meritbadge.herokuapp.com/cuda-runtime-sys)](https://crates.io/crates/cuda-runtime-sys)|[![docs.rs](https://docs.rs/cuda-runtime-sys/badge.svg)](https://docs.rs/cuda-runtime-sys)| 10.2 |
+|name            |crates.io                                                                                                  |docs.rs                                                                                   | CUDA |
+|:--------------:|:---------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:----:|
+|cuda-driver-sys |[![Crate](https://img.shields.io/crates/v/cuda-driver-sys.svg)](https://crates.io/crates/cuda-driver-sys)  |[![docs.rs](https://docs.rs/cuda-driver-sys/badge.svg)](https://docs.rs/cuda-driver-sys)  | 10.2 |
+|cuda-runtime-sys|[![Crate](https://img.shields.io/crates/v/cuda-runtime-sys.svg)](https://crates.io/crates/cuda-runtime-sys)|[![docs.rs](https://docs.rs/cuda-runtime-sys/badge.svg)](https://docs.rs/cuda-runtime-sys)| 10.2 |
 
 Rust binding to [CUDA Driver (`libcuda.so`)](https://docs.nvidia.com/cuda/cuda-driver-api/index.html)
 and [Runtime (`libcudart.so`) APIs](https://docs.nvidia.com/cuda/cuda-runtime-api/index.html)
@@ -45,7 +45,7 @@ LD_LIBRARY_PATH=/usr/local/cuda/lib64/stubs
 License
 --------
 Dual-licensed to be compatible with the Rust project.
-Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0) or the [MIT license](http://opensource.org/licenses/MIT), at your option.
+Licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) or the [MIT license](https://opensource.org/licenses/MIT), at your option.
 This file may not be copied, modified, or distributed except according to those terms.
 
 You should check the [End User License Agreement](https://docs.nvidia.com/cuda/eula/index.html),
