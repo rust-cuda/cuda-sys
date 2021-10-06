@@ -1,0 +1,20 @@
+[package]
+name = "nvtx-sys"
+version = "0.3.0-alpha.0"
+authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>", "Clemens Lutz <lutzcle@cml.li>"]
+edition = "2018"
+
+build = "build.rs"
+links = "nvToolsExt"
+
+description   = "Rust binding to NVIDIA Tools Extension Library"
+documentation = "https://docs.rs/nvtx-sys/"
+repository    = "https://github.com/rust-cuda/cuda-sys"
+keywords      = ["GPGPU", "CUDA", "ffi"]
+license       = "MIT/Apache-2.0"
+readme        = "../README.md"
+categories    = []
+
+[build-dependencies.cuda-config]
+path = "../cuda-config"
+version = "0.1.0"
