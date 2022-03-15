@@ -12,7 +12,7 @@ mod tests {
         let result = unsafe { cuDriverGetVersion(&mut version as *mut i32) };
         match result {
             CUresult::CUDA_SUCCESS => {
-                println!("Deriver Version = {:?}", version);
+                println!("Driver Version = {:?}", version);
             }
             _ => {
                 println!("Cannot get driver version");
