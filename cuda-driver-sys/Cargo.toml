@@ -1,11 +1,11 @@
 [package]
 name = "cuda-driver-sys"
-version = "0.3.1-dev"
+version = "0.3.1"
 authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
 edition = "2018"
 
 build = "build.rs"
-links = "cuda"
+links = "cuda-11.5"
 
 description   = "Rust binding to CUDA Driver APIs"
 documentation = "https://docs.rs/cuda-runtime-sys/"
@@ -14,7 +14,3 @@ keywords      = ["GPGPU", "CUDA", "ffi"]
 license       = "MIT/Apache-2.0"
 readme        = "../README.md"
 categories    = []
-
-[build-dependencies.cuda-config]
-path = "../cuda-config"
-version = "0.1.0"
