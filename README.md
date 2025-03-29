@@ -1,3 +1,7 @@
+> [!WARNING]
+> This repository has been archived following [the reboot of the Rust-CUDA project](https://rust-gpu.github.io/blog/2025/01/27/rust-cuda-reboot/?s=09).  
+> Please use [Rust-GPU/Rust-CUDA](https://github.com/Rust-GPU/Rust-CUDA) instead.
+
 cuda-sys
 =========
 
